@@ -1,0 +1,33 @@
+[submodule "src/crypto-bn-cpp"]
+	path = src/crypto-bn-cpp
+	url = https://github.com/Safeheron/crypto-bn-cpp.git
+[submodule "src/crypto-curve-cpp"]
+	path = src/crypto-curve-cpp
+	url = https://github.com/Safeheron/crypto-curve-cpp.git
+[submodule "src/crypto-hash-cpp"]
+	path = src/crypto-hash-cpp
+	url = https://github.com/Safeheron/crypto-hash-cpp.git
+[submodule "src/crypto-encode-cpp"]
+	path = src/crypto-encode-cpp
+	url = https://github.com/Safeheron/crypto-encode-cpp.git
+[submodule "src/crypto-paillier-cpp"]
+	path = src/crypto-paillier-cpp
+	url = https://github.com/Safeheron/crypto-paillier-cpp.git
+[submodule "src/crypto-sss-cpp"]
+	path = src/crypto-sss-cpp
+	url = https://github.com/Safeheron/crypto-sss-cpp.git
+[submodule "src/crypto-zkp-cpp"]
+	path = src/crypto-zkp-cpp
+	url = https://github.com/Safeheron/crypto-zkp-cpp.git
+[submodule "src/crypto-mta-cpp"]
+	path = src/crypto-mta-cpp
+	url = https://github.com/Safeheron/crypto-mta-cpp.git
+[submodule "src/crypto-commitment-cpp"]
+	path = src/crypto-commitment-cpp
+	url = https://github.com/Safeheron/crypto-commitment-cpp.git
+[submodule "src/crypto-bip32-cpp"]
+	path = src/crypto-bip32-cpp
+	url = https://github.com/Safeheron/crypto-bip32-cpp.git
+[submodule "src/crypto-ecies-cpp"]
+	path = src/crypto-ecies-cpp
+	url = https://github.com/Safeheron/crypto-ecies-cpp.git
