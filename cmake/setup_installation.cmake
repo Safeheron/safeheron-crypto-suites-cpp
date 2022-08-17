@@ -41,17 +41,17 @@ install(
 ## Install head files
 install(
         DIRECTORY
-            third_party/crypto-bn-cpp/src/
-            third_party/crypto-hash-cpp/src/
-            third_party/crypto-encode-cpp/src/
-            third_party/crypto-curve-cpp/src/
-            third_party/crypto-commitment-cpp/src/
-            third_party/crypto-paillier-cpp/src/
-            third_party/crypto-sss-cpp/src/
-            third_party/crypto-zkp-cpp/src/
-            third_party/crypto-mta-cpp/src/
-            third_party/crypto-bip32-cpp/src/
-            third_party/crypto-ecies-cpp/src/
+            src/crypto-bn-cpp/src/
+            src/crypto-hash-cpp/src/
+            src/crypto-encode-cpp/src/
+            src/crypto-curve-cpp/src/
+            src/crypto-commitment-cpp/src/
+            src/crypto-paillier-cpp/src/
+            src/crypto-sss-cpp/src/
+            src/crypto-zkp-cpp/src/
+            src/crypto-mta-cpp/src/
+            src/crypto-bip32-cpp/src/
+            src/crypto-ecies-cpp/src/
         DESTINATION include/safeheron
         FILES_MATCHING PATTERN "*.h"
 
