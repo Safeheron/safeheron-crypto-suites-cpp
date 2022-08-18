@@ -233,7 +233,7 @@ int main(){
 ```
 
 # Security Audit
-Many sub-libraries come from the repository "Safeheron/mpc-dsa-lib" which was developed by Safeheron and was audited by Kudelski Security. The final report was made available and a copy of this audit report([Audit_Report_of_SafeHeron_2021_12.pdf](./doc/Audit_Report_of_SafeHeron_2021_12.pdf)) may be found in this repository. All issues raised by Kudelski have been corrected and the related repository would open source soon.
+Many sub-libraries come from the repository "Safeheron/mpc-dsa-lib" which was developed by Safeheron and was audited by Kudelski Security. All issues raised by Kudelski in the audit report have been corrected. The related algorithm libraries will be open sourced soon. Safeheron's commercial customers will be authorized to view the audit report.
 
 # Development Process & Contact
 This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail.
