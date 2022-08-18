@@ -76,8 +76,8 @@ Linux and Mac are supported now.  After obtaining the Source, have a look at the
 
 ```shell
 # Pass --recurse-submodules to the git clone command, and it will automatically initialize and update each submodule in the repository, including nested submodules if any of the submodules in the repository have submodules themselves.
-git clone --recurse-submodules https://github.com/safeheron/crypto-suites-cpp.git
-cd crypto-suites-cpp
+git clone --recurse-submodules https://github.com/safeheron/safeheron-crypto-suites-cpp.git
+cd safeheron-crypto-suites-cpp
 mkdir build && cd build
 # Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL  -DENABLE_TESTS=ON" instead of the command below on Mac OS.
 cmake ..  -DENABLE_TESTS=ON
@@ -90,13 +90,13 @@ sudo make install
 
 More platforms such as Windows would be supported soon.
 
-# To start using crypto-suites-cpp
+# To start using safeheron-crypto-suites-cpp
 
 ## CMake
 
 CMake is your best option. It supports building on Linux, MacOS and Windows (soon) but also has a good chance of working on other platforms (no promises!). cmake has good support for crosscompiling and can be used for targeting the Android platform.
 
-To build crypto-suites-cpp from source, follow the BUILDING guide.
+To build safeheron-crypto-suites-cpp from source, follow the BUILDING guide.
 
 The canonical way to discover dependencies in CMake is the find_package command.
 
