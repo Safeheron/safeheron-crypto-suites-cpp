@@ -1,5 +1,7 @@
 # safeheron-crypto-suites-cpp
 
+![img](doc/logo.png)
+
 SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography protocols from Safeheron, which contains:
 
 - [crypto-bn-cpp](https://github.com/Safeheron/crypto-bn-cpp): It provides an implementation of C++ big integer. Additionally, it provides operations for modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, jacobi symbol calculation, and a few other miscellaneous operations.
