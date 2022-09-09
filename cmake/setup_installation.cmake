@@ -80,3 +80,21 @@ install(
         PATTERN "kdf.h" EXCLUDE
         PATTERN "symm.h" EXCLUDE
 )
+
+## Install proto files
+install(
+        DIRECTORY
+        src/crypto-bn-cpp/proto/
+        src/crypto-hash-cpp/proto/
+        src/crypto-encode-cpp/proto/
+        src/crypto-curve-cpp/proto/
+        src/crypto-commitment-cpp/proto/
+        src/crypto-paillier-cpp/proto/
+        src/crypto-sss-cpp/proto/
+        src/crypto-zkp-cpp/proto/
+        src/crypto-mta-cpp/proto/
+        src/crypto-bip32-cpp/proto/
+        src/crypto-ecies-cpp/proto/
+        DESTINATION include/safeheron/proto
+        FILES_MATCHING PATTERN "*.proto"
+)
