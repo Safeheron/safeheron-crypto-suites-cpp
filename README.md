@@ -2,6 +2,15 @@
 
 ![img](doc/logo.png)
 
+# Prerequisites
+
+- [GoogleTest](https://github.com/google/googletest). You need it to compile and run test cases. See the [GoogleTest Installation Instructions](./doc/GoogleTest-Installation.md)
+- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./doc/OpenSSL-Installation.md)
+- [Protocol Buffers](https://github.com/protocolbuffers/protobuf.git). See the [Protocol Buffers Installation Instructions](./doc/Protocol-Buffers-Installation.md)
+
+
+# Introduction
+
 SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography protocols from Safeheron, which contains:
 
 - [crypto-bn-cpp](https://github.com/Safeheron/crypto-bn-cpp): It provides an implementation of C++ big integer. Additionally, it provides operations for modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, jacobi symbol calculation, and a few other miscellaneous operations.
@@ -67,12 +76,6 @@ Now we must invoke the generator like this:
 **If usage don't update then you will get a small number with 32-bits length, and then it could easily be guessed out by the adversary.**
 
 
-
-# Prerequisites
-
-- [GoogleTest](https://github.com/google/googletest). You need it to compile and run test cases. See the [GoogleTest Installation Instructions](./doc/GoogleTest-Installation.md)
-- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./doc/OpenSSL-Installation.md)
-- [Protocol Buffers](https://github.com/protocolbuffers/protobuf.git). See the [Protocol Buffers Installation Instructions](./doc/Protocol-Buffers-Installation.md)
 
 
 # Build and Install

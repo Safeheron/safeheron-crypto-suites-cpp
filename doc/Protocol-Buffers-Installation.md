@@ -1,6 +1,6 @@
 # Protocol Buffers Installation 
 
-You should switch to version v3.7.1.
+You should switch to version v3.14.x or v3.20.x.
 
 ## Installation On Linux
 
@@ -15,7 +15,7 @@ You can also get the source by "git clone" our git repository. Make sure you hav
 ```shell
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
-git checkout v3.7.1
+git checkout v3.14.0
 git submodule update --init --recursive
 ./autogen.sh
 ```
@@ -41,7 +41,7 @@ You can also get the source by "git clone" our git repository. Make sure you hav
 ```shell
 git clone https://github.com/protocolbuffers/protobuf.git
 cd protobuf
-git checkout v3.7.1
+git checkout v3.14.0
 git submodule update --init --recursive
 ./autogen.sh
 ```
