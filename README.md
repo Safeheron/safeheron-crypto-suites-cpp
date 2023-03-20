@@ -28,6 +28,7 @@ SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography
  
 - [crypto-ecies-cpp](https://github.com/Safeheron/crypto-ecies-cpp). It provides an implementation of Elliptic Curve Integrated Encryption Scheme according to IEEE 1363 which is an Institute of Electrical and Electronics Engineers (IEEE) standardization project for public-key cryptography.
 
+
 # Important Update in Module "crypto-bn-cpp"
 
 The input of the random number generator changes from "bytes" to "bits".
@@ -71,6 +72,8 @@ Now we must invoke the generator like this:
 
 - [GoogleTest](https://github.com/google/googletest). You need it to compile and run test cases. See the [GoogleTest Installation Instructions](./doc/GoogleTest-Installation.md)
 - [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./doc/OpenSSL-Installation.md)
+- [Protocol Buffers](https://github.com/protocolbuffers/protobuf.git). See the [Protocol Buffers Installation Instructions](./doc/Protocol-Buffers-Installation.md)
+
 
 # Build and Install
 
@@ -217,21 +220,25 @@ int main(){
 }
 ```
 
-## Zero Knowledge Proof(Schnorr Proof)
-
+## A Non-interactive proof of correct paillier keypair generation
 ```c++
-#include "crypto-zkp/zkp.h"
+using safeheron::zkp::pail::PailProof;
+using safeheron::pail::PailPubKey;
+using safeheron::pail::PailPrivKey;
+using safeheron::pail::CreatePailPubKey;
 
-using safeheron::zkp::dlog::DLogProof;
+PailPubKey pail_pub;
+PailPrivKey pail_priv;
+CreateKeyPair2048(pail_priv, pail_pub);
 
-int main(){
-    const Curve * curv = GetCurveParam(CurveType::SECP256K1);
-    BN r = RandomBNLt(curv->n);
-    BN sk = RandomBNLt(curv->n);
-    DLogProof proof(CurveType::SECP256K1);
-    proof.ProveWithR(sk, r);
-    EXPECT_TRUE(proof.Verify());
-}
+const Curve * curv = GetCurveParam(CurveType::SECP256K1);
+BN r = RandomBNLt(curv->n);
+CurvePoint point = curv->g * r;
+BN index = RandomBNLtGcd(curv->n);
+
+PailProof proof;
+proof.Prove(pail_priv, index, point.x(), point.y());
+ASSERT_TRUE(proof.Verify(pail_pub, index, point.x(), point.y()));
 ```
 
 # Security Audit

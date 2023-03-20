@@ -52,6 +52,7 @@ install(
             src/crypto-mta-cpp/src/
             src/crypto-bip32-cpp/src/
             src/crypto-ecies-cpp/src/
+            src/crypto-bip39-cpp/src/
         DESTINATION include/safeheron
         FILES_MATCHING PATTERN "*.h"
 

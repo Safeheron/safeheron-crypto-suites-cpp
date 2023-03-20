@@ -31,3 +31,6 @@
 [submodule "src/crypto-ecies-cpp"]
 	path = src/crypto-ecies-cpp
 	url = https://github.com/Safeheron/crypto-ecies-cpp.git
+[submodule "src/crypto-bip39-cpp"]
+	path = src/crypto-bip39-cpp
+	url = https://github.com/Safeheron/crypto-bip39-cpp.git
