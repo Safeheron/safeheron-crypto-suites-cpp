@@ -22,7 +22,6 @@ SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography
 - [crypto-commitment-cpp](https://github.com/Safeheron/crypto-commitment-cpp). It provides several commitment schemes.
 - [crypto-hash-cpp](https://github.com/Safeheron/crypto-hash-cpp). It provides several hash algorithms such as sha1, sha256, sha512, ripemd160, hash160, hash256, hmac_sha256, hmac_sha512 and chacha20.
 - [crypto-encode-cpp](https://github.com/Safeheron/crypto-encode-cpp). It provides encoding interfaces for hex, base58 and base64.
-- [crypto-mta-cpp](https://github.com/Safeheron/crypto-mta-cpp). It provides an implementation of MtA(Multiplicative to Additive) protocol.
 - [crypto-paillier-cpp](https://github.com/Safeheron/crypto-paillier-cpp). It provides an implementation of  Paillier's crypto scheme.
 - [crypto-sss-cpp](https://github.com/Safeheron/crypto-sss-cpp). It provides secret sharing schemes.
 
@@ -34,6 +33,7 @@ SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography
   - Non-interactive proof of correct paillier keypair generation.
 
 - [crypto-bip32-cpp](https://github.com/Safeheron/crypto-bip32-cpp). It provides a BIP32 compatible library which supports bip32-secp256k1 and bip32-ed25519.
+- [crypto-bip39-cpp](https://github.com/Safeheron/crypto-bip39-cpp). It provides an implementation of BIP39.
  
 - [crypto-ecies-cpp](https://github.com/Safeheron/crypto-ecies-cpp). It provides an implementation of Elliptic Curve Integrated Encryption Scheme according to IEEE 1363 which is an Institute of Electrical and Electronics Engineers (IEEE) standardization project for public-key cryptography.
 
