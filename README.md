@@ -245,7 +245,8 @@ ASSERT_TRUE(proof.Verify(pail_pub, index, point.x(), point.y()));
 ```
 
 # Security Audit
-Many sub-libraries come from the repository "Safeheron/mpc-dsa-lib" which was developed by Safeheron and was audited by Kudelski Security. All issues raised by Kudelski in the audit report have been corrected. The related algorithm libraries will be open sourced soon. Safeheron's commercial customers will be authorized to view the audit report.
+Some sub-libs originate from the repository "Safeheron/mpc-dsa-lib", an internal project developed by Safeheron and was audited by Kudelski Security. All issues raised by Kudelski in the audit report have been corrected. The related algorithm libraries will be open sourced soon.
+
 
 # Development Process & Contact
 This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail.

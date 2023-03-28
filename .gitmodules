@@ -19,9 +19,6 @@
 [submodule "src/crypto-zkp-cpp"]
 	path = src/crypto-zkp-cpp
 	url = https://github.com/Safeheron/crypto-zkp-cpp.git
-[submodule "src/crypto-mta-cpp"]
-	path = src/crypto-mta-cpp
-	url = https://github.com/Safeheron/crypto-mta-cpp.git
 [submodule "src/crypto-commitment-cpp"]
 	path = src/crypto-commitment-cpp
 	url = https://github.com/Safeheron/crypto-commitment-cpp.git
