@@ -49,7 +49,6 @@ install(
             src/crypto-paillier-cpp/src/
             src/crypto-sss-cpp/src/
             src/crypto-zkp-cpp/src/
-            src/crypto-mta-cpp/src/
             src/crypto-bip32-cpp/src/
             src/crypto-ecies-cpp/src/
             src/crypto-bip39-cpp/src/
@@ -93,7 +92,6 @@ install(
         src/crypto-paillier-cpp/proto/
         src/crypto-sss-cpp/proto/
         src/crypto-zkp-cpp/proto/
-        src/crypto-mta-cpp/proto/
         src/crypto-bip32-cpp/proto/
         src/crypto-ecies-cpp/proto/
         DESTINATION include/safeheron/proto
