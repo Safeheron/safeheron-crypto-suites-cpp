@@ -21,3 +21,5 @@ By default, OpenSSL is already installed in macOS. However, your version may be 
 brew install openssl
 ```
 
+## Warning on StarkCurve
+The StarkCurve is a new curve proposed by StarkWare. It is a 256-bit curve with a 128-bit security level. It is designed to be used in the StarkEx protocol. The StarkCurve is not supported by OpenSSL. We have extended OpenSSL to support the StarkCurve. If you want to use the StarkCurve, you must install the extended OpenSSL (refer to the "stark_curve" branch). Otherwise, you will get an error when you use the StarkCurve.
