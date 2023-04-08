@@ -26,11 +26,6 @@ SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography
 - [crypto-sss-cpp](https://github.com/Safeheron/crypto-sss-cpp). It provides secret sharing schemes.
 
 - [crypto-zkp-cpp](https://github.com/Safeheron/crypto-zkp-cpp). It provides several zero knowledge protocols.
-  - Schnorr proof.
-  - Proof of knowledge that a pair of group elements {D, E}
-  - Proof of strong RSA modulus.
-  - Range proof in GG18.
-  - Non-interactive proof of correct paillier keypair generation.
 
 - [crypto-bip32-cpp](https://github.com/Safeheron/crypto-bip32-cpp). It provides a BIP32 compatible library which supports bip32-secp256k1 and bip32-ed25519.
 - [crypto-bip39-cpp](https://github.com/Safeheron/crypto-bip39-cpp). It provides an implementation of BIP39.
