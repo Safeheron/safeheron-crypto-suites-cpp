@@ -240,7 +240,7 @@ ASSERT_TRUE(proof.Verify(pail_pub, index, point.x(), point.y()));
 ```
 
 # Security Audit
-Some sub-libs originate from the repository "Safeheron/mpc-dsa-lib", an internal project developed by Safeheron and was audited by Kudelski Security in December 2020.. 
+Some sub-libs originate from the repository "Safeheron/mpc-dsa-lib", an internal project developed by Safeheron and was audited by Kudelski Security in December 2021.
 
 Lots of changes after the audit, use at your own risk.
 
