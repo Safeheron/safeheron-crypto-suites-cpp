@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package safeheron.proto;
+
+// For authPub
+message CurvePoint{
+    string x = 1;
+    string y = 2;
+    // Reserved segment
+    string curve = 3;
+}
