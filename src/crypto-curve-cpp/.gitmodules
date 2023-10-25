@@ -1,3 +1,0 @@
-[submodule "third_party/ed25519-donna"]
-	path = third_party/ed25519-donna
-	url = https://github.com/Safeheron/ed25519-donna.git
