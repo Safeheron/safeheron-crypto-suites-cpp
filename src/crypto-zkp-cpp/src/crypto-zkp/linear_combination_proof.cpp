@@ -1,6 +1,6 @@
 #include "linear_combination_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -40,10 +40,13 @@ void LinearCombinationProof::ProveWithR(const LinearCombinationStatement &statem
     // Alpha = R^a + G^b
     CurvePoint Alpha = R * a + G * b;
 
-    // c = H(V || R || G || Alpha)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || V || R || G || ord || Alpha)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     V.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     V.y().ToBytes32BE(str);
@@ -56,13 +59,12 @@ void LinearCombinationProof::ProveWithR(const LinearCombinationStatement &statem
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     G.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    ord.ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, 32);
@@ -85,10 +87,13 @@ bool LinearCombinationProof::Verify(const LinearCombinationStatement &statement)
     const curve::CurvePoint &G = statement.G_;
     const safeheron::bignum::BN &ord = statement.ord_;
 
-    // c = H(V || R || G || Alpha)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || V || R || G || ord || Alpha)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     V.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     V.y().ToBytes32BE(str);
@@ -101,13 +106,12 @@ bool LinearCombinationProof::Verify(const LinearCombinationStatement &statement)
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     G.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    ord.ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha_.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha_.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, 32);

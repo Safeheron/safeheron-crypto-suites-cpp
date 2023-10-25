@@ -1,6 +1,6 @@
 #include "pedersen_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -10,7 +10,7 @@ using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
 using safeheron::curve::Curve;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -43,10 +43,13 @@ void PedersenProof::ProveWithR(const PedersenStatement &statement,
     curve::CurvePoint A2 = statement.H_ * b_lt_curveN;
     curve::CurvePoint Alpha = A1 + A2;
 
-    // c = H(Alpha || T || G || H)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || Alpha || T || G || H)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     // Alpha
     Alpha.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -67,9 +70,6 @@ void PedersenProof::ProveWithR(const PedersenStatement &statement,
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.H_.y().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
@@ -93,10 +93,13 @@ bool PedersenProof::Verify(const PedersenStatement &statement) const {
     // t = (a + c * sigma) % q
     // u = (b + c * l) % q
 
-    // c = H(Alpha || T || G || H)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || Alpha || T || G || H)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     // Alpha
     Alpha_.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -117,9 +120,6 @@ bool PedersenProof::Verify(const PedersenStatement &statement) const {
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.H_.y().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));

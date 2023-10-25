@@ -1,6 +1,6 @@
 #include "pail_enc_range_proof_v3.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-paillier/pail.h"
 #include "crypto-encode/base64.h"
@@ -10,7 +10,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using safeheron::pail::PailPubKey;
 using safeheron::pail::PailPrivKey;
 using google::protobuf::util::Status;
@@ -33,7 +33,7 @@ static BN SampleRange(const BN &min, const BN &max){
 }
 
 void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, const PailEncRangeWitness_V3 &witness) {
-    assert(CSHA256::OUTPUT_SIZE * 8 >= SECURITY_PARAMETER);
+    assert(CSafeHash256::OUTPUT_SIZE * 8 >= SECURITY_PARAMETER);
     assert(statement.pail_pub_.n().BitLength() >= 2046);
     const BN l = statement.l_;
     const BN double_l = statement.l_ * 2;
@@ -57,8 +57,8 @@ void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, cons
     }
 
     // e = hash(c1_arr[1], c2_arr[1], c1_arr[2], c2_arr[2], ... , c1_arr[n], c2_arr[n] )
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
     statement.pail_pub_.n().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -101,8 +101,8 @@ bool PailEncRangeProof_V3::Verify(const PailEncRangeStatement_V3 &statement) con
     const BN double_l = statement.l_ * 2;
 
     // e = hash(c1_arr[1], c2_arr[1], c1_arr[2], c2_arr[2], ... , c1_arr[n], c2_arr[n] )
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
     statement.pail_pub_.n().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());

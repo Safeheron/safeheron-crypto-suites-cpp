@@ -62,10 +62,6 @@ TEST(ZKP, PailBlumModulusProof)
     timer.Reset("verify");
     ASSERT_TRUE(proof.Verify(N_tilde));
     timer.End();
-
-    std::string base64;
-    proof.ToBase64(base64);
-    std::cout << "length of proof: " << base64.length() << std::endl;
 }
 
 int main(int argc, char **argv) {

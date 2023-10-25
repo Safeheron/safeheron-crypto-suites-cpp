@@ -1,6 +1,6 @@
 #include "pail_aff_group_ele_range_proof_v1.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -68,10 +68,30 @@ void PailAffGroupEleRangeProof_V1::Prove(const PailAffGroupEleRangeSetUp_V1 &set
     // w = h1^gamma * h2^tau mod N_tilde
     w_ = ( h1.PowM(gamma, N_tilde) * h2.PowM(tau, N_tilde) ) % N_tilde;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // H( Salt || N || h1 || h2 || c1 || c2 || N || X || q || u || z || z_prime || t || v || w )
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    c1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    c2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     pail_pub.n().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     u_.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -87,9 +107,6 @@ void PailAffGroupEleRangeProof_V1::Prove(const PailAffGroupEleRangeSetUp_V1 &set
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     w_.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;
@@ -135,10 +152,30 @@ bool PailAffGroupEleRangeProof_V1::Verify(const PailAffGroupEleRangeSetUp_V1 &se
     if(s1_ > q3 || s1_ < BN::ZERO - q3)return false;
     if(t1_ > q7 || t1_ < BN::ZERO - q7)return false;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // H( Salt || N || h1 || h2 || c1 || c2 || N || X || q || u || z || z_prime || t || v || w )
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    c1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    c2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     pail_pub.n().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     u_.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -154,9 +191,6 @@ bool PailAffGroupEleRangeProof_V1::Verify(const PailAffGroupEleRangeSetUp_V1 &se
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     w_.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;

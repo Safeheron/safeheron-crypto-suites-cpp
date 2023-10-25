@@ -3,6 +3,11 @@
 ![img](doc/logo.png)
 
 This software implements a library for several zero knowledge protocols.
+- A Schnorr proof.
+- A proof of knowledge that a pair of group elements {D, E}
+- A proof of strong RSA modulus.
+- A range proof in GG18.
+- Non-interactive proof of correct paillier keypair generation.
 
 The library comes with serialize/deserialize support to be used in higher level code to implement networking.
 

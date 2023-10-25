@@ -1,16 +1,17 @@
 #include "no_small_factor_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha512.h"
+#include "crypto-hash/safe_hash512.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
+#include "common.h"
 
 using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
 using safeheron::curve::Curve;
-using safeheron::hash::CSHA512;
+using safeheron::hash::CSafeHash512;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -66,11 +67,26 @@ void NoSmallFactorProof::Prove(const NoSmallFactorSetUp &setup, const NoSmallFac
     // T = Q^alpha * t^r  mod N_tilde
     T_ = (Q_.PowM(alpha, N_tilde) * t.PowM(r, N_tilde)) % N_tilde;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt ||  N || s || t || N0 || l || varepsilon || P || Q || A || B || T || sigma )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t buf[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(buf, l);
+    sha512.Write(buf, sizeof buf);
+    uint_to_byte4(buf, varepsilon);
+    sha512.Write(buf, sizeof buf);
     P_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     Q_.ToBytesBE(str);
@@ -83,13 +99,10 @@ void NoSmallFactorProof::Prove(const NoSmallFactorSetUp &setup, const NoSmallFac
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     sigma_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     int byte_len = l / 8;
     BN e = BN::FromBytesBE(sha512_digest, byte_len);
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     BN sigma_tilde = sigma_ - nu * p;
     z1_ = alpha + e * p;
@@ -114,6 +127,7 @@ bool NoSmallFactorProof::Verify(const NoSmallFactorSetUp &setup, const NoSmallFa
     if(z2_ > limit_alpha_beta || z2_ < BN::ZERO - limit_alpha_beta)return false;
 
     if(N_tilde.BitLength() < 2046)return false;
+    if(N0 <= 1 || N0.BitLength() < 2046) return false;
 
     if(P_ % N_tilde == 0) return false;
     if(Q_ % N_tilde == 0) return false;
@@ -127,11 +141,26 @@ bool NoSmallFactorProof::Verify(const NoSmallFactorSetUp &setup, const NoSmallFa
     if(B_.Gcd(N_tilde) != 1) return false;
     if(T_.Gcd(N_tilde) != 1) return false;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt ||  N || s || t || N0 || l || varepsilon || P || Q || A || B || T || sigma )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t buf[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(buf, l);
+    sha512.Write(buf, sizeof buf);
+    uint_to_byte4(buf, varepsilon);
+    sha512.Write(buf, sizeof buf);
     P_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     Q_.ToBytesBE(str);
@@ -144,13 +173,10 @@ bool NoSmallFactorProof::Verify(const NoSmallFactorSetUp &setup, const NoSmallFa
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     sigma_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     int byte_len = l / 8;
     BN e = BN::FromBytesBE(sha512_digest, byte_len);
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     BN R = (s.PowM(N0, N_tilde) * t.PowM(sigma_, N_tilde)) % N_tilde;
 

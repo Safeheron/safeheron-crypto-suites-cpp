@@ -5,7 +5,7 @@
 #define EXCEPTION_BUF_SIZE_FUNC 24
 #define EXCEPTION_BUF_SIZE_MESSAGE 128
 
-#include <string.h>
+#include <string>
 #include <stdexcept>
 
 namespace safeheron{

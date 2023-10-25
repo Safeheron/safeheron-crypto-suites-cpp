@@ -1,15 +1,16 @@
 #include "pail_aff_group_ele_range_proof_v2.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha512.h"
+#include "crypto-hash/safe_hash512.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
+#include "../common.h"
 
 using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA512;
+using safeheron::hash::CSafeHash512;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -87,13 +88,42 @@ void PailAffGroupEleRangeProof_V2::Prove(const PailAffGroupEleRangeSetUp_V2 &set
     // T = s^y * t^mu mod N_tilde
     T_ = ( s.PowM(y, N_tilde) * t.PowM(mu, N_tilde) ) % N_tilde;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N || s || t || N0 || N1 || C || D || Y || X || q || l || l_prime || varepsilon || S || T || A || Bx || By || E || F )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t byte4[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N1.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    C.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    D.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(byte4, l);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, l_prime);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, varepsilon);
+    sha512.Write(byte4, 4);
     S_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     T_.ToBytesBE(str);
@@ -110,13 +140,10 @@ void PailAffGroupEleRangeProof_V2::Prove(const PailAffGroupEleRangeSetUp_V2 &set
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     F_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     // z1 = e * x + alpha
     z1_ = e * x + alpha;
@@ -174,13 +201,42 @@ bool PailAffGroupEleRangeProof_V2::Verify(const PailAffGroupEleRangeSetUp_V2 &se
     if(z1_ > limit_alpha || z1_ < BN::ZERO - limit_alpha)return false;
     if(z2_ > limit_beta || z2_ < BN::ZERO - limit_beta)return false;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N || s || t || N0 || N1 || C || D || Y || X || q || l || l_prime || varepsilon || S || T || A || Bx || By || E || F )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t byte4[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N1.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    C.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    D.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(byte4, l);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, l_prime);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, varepsilon);
+    sha512.Write(byte4, 4);
     S_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     T_.ToBytesBE(str);
@@ -197,13 +253,10 @@ bool PailAffGroupEleRangeProof_V2::Verify(const PailAffGroupEleRangeSetUp_V2 &se
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     F_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     bool ok = true;
     CurvePoint left_point;

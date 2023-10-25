@@ -38,12 +38,14 @@ if (NOT ${ENABLE_ASSEMBLE})
 
     find_package(CryptoBN REQUIRED)
     find_package(CryptoEncode REQUIRED)
+    find_package(CryptoHash REQUIRED)
 
     target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC
             ${PROTOBUF_INCLUDE_DIRS}
             /usr/local/include
             ${CryptoBN_INCLUDE_DIRS}
             ${CryptoEncode_INCLUDE_DIRS}
+            ${CryptoHash_INCLUDE_DIRS}
             )
 
     target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -57,5 +59,6 @@ if (NOT ${ENABLE_ASSEMBLE})
             -ldl
             CryptoBN
             CryptoEncode
+            CryptoHash
             )
 endif()

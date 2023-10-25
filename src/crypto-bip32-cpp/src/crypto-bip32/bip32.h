@@ -26,16 +26,16 @@ public:
 
     /**
      * Copy constructor
-     * @param[in] hdKey
+     * @param[in] hd_key
      */
-    HDKey(const HDKey &hdKey);
+    HDKey(const HDKey &hd_key);
 
     /**
      * Copy assignment operator
-     * @param[in] hdKey
+     * @param[in] hd_key
      * @return A HDKey object
      */
-    HDKey &operator=(const HDKey &hdKey); // copy assignment
+    HDKey &operator=(const HDKey &hd_key); // copy assignment
 
     /**
      * Destructor
@@ -45,26 +45,54 @@ public:
     /**
      * Creat a HDKey object.
      * @param[in] c_type type of elliptic curve.
-     * @param[in] privateKey
+     * @param[in] private_key
      * @param[in] chain_code
      * @param[in] depth
      * @param[in] child_num
      * @param[in] fingerprint
      * @return a HDKey object.
      */
-    static HDKey CreateHDKey(safeheron::curve::CurveType c_type, const safeheron::bignum::BN & privateKey, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+    static HDKey CreateHDKey(safeheron::curve::CurveType c_type, const safeheron::bignum::BN & private_key, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+
+     /**
+      * Creat a HDKey object.
+      * @param hd_key the output HDKey object
+      * @param c_type type of elliptic curve.
+      * @param private_key
+      * @param chain_code
+      * @param depth
+      * @param child_num
+      * @param fingerprint
+      * @return
+      */
+    static bool CreateHDKey(HDKey &hd_key, safeheron::curve::CurveType c_type, const safeheron::bignum::BN & private_key, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+
 
     /**
      * Creat a HDKey object.
      * @param[in] c_type
-     * @param[in] publicKey
+     * @param[in] public_key
      * @param[in] chain_code
      * @param[in] depth
      * @param[in] child_num
      * @param[in] fingerprint
      * @return a HDKey object.
      */
-    static HDKey CreateHDKey(safeheron::curve::CurveType c_type, const safeheron::curve::CurvePoint & publicKey, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+    static HDKey CreateHDKey(safeheron::curve::CurveType c_type, const safeheron::curve::CurvePoint & public_key, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+
+    /**
+     * Creat a HDKey object.
+     * @param hd_key the output HDKey object
+     * @param c_type
+     * @param public_key
+     * @param chain_code
+     * @param depth
+     * @param child_num
+     * @param fingerprint
+     * @return
+     */
+    static bool CreateHDKey(HDKey &hd_key, safeheron::curve::CurveType c_type, const safeheron::curve::CurvePoint & public_key, const uint8_t *chain_code, uint32_t depth=0, uint32_t child_num=0, uint32_t fingerprint=0);
+
 
     /**
      * Check if this HDKey has a private key.
@@ -120,12 +148,29 @@ public:
     HDKey PublicCKD(uint32_t i) const;
 
     /**
+     *  Public child key derivation.
+     * @param child_key the derived HDKey object
+     * @param i
+     * @return
+     */
+    bool PublicCKD(HDKey &child_key, uint32_t i) const;
+
+    /**
      * Public child key derivation.
      * @param[in] i
      * @param[out] delta delta = (child - parent) mod order
      * @return a HDKey object.
      */
     HDKey PublicCKD(uint32_t i, safeheron::bignum::BN &delta) const;
+
+     /**
+      * Public child key derivation.
+      * @param child_key the derived HDKey object
+      * @param i
+      * @param delta delta = (child - parent) mod order
+      * @return
+      */
+    bool PublicCKD(HDKey &child_key, uint32_t i, safeheron::bignum::BN &delta) const;
 
     /**
      * Private child key derivation according to specified path.
@@ -136,10 +181,26 @@ public:
 
     /**
      * Private child key derivation according to specified path.
+     * @param child_key the derived HDKey object
+     * @param path
+     * @return
+     */
+    bool PrivateCKDPath(HDKey &child_key, const char * path) const;
+
+    /**
+     * Private child key derivation according to specified path.
      * @param[in] path
      * @return a HDKey object.
      */
     HDKey PrivateCKDPath(const std::string &path) const;
+
+     /**
+      * Private child key derivation according to specified path.
+      * @param child_key the derived HDKey object
+      * @param path
+      * @return
+      */
+    bool PrivateCKDPath(HDKey &child_key, const std::string &path) const;
 
     /**
      * Public child key derivation according to specified path.
@@ -149,6 +210,15 @@ public:
      */
     HDKey PublicCKDPath(const char *path, safeheron::bignum::BN &delta) const;
 
+     /**
+      * Public child key derivation according to specified path.
+      * @param child_key the derived HDKey object
+      * @param path
+      * @param delta delta = (child - parent) mod order
+      * @return
+      */
+    bool PublicCKDPath(HDKey &child_key, const char *path, safeheron::bignum::BN &delta) const;
+
     /**
      * Public child key derivation according to specified path.
      * @param[in] path
@@ -157,6 +227,16 @@ public:
      */
     HDKey PublicCKDPath(const std::string &path, safeheron::bignum::BN &delta) const;
 
+     /**
+      * Public child key derivation according to specified path.
+      * @param child_key the derived HDKey object
+      * @param path
+      * @param delta delta = (child - parent) mod order
+      * @return
+      */
+    bool PublicCKDPath(HDKey &child_key, const std::string &path, safeheron::bignum::BN &delta) const;
+
+
     /**
      * Public child key derivation according to specified path.
      * @param[in] path
@@ -164,12 +244,30 @@ public:
      */
     HDKey PublicCKDPath(const char *path) const;
 
+     /**
+      * Public child key derivation according to specified path.
+      * @param child_key the derived HDKey object
+      * @param path
+      * @return
+      */
+    bool PublicCKDPath(HDKey &child_key, const char *path) const;
+
+
     /**
      * Public child key derivation according to specified path.
      * @param[in] path
      * @return
      */
     HDKey PublicCKDPath(const std::string &path) const;
+
+     /**
+      * Public child key derivation according to specified path.
+      * @param child_key the derived HDKey object
+      * @param path
+      * @return
+      */
+    bool PublicCKDPath(HDKey &child_key, const std::string &path) const;
+
 
     /**
      * Deserialize the extended public key and set this HDKey.

@@ -54,6 +54,22 @@ const static Curve P256(
                 CurveType::P256));
 
 /**
+ * Stark(Stark256v1)
+ *grp
+ */
+const static Curve Stark(
+        safeheron::bignum::BN("0800000000000011000000000000000000000000000000000000000000000001", 16),
+        safeheron::bignum::BN("0000000000000000000000000000000000000000000000000000000000000001", 16),
+        safeheron::bignum::BN("06f21413efbe40de150e596d72f7a8c5609ad26c15c915c1f4cdfcb99cee9e89", 16),
+        safeheron::bignum::BN("0", 16), // undefined 'c' for Stark curve
+        safeheron::bignum::BN("0", 16), // undefined 'd' for Stark curve
+        safeheron::bignum::BN("0800000000000010ffffffffffffffffb781126dcae7b2321e66a241adc64d2f", 16),
+        CurvePoint(
+                safeheron::bignum::BN("01ef15c18599971b7beced415a40f0c7deacfd9b0d1819e03d723d8bc943cfca", 16),
+                safeheron::bignum::BN("005668060aa49730b7be4801df46ec62de53ecd11abe43a32873000c36e8dc1f", 16),
+                CurveType::STARK));
+
+/**
  * EC_GROUP for Secp256k1
  * 
  */
@@ -63,6 +79,11 @@ static ec_group_st* secp256k1_grp = nullptr;
  * 
  */
 static ec_group_st* p256_grp = nullptr;
+/**
+ * EC_GROUP for Stark
+ * 
+ */
+static ec_group_st* stark_grp = nullptr;
 
 
 Curve::Curve(const safeheron::bignum::BN _p,
@@ -90,6 +111,9 @@ const ec_group_st *GetCurveGroup(CurveType c_type) {
         case curve::CurveType::P256:
             if (!p256_grp) p256_grp = EC_GROUP_new_by_curve_name(NID_X9_62_prime256v1);
             return p256_grp;
+        case curve::CurveType::STARK:
+            if (!stark_grp) stark_grp = EC_GROUP_new_by_curve_name(NID_stark256v1);
+            return stark_grp;
         default:
             return nullptr;
     }
@@ -101,6 +125,8 @@ const Curve *GetCurveParam(CurveType c_type) {
             return &Secp256k1;
         case CurveType::P256:
             return &P256;
+        case CurveType::STARK:
+            return &Stark;
         case CurveType::ED25519:
             return &Ed25519;
         default:

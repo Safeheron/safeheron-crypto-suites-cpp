@@ -5,6 +5,8 @@
 #include "crypto-curve/curve.h"
 #include "kgd_number.h"
 #include "kgd_curve_point.h"
+#include "com256.h"
+#include "com512.h"
 
 namespace safeheron{
 namespace commitment {

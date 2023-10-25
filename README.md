@@ -13,24 +13,23 @@
 
 SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography protocols from Safeheron, which contains:
 
-- [crypto-bn-cpp](https://github.com/Safeheron/crypto-bn-cpp): It provides an implementation of C++ big integer. Additionally, it provides operations for modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, jacobi symbol calculation, and a few other miscellaneous operations.
-- [crypto-curve-cpp](https://github.com/Safeheron/crypto-curve-cpp). It provides a uniform abstract for elliptic curves based cryptography (ECC).
+- crypto-bn-cpp: It provides an implementation of C++ big integer. Additionally, it provides operations for modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, jacobi symbol calculation, and a few other miscellaneous operations.
+- crypto-curve-cpp. It provides a uniform abstract for elliptic curves based cryptography (ECC).
   - It contains an extremely simple mathematical interface to onboard new elliptic curves. Use this library for general purpose elliptic curve cryptography.
   - It provides interfaces on ecdsa to Sepcp256k1 and P256.
   - It provides interfaces on eddsa to ed25519.
 
-- [crypto-commitment-cpp](https://github.com/Safeheron/crypto-commitment-cpp). It provides several commitment schemes.
-- [crypto-hash-cpp](https://github.com/Safeheron/crypto-hash-cpp). It provides several hash algorithms such as sha1, sha256, sha512, ripemd160, hash160, hash256, hmac_sha256, hmac_sha512 and chacha20.
-- [crypto-encode-cpp](https://github.com/Safeheron/crypto-encode-cpp). It provides encoding interfaces for hex, base58 and base64.
-- [crypto-paillier-cpp](https://github.com/Safeheron/crypto-paillier-cpp). It provides an implementation of  Paillier's crypto scheme.
-- [crypto-sss-cpp](https://github.com/Safeheron/crypto-sss-cpp). It provides secret sharing schemes.
+- crypto-commitment-cpp. It provides several commitment schemes.
+- crypto-hash-cpp. It provides several hash algorithms such as sha1, sha256, sha512, ripemd160, hash160, hash256, hmac_sha256, hmac_sha512 and chacha20.
+- crypto-encode-cpp. It provides encoding interfaces for hex, base58 and base64.
+- crypto-paillier-cpp. It provides an implementation of  Paillier's crypto scheme.
+- crypto-sss-cpp. It provides secret sharing schemes.
+- crypto-zkp-cpp. It provides several zero knowledge protocols.
+- crypto-bip32-cpp. It provides a BIP32 compatible library which supports bip32-secp256k1 and bip32-ed25519.
+- crypto-bip39-cpp. It provides an implementation of BIP39.
+- crypto-ecies-cpp. It provides an implementation of Elliptic Curve Integrated Encryption Scheme according to IEEE 1363 which is an Institute of Electrical and Electronics Engineers (IEEE) standardization project for public-key cryptography.
 
-- [crypto-zkp-cpp](https://github.com/Safeheron/crypto-zkp-cpp). It provides several zero knowledge protocols.
-
-- [crypto-bip32-cpp](https://github.com/Safeheron/crypto-bip32-cpp). It provides a BIP32 compatible library which supports bip32-secp256k1 and bip32-ed25519.
-- [crypto-bip39-cpp](https://github.com/Safeheron/crypto-bip39-cpp). It provides an implementation of BIP39.
- 
-- [crypto-ecies-cpp](https://github.com/Safeheron/crypto-ecies-cpp). It provides an implementation of Elliptic Curve Integrated Encryption Scheme according to IEEE 1363 which is an Institute of Electrical and Electronics Engineers (IEEE) standardization project for public-key cryptography.
+Note: All modules were combined in the repository now instead using git submodules for management.
 
 
 # Important Update in Module "crypto-bn-cpp"
@@ -240,7 +239,7 @@ ASSERT_TRUE(proof.Verify(pail_pub, index, point.x(), point.y()));
 ```
 
 # Security Audit
-Some sub-libs originate from the repository "Safeheron/mpc-dsa-lib", an internal project developed by Safeheron and was audited by Kudelski Security in December 2021.
+Some sub-libs originate from an internal repository by Safeheron and were audited by Kudelski Security in December 2021 and some sub-libs were audited by LeastAuthority in 2023.
 
 Lots of changes after the audit, use at your own risk.
 

@@ -1,6 +1,6 @@
 #include "dlog_elgamal_com_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha512.h"
+#include "crypto-hash/safe_hash512.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA512;
+using safeheron::hash::CSafeHash512;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -46,9 +46,39 @@ void DlogElGamalComProof::Prove(const DlogElGamalComStatement &statement, const 
     // B = h^m
     B_ = h * m;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt ||  g || L || M || X || Y || h || q || A || N || B )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    g.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    g.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    L.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    L.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    M.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    M.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    h.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    h.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.x().ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.y().ToBytesBE(str);
@@ -61,13 +91,10 @@ void DlogElGamalComProof::Prove(const DlogElGamalComStatement &statement, const 
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     B_.y().ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     // z = alpha + e * lambda mod q
     z_ = ( alpha + e * lambda ) % q;
@@ -84,9 +111,39 @@ bool DlogElGamalComProof::Verify(const DlogElGamalComStatement &statement) const
     const safeheron::curve::CurvePoint &h = statement.h_;
     const safeheron::bignum::BN &q = statement.q_;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt ||  g || L || M || X || Y || h || q || A || N || B )
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    g.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    g.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    L.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    L.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    M.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    M.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    X.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    Y.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    h.x().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    h.y().ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.x().ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.y().ToBytesBE(str);
@@ -99,13 +156,10 @@ bool DlogElGamalComProof::Verify(const DlogElGamalComStatement &statement) const
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     B_.y().ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     bool ok = true;
     CurvePoint left_point;

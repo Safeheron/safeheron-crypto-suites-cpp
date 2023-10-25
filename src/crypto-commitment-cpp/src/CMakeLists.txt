@@ -1,5 +1,7 @@
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         crypto-commitment/commitment.cpp
+        crypto-commitment/com256.cpp
+        crypto-commitment/com512.cpp
         crypto-commitment/kgd_curve_point.cpp
         crypto-commitment/kgd_number.cpp
         crypto-commitment/proto_gen/commitment.pb.switch.cc

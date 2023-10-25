@@ -5,6 +5,8 @@
 #include "common.h"
 #include "memzero.h"
 
+#include "exception/located_exception.h"
+
 using safeheron::bignum::BN;
 using safeheron::curve::Curve;
 using safeheron::curve::CurveType;
@@ -80,53 +82,91 @@ HDKey::~HDKey() {
     crypto_bip32_memzero(&hd_node_, sizeof(HDNode));
 }
 
-HDKey HDKey::CreateHDKey(CurveType c_type, const BN &privateKey, const uint8_t *chain_code,
+HDKey HDKey::CreateHDKey(CurveType c_type, const BN &private_key, const uint8_t *chain_code,
                          uint32_t depth, uint32_t child_num, uint32_t fingerprint) {
     HDKey hd_key;
     hd_key.curve_type_ = c_type;
     hd_key.fingerprint_ = fingerprint;
     memset(&hd_key.hd_node_, 0, sizeof(HDNode));
 
+    int ret;
     switch (c_type) {
         case CurveType::SECP256K1:
         case CurveType::P256:
         {
             uint8_t priv[32];
-            privateKey.ToBytes32BE(priv);
-            _ecdsa::hdnode_from_xprv(depth, child_num, chain_code, priv, c_type, &hd_key.hd_node_);
+            private_key.ToBytes32BE(priv);
+            ret = _ecdsa::hdnode_from_xprv(depth, child_num, chain_code, priv, c_type, &hd_key.hd_node_);
             crypto_bip32_memzero(priv, 32);
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "_ecdsa::hdnode_from_xprv failed.");
             break;
         }
         case CurveType::ED25519:
         {
             uint8_t priv[32];
-            privateKey.ToBytes32LE(priv);
-            _ed25519::hdnode_from_xprv(depth, child_num, chain_code, priv, CurveType::ED25519, &hd_key.hd_node_);
+            private_key.ToBytes32LE(priv);
+            ret = _ed25519::hdnode_from_xprv(depth, child_num, chain_code, priv, CurveType::ED25519, &hd_key.hd_node_);
             crypto_bip32_memzero(priv, 32);
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "_ed25519::hdnode_from_xprv failed.");
             break;
         }
         default:
-            break;
+            throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid curve type.");
     }
 
     return hd_key;
 }
 
-HDKey HDKey::CreateHDKey(CurveType c_type, const CurvePoint &point, const uint8_t *chain_code,
-                         uint32_t depth, uint32_t child_num, uint32_t fingerprint) {
+bool HDKey::CreateHDKey(HDKey &hd_key, safeheron::curve::CurveType c_type, const safeheron::bignum::BN & private_key, const uint8_t *chain_code,
+                        uint32_t depth, uint32_t child_num, uint32_t fingerprint) {
+    hd_key.curve_type_ = c_type;
+    hd_key.fingerprint_ = fingerprint;
+    memset(&hd_key.hd_node_, 0, sizeof(HDNode));
 
+    int ret;
+    switch (c_type) {
+        case CurveType::SECP256K1:
+        case CurveType::P256:
+        {
+            uint8_t priv[32];
+            private_key.ToBytes32BE(priv);
+            ret = _ecdsa::hdnode_from_xprv(depth, child_num, chain_code, priv, c_type, &hd_key.hd_node_);
+            crypto_bip32_memzero(priv, 32);
+            if (ret != 1) return false;
+            break;
+        }
+        case CurveType::ED25519:
+        {
+            uint8_t priv[32];
+            private_key.ToBytes32LE(priv);
+            ret = _ed25519::hdnode_from_xprv(depth, child_num, chain_code, priv, CurveType::ED25519, &hd_key.hd_node_);
+            crypto_bip32_memzero(priv, 32);
+            if (ret != 1) return false;
+            break;
+        }
+        default:
+            return false;
+    }
+
+    return true;
+}
+
+HDKey HDKey::CreateHDKey(safeheron::curve::CurveType c_type, const safeheron::curve::CurvePoint & public_key, const uint8_t *chain_code,
+                         uint32_t depth, uint32_t child_num, uint32_t fingerprint) {
     HDKey hd_key;
     hd_key.curve_type_ = c_type;
     hd_key.fingerprint_ = fingerprint;
     memset(&hd_key.hd_node_, 0, sizeof(HDNode));
 
+    int ret;
     switch (c_type) {
         case CurveType::SECP256K1:
         case CurveType::P256:
         {
             uint8_t pub33[33];
-            point.EncodeCompressed(pub33);
-            _ecdsa::hdnode_from_xpub(depth, child_num, chain_code, pub33, c_type, &hd_key.hd_node_);
+            public_key.EncodeCompressed(pub33);
+            ret = _ecdsa::hdnode_from_xpub(depth, child_num, chain_code, pub33, c_type, &hd_key.hd_node_);
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "_ecdsa::hdnode_from_xpub failed.");
             break;
         }
         case CurveType::ED25519:
@@ -134,15 +174,50 @@ HDKey HDKey::CreateHDKey(CurveType c_type, const CurvePoint &point, const uint8_
             // pub33 = 0x00 || pub32
             uint8_t pub33[33];
             pub33[0] = 0x0;
-            point.EncodeEdwardsPoint((uint8_t *)(pub33 + 1));
-            _ed25519::hdnode_from_xpub(depth, child_num, chain_code, pub33, CurveType::ED25519, &hd_key.hd_node_);
+            public_key.EncodeEdwardsPoint((uint8_t *)(pub33 + 1));
+            ret = _ed25519::hdnode_from_xpub(depth, child_num, chain_code, pub33, CurveType::ED25519, &hd_key.hd_node_);
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "_eddsa::hdnode_from_xpub failed.");
             break;
         }
         default:
-            break;
+            throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid curve type.");
     }
 
     return hd_key;
+}
+
+bool HDKey::CreateHDKey(HDKey &hd_key, safeheron::curve::CurveType c_type, const safeheron::curve::CurvePoint & public_key, const uint8_t *chain_code,
+                        uint32_t depth, uint32_t child_num, uint32_t fingerprint) {
+    hd_key.curve_type_ = c_type;
+    hd_key.fingerprint_ = fingerprint;
+    memset(&hd_key.hd_node_, 0, sizeof(HDNode));
+
+    int ret;
+    switch (c_type) {
+        case CurveType::SECP256K1:
+        case CurveType::P256:
+        {
+            uint8_t pub33[33];
+            public_key.EncodeCompressed(pub33);
+            ret = _ecdsa::hdnode_from_xpub(depth, child_num, chain_code, pub33, c_type, &hd_key.hd_node_);
+            if (ret != 1) return false;
+            break;
+        }
+        case CurveType::ED25519:
+        {
+            // pub33 = 0x00 || pub32
+            uint8_t pub33[33];
+            pub33[0] = 0x0;
+            public_key.EncodeEdwardsPoint((uint8_t *)(pub33 + 1));
+            ret = _ed25519::hdnode_from_xpub(depth, child_num, chain_code, pub33, CurveType::ED25519, &hd_key.hd_node_);
+            if (ret != 1) return false;
+            break;
+        }
+        default:
+            return false;
+    }
+
+    return true;
 }
 
 bool HDKey::HasPrivateKey() const {
@@ -222,6 +297,7 @@ HDKey HDKey::PrivateCKD(uint32_t i) const{
         {
             HDNode hd_node = hd_node_;
             uint32_t fingerprint = safeheron::bip32::_ecdsa::hdnode_fingerprint(&hd_node);
+            //always returns 1
             _ecdsa::hdnode_private_ckd(&hd_node, i);
 
             HDKey child_key(*this);
@@ -234,6 +310,7 @@ HDKey HDKey::PrivateCKD(uint32_t i) const{
         {
             HDNode hd_node = hd_node_;
             uint32_t fingerprint = safeheron::bip32::_ed25519::hdnode_fingerprint(&hd_node);
+            //always returns 1
             _ed25519::hdnode_private_ckd(&hd_node, i);
 
             HDKey child_key(*this);
@@ -243,11 +320,12 @@ HDKey HDKey::PrivateCKD(uint32_t i) const{
             return child_key;
         }
         default:
-            return HDKey();
+            throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid curve type.");
     }
 }
 
 HDKey HDKey::PublicCKD(uint32_t i, safeheron::bignum::BN &delta) const{
+    int ret;
     switch (curve_type_) {
         case CurveType::SECP256K1:
         case CurveType::P256:
@@ -259,7 +337,8 @@ HDKey HDKey::PublicCKD(uint32_t i, safeheron::bignum::BN &delta) const{
 
             BN d(0);
             fingerprint = safeheron::bip32::_ecdsa::hdnode_fingerprint(&hd_node);
-            _ecdsa::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            ret = _ecdsa::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__, __LINE__, __FUNCTION__, 1, " _ecdsa::hdnode_public_ckd_ex failed.");
             total_delta = (total_delta + d) % curv->n;
 
             delta = total_delta;
@@ -279,7 +358,8 @@ HDKey HDKey::PublicCKD(uint32_t i, safeheron::bignum::BN &delta) const{
 
             BN d(0);
             fingerprint = safeheron::bip32::_ed25519::hdnode_fingerprint(&hd_node);
-            _ed25519::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            ret = _ed25519::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            if (ret != 1) throw safeheron::exception::LocatedException(__FILE__, __LINE__, __FUNCTION__, 1, " _ed25519::hdnode_public_ckd_ex failed.");
             total_delta = (total_delta + d) % curv->n;
 
             delta = total_delta;
@@ -291,18 +371,77 @@ HDKey HDKey::PublicCKD(uint32_t i, safeheron::bignum::BN &delta) const{
             return child_key;
         }
         default:
-            return HDKey();
+            throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid curve type.");
     }
 }
+
+bool HDKey::PublicCKD(HDKey &child_key, uint32_t i, safeheron::bignum::BN &delta) const {
+    int ret;
+    switch (curve_type_) {
+        case CurveType::SECP256K1:
+        case CurveType::P256:
+        {
+            const curve::Curve *curv = curve::GetCurveParam(curve_type_);
+            BN total_delta(0);
+            HDNode hd_node = hd_node_;
+            uint32_t fingerprint = 0;
+
+            BN d(0);
+            fingerprint = safeheron::bip32::_ecdsa::hdnode_fingerprint(&hd_node);
+            ret = _ecdsa::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            if (ret != 1) return false;
+            total_delta = (total_delta + d) % curv->n;
+
+            delta = total_delta;
+
+            child_key = *this;
+            child_key.hd_node_ = hd_node;
+            child_key.fingerprint_ = fingerprint;
+            crypto_bip32_memzero(&hd_node, sizeof(HDNode));
+            return true;
+        }
+        case CurveType::ED25519:
+        {
+            const curve::Curve *curv = curve::GetCurveParam(CurveType::ED25519);
+            BN total_delta(0);
+            HDNode hd_node = hd_node_;
+            uint32_t fingerprint = 0;
+
+            BN d(0);
+            fingerprint = safeheron::bip32::_ed25519::hdnode_fingerprint(&hd_node);
+            ret = _ed25519::hdnode_public_ckd_ex(&hd_node, i, d, curve_type_, HasPrivateKey());
+            if (ret != 1) return false;
+            total_delta = (total_delta + d) % curv->n;
+
+            delta = total_delta;
+
+            child_key = *this;
+            child_key.hd_node_ = hd_node;
+            child_key.fingerprint_ = fingerprint;
+            crypto_bip32_memzero(&hd_node, sizeof(HDNode));
+            return true;
+        }
+        default:
+            return false;
+    }
+}
+
 
 HDKey HDKey::PublicCKD(uint32_t i) const{
     BN delta;
     return PublicCKD(i, delta);
 }
 
+bool HDKey::PublicCKD(HDKey &child_key, uint32_t i) const {
+    BN delta;
+    return PublicCKD(child_key, i, delta);
+}
+
 HDKey HDKey::PrivateCKDPath(const char *path) const {
     std::vector<uint32_t> hd_path;
-    HDPath::ParseHDPath(path, hd_path);
+    if (!HDPath::ParseHDPath(path, hd_path)) {
+        throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid path.");
+    }
     HDKey child_key(*this);
     for(size_t i = 0; i < hd_path.size(); ++i){
         child_key = child_key.PrivateCKD(hd_path[i]);
@@ -310,14 +449,30 @@ HDKey HDKey::PrivateCKDPath(const char *path) const {
     return child_key;
 }
 
+bool HDKey::PrivateCKDPath(HDKey &child_key, const char * path) const {
+    std::vector<uint32_t> hd_path;
+    if (!HDPath::ParseHDPath(path, hd_path)) return false;
+    child_key = *this;
+    for(size_t i = 0; i < hd_path.size(); ++i){
+        child_key = child_key.PrivateCKD(hd_path[i]);
+    }
+    return true;
+}
+
 HDKey HDKey::PrivateCKDPath(const std::string &path) const {
     return PrivateCKDPath(path.c_str());
+}
+
+bool HDKey::PrivateCKDPath(HDKey &child_key, const std::string &path) const {
+    return PrivateCKDPath(child_key, path.c_str());
 }
 
 HDKey HDKey::PublicCKDPath(const char *path, BN &delta) const {
     std::vector<uint32_t> hd_path;
     const Curve * curv = GetCurveParam(curve_type_);
-    HDPath::ParseHDPath(path, hd_path);
+    if (!HDPath::ParseHDPath(path, hd_path)) {
+        throw safeheron::exception::LocatedException(__FILE__,  __LINE__, __FUNCTION__, 1, "Invalid path.");
+    }
     HDKey child_key(*this);
     delta = BN(0);
     for(size_t i = 0; i < hd_path.size(); ++i){
@@ -329,8 +484,31 @@ HDKey HDKey::PublicCKDPath(const char *path, BN &delta) const {
     return child_key;
 }
 
+bool HDKey::PublicCKDPath(HDKey &child_key, const char *path, safeheron::bignum::BN &delta) const {
+    std::vector<uint32_t> hd_path;
+    const Curve * curv = GetCurveParam(curve_type_);
+    if (!HDPath::ParseHDPath(path, hd_path)) return false;
+    child_key = *this;
+    //HDKey child_key(*this);
+    delta = BN(0);
+    int ret;
+    for(size_t i = 0; i < hd_path.size(); ++i){
+        // Normal(No harden) derive
+        BN t_delta;
+        //hd_key = hd_key.PublicCKD(hd_path[i], t_delta);
+        ret = child_key.PublicCKD(child_key, hd_path[i], t_delta);
+        if (ret != 1) return false;
+        delta = (delta + t_delta) % curv->n;
+    }
+    return true;
+}
+
 HDKey HDKey::PublicCKDPath(const std::string &path, BN &delta) const {
     return PublicCKDPath(path.c_str(), delta);
+}
+
+bool HDKey::PublicCKDPath(HDKey &child_key, const std::string &path, safeheron::bignum::BN &delta) const {
+    return PublicCKDPath(child_key, path.c_str(), delta);
 }
 
 HDKey HDKey::PublicCKDPath(const char *path) const {
@@ -338,10 +516,21 @@ HDKey HDKey::PublicCKDPath(const char *path) const {
     return PublicCKDPath(path, delta);
 }
 
+bool HDKey::PublicCKDPath(HDKey &child_key, const char *path) const {
+    BN delta;
+    return PublicCKDPath(child_key, path, delta);
+}
+
 HDKey HDKey::PublicCKDPath(const std::string &path) const {
     BN delta;
     return PublicCKDPath(path, delta);
 }
+
+bool HDKey::PublicCKDPath(HDKey &child_key, const std::string &path) const {
+    BN delta;
+    return PublicCKDPath(child_key, path, delta);
+}
+
 
 bool HDKey::FromExtendedPublicKey(const char *xpub, CurveType c_type) {
     switch (c_type) {
@@ -353,7 +542,7 @@ bool HDKey::FromExtendedPublicKey(const char *xpub, CurveType c_type) {
             int ret = _ecdsa::hdnode_deserialize_public_ex(xpub, &version, c_type, &hd_node_, &fingerprint);
             curve_type_ = c_type;
             fingerprint_ = fingerprint;
-            return ret == 1 && (version == static_cast<uint32_t>(Bip32Version::BITCOIN_VERSION_PUBLIC));;
+            return ret == 1 && (version == static_cast<uint32_t>(Bip32Version::BITCOIN_VERSION_PUBLIC));
         }
         case CurveType::ED25519:
         {

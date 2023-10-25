@@ -21,7 +21,7 @@ namespace dlog_equality{
  *      - h^x = Y
  *
  * Reference
- * - Appendix C.1 (Figure 22) in [MPC-CMP](https://eprint.iacr.org/2021/060.pdf)
+ * - Appendix C.1 (Figure 23) in [MPC-CMP](https://eprint.iacr.org/2021/060.pdf)
  */
 
 struct DlogEqualityStatement {

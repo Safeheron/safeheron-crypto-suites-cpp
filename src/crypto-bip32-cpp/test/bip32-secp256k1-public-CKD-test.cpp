@@ -19,6 +19,38 @@ using safeheron::bip32::HDKey;
 using safeheron::exception::LocatedException;
 using namespace safeheron::encode;
 
+const static std::vector<std::vector<std::string>> test_vector {
+
+        {
+                "xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMSgv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB",
+                "m/0",
+                "xpub69H7F5d8KSRgmmdJg2KhpAK8SR3DjMwAdkxj3ZuxV27CprR9LgpeyGmXUbC6wb7ERfvrnKZjXoUmmDznezpbZb7ap6r1D3tgFxHmwMkQTPH",
+        }
+};
+void test_PubCKD(const std::string &root_xpub, const std::string &path, const std::string &child_xpub) {
+    HDKey hd_root;
+    hd_root.FromExtendedPublicKey(root_xpub, CurveType::SECP256K1);
+    HDKey child_key = hd_root.PublicCKDPath(path);
+    std::string child_xpub_gen;
+    child_key.ToExtendedPublicKey(child_xpub_gen);
+    EXPECT_TRUE(child_xpub == child_xpub_gen);
+}
+TEST(bip32, PubCKD) {
+    for (size_t i = 0; i < test_vector.size(); ++i) {
+        std::string root_xpub = test_vector[i][0];
+        size_t j = 1;
+        while (j < test_vector[i].size()) {
+            std::string path = test_vector[i][j];
+            ++j;
+            std::string child_xpub = test_vector[i][j];
+            ++j;
+            test_PubCKD(root_xpub, path, child_xpub);
+        }
+
+    }
+}
+
+
 std::vector<std::vector<string>> case_data_public_cdk_secp256k1 = {
         {
                 "xprv9s21ZrQH143K3vh26yNdQCf8euP1DWqXv1zAoZB6JARsK96tsCwxgoBQbso7WAP18Jr4tGcE7evR1vahPAAntkdxP7UyeWfA9skuFyRcum9",
@@ -52,37 +84,6 @@ std::vector<std::vector<string>> case_data_public_cdk_secp256k1 = {
         }
 };
 
-const static std::vector<std::vector<std::string>> test_vector {
-
-        {
-                "xpub661MyMwAqRbcFW31YEwpkMuc5THy2PSt5bDMsktWQcFF8syAmRUapSCGu8ED9W6oDMSgv6Zz8idoc4a6mr8BDzTJY47LJhkJ8UB7WEGuduB",
-                "m/0",
-                "xpub69H7F5d8KSRgmmdJg2KhpAK8SR3DjMwAdkxj3ZuxV27CprR9LgpeyGmXUbC6wb7ERfvrnKZjXoUmmDznezpbZb7ap6r1D3tgFxHmwMkQTPH",
-        }
-};
-void test_PubCKD(const std::string &root_xpub, const std::string &path, const std::string &child_xpub) {
-    HDKey hd_root;
-    hd_root.FromExtendedPublicKey(root_xpub, CurveType::SECP256K1);
-    HDKey child_key = hd_root.PublicCKDPath(path);
-    std::string child_xpub_gen;
-    child_key.ToExtendedPublicKey(child_xpub_gen);
-    EXPECT_TRUE(child_xpub == child_xpub_gen);
-}
-TEST(bip32, PubCKD) {
-    for (size_t i = 0; i < test_vector.size(); ++i) {
-        std::string root_xpub = test_vector[i][0];
-        size_t j = 1;
-        while (j < test_vector[i].size()) {
-            std::string path = test_vector[i][j];
-            ++j;
-            std::string child_xpub = test_vector[i][j];
-            ++j;
-            test_PubCKD(root_xpub, path, child_xpub);
-        }
-
-    }
-}
-
 void testPublicCKD_Secp256k1(std::string xprv, std::string path, std::string child_xpub, std::string deltaStr){
     BN delta = BN::FromHexStr(deltaStr);
     safeheron::bip32::HDKey hdKey;
@@ -104,7 +105,6 @@ void testPublicCKD_Secp256k1(std::string xprv, std::string path, std::string chi
     //std::cout << "delta: " << t_delta_str << std::endl;
 }
 
-
 TEST(Bip32, PublicCDK_Secp256k1)
 {
     for(const auto &item: case_data_public_cdk_secp256k1){
@@ -115,6 +115,40 @@ TEST(Bip32, PublicCDK_Secp256k1)
         testPublicCKD_Secp256k1(xprv, path, child_xpub, delta);
     }
 }
+
+void testPublicCKD_Secp256k1_with_false_ret(std::string xprv, std::string path, std::string child_xpub, std::string deltaStr){
+    BN delta = BN::FromHexStr(deltaStr);
+    safeheron::bip32::HDKey hdKey;
+    EXPECT_TRUE(hdKey.FromExtendedPrivateKey(xprv, CurveType::SECP256K1));
+
+    safeheron::bip32::HDKey childHDKey;
+    BN t_delta;
+    bool ok = hdKey.PublicCKDPath(childHDKey, path, t_delta);
+    EXPECT_TRUE(ok);
+    std::string t_child_xpub;
+    childHDKey.ToExtendedPublicKey(t_child_xpub);
+    //std::cout << "  child_xpub: " << hex::EncodeToHex(base58::DecodeFromBase58(child_xpub)) << std::endl;
+    //std::cout << "t_child_xpub: " << hex::EncodeToHex(base58::DecodeFromBase58(t_child_xpub)) << std::endl;
+    EXPECT_TRUE(child_xpub == t_child_xpub);
+    EXPECT_TRUE(delta == t_delta);
+
+
+    std::string t_delta_str;
+    t_delta.ToHexStr(t_delta_str);
+    //std::cout << "delta: " << t_delta_str << std::endl;
+}
+
+TEST(Bip32, PublicCDK_Secp256k1_with_false_ret)
+{
+    for(const auto &item: case_data_public_cdk_secp256k1){
+        const string &xprv = item[0];
+        const string &path = item[1];
+        const string &child_xpub = item[2];
+        const string &delta = item[3];
+        testPublicCKD_Secp256k1_with_false_ret(xprv, path, child_xpub, delta);
+    }
+}
+
 
 std::vector<string> case_data_root_xpub_secp256k1 = {"xpub661MyMwAqRbcGQmVCzudmLbsCwDVcyZPHEumbwahrVxrBwS3QkGDEbVtTBwvUP4HruZn2cssHsywMREQh9R3XgUbe7hjfK2Z5sxJrJQEnNh"};
 std::vector<std::vector<std::vector<std::string>>> case_data_public_ckd_child_key_secp256k1 = {
@@ -172,6 +206,41 @@ TEST(Bip32, PublicCKDTestCase_Secp256k1)
             const string & path = case_data_public_ckd_child_key_secp256k1[i][j][0];
             const string & child_xpub = case_data_public_ckd_child_key_secp256k1[i][j][1];
             testPublicCKD_Secp256k1(xpub, path, child_xpub);
+        }
+    }
+}
+
+void testPublicCKD_Secp256k1_with_false_ret(const string &xpub, const string &path, const string &child_xpub){
+    bool ok;
+    HDKey root_hd_key;
+    ok = root_hd_key.FromExtendedPublicKey(xpub, CurveType::SECP256K1);
+    ASSERT_TRUE(ok);
+    //std::cout << "path: " << path << std::endl;
+    BN delta;
+    HDKey child_hd_key;
+    ok = root_hd_key.PublicCKDPath(child_hd_key, path.c_str(), delta);
+    ASSERT_TRUE(ok);
+    string t_child_xpub;
+    child_hd_key.ToExtendedPublicKey(t_child_xpub);
+    //std::cout << "child_xpub: " << child_xpub << std::endl;
+    ASSERT_EQ(t_child_xpub, child_xpub);
+
+    const Curve *curv = GetCurveParam(CurveType::SECP256K1);
+    CurvePoint root_point;
+    root_hd_key.GetPublicKey(root_point);
+    CurvePoint child_point;
+    child_hd_key.GetPublicKey(child_point);
+    EXPECT_TRUE((root_point +  curv->g * delta == child_point));
+}
+
+TEST(Bip32, PublicCKDTestCase_Secp256k1_with_false_ret)
+{
+    for(size_t i = 0; i < case_data_root_xpub_secp256k1.size(); i++ ){
+        for(size_t j = 0; j < case_data_public_ckd_child_key_secp256k1[i].size(); j++){
+            const string & xpub = case_data_root_xpub_secp256k1[i];
+            const string & path = case_data_public_ckd_child_key_secp256k1[i][j][0];
+            const string & child_xpub = case_data_public_ckd_child_key_secp256k1[i][j][1];
+            testPublicCKD_Secp256k1_with_false_ret(xpub, path, child_xpub);
         }
     }
 }

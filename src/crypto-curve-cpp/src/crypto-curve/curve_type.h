@@ -17,6 +17,7 @@ enum class CurveType: uint32_t {
     INVALID_CURVE = 0xFFFFFFFF, /**< Invalid Curve. */
     SECP256K1 = 1, /**< Curve Secp256k1 */
     P256 = 2, /**< Curve Secp256r1 */
+    STARK = 4,  /**< Curve Stark256v1 */
     ED25519 = 32, /**< Curve Ed25519 */
 };
 

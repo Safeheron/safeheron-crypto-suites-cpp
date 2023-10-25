@@ -1,6 +1,6 @@
 #include "two_dln_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -41,6 +41,33 @@ void GenerateN_tilde(safeheron::bignum::BN &N_tilde, safeheron::bignum::BN &h1, 
     h2 = h1.PowM(alpha, N_tilde);
 }
 
+bool GenerateN_tilde_with_PQ(const safeheron::bignum::BN &P, const safeheron::bignum::BN &Q, safeheron::bignum::BN &N_tilde, safeheron::bignum::BN &h1, safeheron::bignum::BN &h2, safeheron::bignum::BN &p, safeheron::bignum::BN &q, safeheron::bignum::BN &alpha, safeheron::bignum::BN &beta) {
+    const uint32_t PRIME_BITS = 1024;
+    if (P.BitLength() < PRIME_BITS || !P.IsProbablyPrime()) {
+        return false;
+    }
+    p = (P-1)/2;
+    if (!p.IsProbablyPrime()) {
+        return false;
+    }
+    if (Q.BitLength() < PRIME_BITS || !Q.IsProbablyPrime()) {
+        return false;
+    }
+    q = (Q-1)/2;
+    if (!q.IsProbablyPrime()) {
+        return false;
+    }
+    N_tilde = P * Q;
+    BN pq = p * q;
+
+    BN f = safeheron::rand::RandomBNLtGcd(N_tilde);
+    alpha = safeheron::rand::RandomBNLtGcd(N_tilde);
+    beta = alpha.InvM(pq);
+
+    h1 = ( f * f ) % N_tilde;
+    h2 = h1.PowM(alpha, N_tilde);
+    return true;
+}
 
 void TwoDLNProof::Prove(const BN &N, const BN &h1, const BN &h2, const BN &p, const BN &q, const BN &alpha, const BN &beta) {
     dln_proof_1_.SetSalt(salt_);

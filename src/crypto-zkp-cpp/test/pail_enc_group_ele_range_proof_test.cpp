@@ -58,6 +58,7 @@ TEST(ZKP, Pail_ENC_Range_Proof_3)
 
     CTimer timer("time_cost_of_proof");
     safeheron::zkp::pail::PailEncGroupEleRangeProof range_proof;
+    range_proof.SetSalt("Salt");
     range_proof.Prove(setup, statement, witness);
     ASSERT_TRUE(range_proof.Verify(setup, statement));
     timer.End();
@@ -66,6 +67,7 @@ TEST(ZKP, Pail_ENC_Range_Proof_3)
     range_proof.ToBase64(base64);
     safeheron::zkp::pail::PailEncGroupEleRangeProof range_proof2;
     ASSERT_TRUE(range_proof2.FromBase64(base64));
+    range_proof2.SetSalt("Salt");
     ASSERT_TRUE(range_proof2.Verify(setup, statement));
 }
 

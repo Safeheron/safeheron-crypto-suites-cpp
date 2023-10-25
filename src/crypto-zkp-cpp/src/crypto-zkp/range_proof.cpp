@@ -1,6 +1,6 @@
 #include "range_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -42,9 +42,18 @@ void AliceRangeProof::Prove(const BN &q, const BN &N, const BN &g, const BN &N_t
     // w = h1^alpha * h2^gamma mod N_tilde
     w_ = ( h1.PowM(alpha, N_tilde) * h2.PowM(gamma, N_tilde) ) % N_tilde;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     N.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     c.ToBytesBE(str);
@@ -55,9 +64,6 @@ void AliceRangeProof::Prove(const BN &q, const BN &N, const BN &g, const BN &N_t
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     w_.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;
@@ -83,9 +89,18 @@ bool AliceRangeProof::Verify(const BN &q, const BN &N, const BN &g, const BN &N_
 
     if(s1_ > q3)return false;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h1.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    h2.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     N.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     c.ToBytesBE(str);
@@ -96,9 +111,6 @@ bool AliceRangeProof::Verify(const BN &q, const BN &N, const BN &g, const BN &N_
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     w_.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;

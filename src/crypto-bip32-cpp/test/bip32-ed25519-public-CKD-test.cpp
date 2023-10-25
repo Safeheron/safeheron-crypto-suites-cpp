@@ -108,6 +108,61 @@ TEST(Bip32, PublicCKDTestCase_Ed25519)
     }
 }
 
+void testSeedAndCKD_Ed25519_with_false_ret(const string &seed_hex, const string &path, const string &xprv, const string &xpub){
+    bool ok;
+    HDKey root_hd_key;
+    string data = hex::DecodeFromHex(seed_hex);
+    ok = root_hd_key.FromSeed(CurveType::ED25519, reinterpret_cast<const uint8_t *>(data.c_str()), data.length());
+    ASSERT_TRUE(ok);
+    //std::cout << "path: " << path << std::endl;
+    HDKey child_hd_key;
+    ok = root_hd_key.PrivateCKDPath(child_hd_key, path.c_str());
+    ASSERT_TRUE(ok);
+    string child_xprv, child_xpub;
+    child_hd_key.ToExtendedPrivateKey(child_xprv);
+    child_hd_key.ToExtendedPublicKey(child_xpub);
+
+    //std::cout << "child_xprv: " << child_xprv << std::endl;
+    //std::cout << "child_xpub: " << child_xpub << std::endl;
+    //std::cout << "child_xprv: " << hex::EncodeToHex(base58::DecodeFromBase58(child_xprv)) << std::endl;
+    //std::cout << "      xprv: " << hex::EncodeToHex(base58::DecodeFromBase58(xprv)) << std::endl;
+    ASSERT_EQ(child_xprv, xprv);
+    ASSERT_EQ(child_xpub, xpub);
+
+    BN delta(0);
+    string root_xpub;
+    root_hd_key.ToExtendedPublicKey(root_xpub);
+    HDKey root_hd_key_p;
+    ok = root_hd_key_p.FromExtendedPublicKey(root_xpub, CurveType::ED25519);
+    ASSERT_TRUE(ok);
+    ok = root_hd_key_p.PublicCKDPath(child_hd_key,path.c_str(), delta);
+    ASSERT_TRUE(ok);
+    child_hd_key.ToExtendedPublicKey(child_xpub);
+    //std::cout << "child_xpub: " << child_xpub << std::endl;
+    ASSERT_EQ(child_xpub, xpub);
+
+
+    const Curve *curv = safeheron::curve::GetCurveParam(CurveType::ED25519);
+    CurvePoint root_point;
+    root_hd_key.GetPublicKey(root_point);
+    CurvePoint child_point;
+    child_hd_key.GetPublicKey(child_point);
+    EXPECT_TRUE((root_point +  curv->g * delta == child_point));
+}
+
+TEST(Bip32, PublicCKDTestCase_Ed25519_with_false_ret)
+{
+    for(size_t i = 0; i < case_data_child_key_ed25519.size(); i++ ){
+        for(size_t j = 0; j < case_data_child_key_ed25519[i].size(); j++){
+            const string & seed = case_data_seeds_ed25519[i];
+            const string & path = case_data_child_key_ed25519[i][j][0];
+            const string & xprv = case_data_child_key_ed25519[i][j][1];
+            const string & xpub = case_data_child_key_ed25519[i][j][2];
+            testSeedAndCKD_Ed25519_with_false_ret(seed, path, xprv, xpub);
+        }
+    }
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

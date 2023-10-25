@@ -4,54 +4,10 @@
 
 Hash implementation in C++, such as sha1, sha256, sha512, ripemd160, hash160, hash256, hmac_sha256, hmac_sha512 and chacha20 .
 
-# Build and Install
-
-Linux and Mac are supported now.  After obtaining the Source, have a look at the installation script.
-
-```shell
-git clone https://github.com/safeheron/crypto-hash-cpp.git
-cd crypto-hash-cpp
-mkdir build && cd build
-# Turn on the switcher to enable tests; by default, turn off it if you don't wanna to build the test cases.
-cmake .. -DENABLE_TESTS=ON
-make
-make test # If you set ENABLE_TESTS ON
-sudo make install
-```
 
 More platforms such as Windows would be supported soon.
 
 
-# To start using crypto-hash-cpp
-
-## CMake
-
-CMake is your best option. It supports building on Linux, MacOS and Windows (soon) but also has a good chance of working on other platforms (no promises!). cmake has good support for crosscompiling and can be used for targeting the Android platform.
-
-To build crypto-bn-cpp from source, follow the BUILDING guide.
-
-The canonical way to discover dependencies in CMake is the find_package command.
-
-```shell
-cmake_minimum_required(VERSION 3.10)
-project(example)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-
-find_package(CryptoHash REQUIRED)
-
-add_executable(example example.cpp)
-target_include_directories(example PRIVATE
-        ${CryptoHash_INCLUDE_DIRS}
-        )
-
-target_link_libraries(example PRIVATE
-        CryptoHash
-        pthread )
-```
 
 ## Example
 

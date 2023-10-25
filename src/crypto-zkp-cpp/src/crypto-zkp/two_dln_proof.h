@@ -28,6 +28,7 @@ namespace dln_proof{
  *      - h1 = h2^beta mod N_tilde
  */
 void GenerateN_tilde(safeheron::bignum::BN &N_tilde, safeheron::bignum::BN &h1, safeheron::bignum::BN &h2, safeheron::bignum::BN &p, safeheron::bignum::BN &q, safeheron::bignum::BN &alpha, safeheron::bignum::BN &beta);
+bool GenerateN_tilde_with_PQ(const safeheron::bignum::BN &P, const safeheron::bignum::BN &Q, safeheron::bignum::BN &N_tilde, safeheron::bignum::BN &h1, safeheron::bignum::BN &h2, safeheron::bignum::BN &p, safeheron::bignum::BN &q, safeheron::bignum::BN &alpha, safeheron::bignum::BN &beta);
 
 class TwoDLNProof {
 public:

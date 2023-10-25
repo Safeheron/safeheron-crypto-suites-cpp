@@ -40,6 +40,9 @@ void DLNProof::Prove(const BN &N, const BN &h1, const BN &h2, const BN &p, const
     CSafeHash256 sha256;
     uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     N.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h1.ToBytesBE(str);
@@ -49,9 +52,6 @@ void DLNProof::Prove(const BN &N, const BN &h1, const BN &h2, const BN &p, const
     for(int i = 0; i < ITERATIONS; ++i) {
         alpha_arr_[i].ToBytesBE(str);
         sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    }
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
     sha256.Finalize(sha256_digest);
 
@@ -68,6 +68,8 @@ bool DLNProof::Verify(const BN &N, const BN &h1, const BN &h2) const {
     if(N <= 1) return false;
     if(h1 <= 1 || h1 >= N) return false;
     if(h2 <= 1 || h2 >= N) return false;
+    if(h1.Gcd(N) != 1) return false;
+    if(h2.Gcd(N) != 1) return false;
     if(h1 == h2) return false;
     for(int i = 0; i < ITERATIONS; ++i) {
         if(t_arr_[i] <= 1 || t_arr_[i] >= N) return false;
@@ -79,6 +81,9 @@ bool DLNProof::Verify(const BN &N, const BN &h1, const BN &h2) const {
     CSafeHash256 sha256;
     uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     N.ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h1.ToBytesBE(str);
@@ -88,9 +93,6 @@ bool DLNProof::Verify(const BN &N, const BN &h1, const BN &h2) const {
     for(int i = 0; i < ITERATIONS; ++i) {
         alpha_arr_[i].ToBytesBE(str);
         sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    }
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
     sha256.Finalize(sha256_digest);
 

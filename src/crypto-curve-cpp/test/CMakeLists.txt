@@ -47,3 +47,6 @@ add_test(NAME ecdsa-test COMMAND ecdsa-test)
 
 add_executable(eddsa-test eddsa-test.cpp)
 add_test(NAME eddsa-test COMMAND eddsa-test)
+
+add_executable(stark-test stark-consistency-test.cpp)
+add_test(NAME stark-test COMMAND stark-test)

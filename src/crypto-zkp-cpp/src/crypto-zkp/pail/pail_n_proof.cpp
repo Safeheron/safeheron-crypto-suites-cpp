@@ -1,6 +1,6 @@
 #include "pail_n_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-paillier/pail.h"
 #include "crypto-encode/base64.h"
@@ -10,7 +10,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using safeheron::pail::PailPubKey;
 using safeheron::pail::PailPrivKey;
 using google::protobuf::util::Status;
@@ -60,10 +60,10 @@ void PailNProof::GenerateXs(std::vector<BN> &x_arr, const BN &N, uint32_t proof_
     uint32_t i = 0;
     int n = 0;
     int j = 0;
-    int N_blocks = 1 + N.BitLength() / (CSHA256::OUTPUT_SIZE * 8);
-    std::unique_ptr<uint8_t[]> blocks_buf(new uint8_t[N_blocks * CSHA256::OUTPUT_SIZE]);
+    int N_blocks = 1 + N.BitLength() / (CSafeHash256::OUTPUT_SIZE * 8);
+    std::unique_ptr<uint8_t[]> blocks_buf(new uint8_t[N_blocks * CSafeHash256::OUTPUT_SIZE]);
 
-    memset(blocks_buf.get(), 0, N_blocks * CSHA256::OUTPUT_SIZE);
+    memset(blocks_buf.get(), 0, N_blocks * CSafeHash256::OUTPUT_SIZE);
     uint8_t byte4[4];
     string N_buf;
     // N
@@ -71,10 +71,13 @@ void PailNProof::GenerateXs(std::vector<BN> &x_arr, const BN &N, uint32_t proof_
 
     while( i < proof_iters ){
         for( j = 0; j < N_blocks; ++j ){
-            // digest = H(i || j || n || index || point_x || point_y || N)
-            CSHA256 sha256;
-            uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+            // digest = H( Salt || i || j || n || index || point_x || point_y || N)
+            CSafeHash256 sha256;
+            uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
             string str;
+            if(salt_.length() > 0) {
+                sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+            }
             // i
             uint_to_byte4(byte4, i);
             sha256.Write( byte4, 4);
@@ -86,14 +89,11 @@ void PailNProof::GenerateXs(std::vector<BN> &x_arr, const BN &N, uint32_t proof_
             sha256.Write( byte4, 4);
             // N
             sha256.Write((const uint8_t *)(N_buf.c_str()), N_buf.length());
-            if(salt_.length() > 0) {
-                sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-            }
             sha256.Finalize(sha256_digest);
-            memcpy(blocks_buf.get() + CSHA256::OUTPUT_SIZE * j, sha256_digest, CSHA256::OUTPUT_SIZE);
+            memcpy(blocks_buf.get() + CSafeHash256::OUTPUT_SIZE * j, sha256_digest, CSafeHash256::OUTPUT_SIZE);
         }
 
-        BN x = BN::FromBytesBE(blocks_buf.get(), N_blocks * CSHA256::OUTPUT_SIZE);
+        BN x = BN::FromBytesBE(blocks_buf.get(), N_blocks * CSafeHash256::OUTPUT_SIZE);
         x = x % N;
         // x in Z_N*
         bool ok = (x > BN::ONE) && (x < N) && (x.Gcd(N) == BN::ONE);

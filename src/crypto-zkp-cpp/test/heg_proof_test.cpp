@@ -49,6 +49,7 @@ TEST(ZKP, HegProof)
 
     // Prove
     heg::HegProof proof;
+    proof.SetSalt("Salt");
     proof.Prove(statement, witness);
 
     // Verify
@@ -64,12 +65,14 @@ TEST(ZKP, HegProof)
     EXPECT_TRUE((proof.z1_ == proof2.z1_) );
     EXPECT_TRUE((proof.z2_ == proof2.z2_) );
     EXPECT_TRUE(proof.Verify(statement));
+    proof2.SetSalt("Salt");
     EXPECT_TRUE(proof2.Verify(statement));
 
     //// json string
     std::string jsonStr;
     EXPECT_TRUE(proof.ToJsonString(jsonStr));
     EXPECT_TRUE(proof2.FromJsonString(jsonStr));
+    proof2.SetSalt("Salt");
     EXPECT_TRUE((proof.T_ == proof2.T_) && proof2.Verify(statement));
 }
 

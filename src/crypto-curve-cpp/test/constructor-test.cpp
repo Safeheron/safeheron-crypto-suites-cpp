@@ -59,6 +59,10 @@ TEST(CurvePoint, Constructor) {
     EXPECT_TRUE(CPoint8.IsValid());
     EXPECT_FALSE(CPoint8.IsInfinity());
     std::cout << "CPoint8.Inspect()(CPoint8 = CPoint5): " << CPoint8.Inspect() << std::endl;
+    CurvePoint CPoint9(CurveType::STARK);
+    EXPECT_TRUE(CPoint9.IsValid());
+    EXPECT_TRUE(CPoint9.IsInfinity());
+    std::cout << "CPoint9.Inspect(): " << CPoint9.Inspect() << std::endl;
 }
 
 void testPointCoordinate(BN bn_x, BN bn_y, CurveType cType) {
@@ -105,6 +109,15 @@ TEST(CurvePoint, PointCoordinate) {
     bn_y = BN("7807f217e163140e825dfdfebd2dbf3463caceca3545e7972b099e0b9bd7bd53", 16);
     EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::ED25519));
     testPointCoordinate(bn_x, bn_y, safeheron::curve::CurveType::ED25519);
+
+    bn_x = BN("234287dcbaffe7f969c748655fca9e58fa8120b6d56eb0c1080d17957ebe47b", 16);
+    bn_y = BN("3b056f100f96fb21e889527d41f4e39940135dd7a6c94cc6ed0268ee89e5615", 16);
+    EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::STARK));
+    testPointCoordinate(bn_x, bn_y, safeheron::curve::CurveType::STARK);
+    bn_x = BN("3909690e1123c80678a7ba0fde0e8447f6f02b3f6b960034d1e93524f8b476", 16);
+    bn_y = BN("7122e9063d239d89d4e336753845b76f2b33ca0d7f0c1acd4b9fe974994cc19", 16);
+    EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::STARK));
+    testPointCoordinate(bn_x, bn_y, safeheron::curve::CurveType::STARK);
 }
 
 
@@ -169,6 +182,16 @@ TEST(CurvePoint, Validation) {
     bn_x = BN("1a276770f3f04a7bf33ec6726d1b4da3239b3b93b8cd6355b7add64260965bee", 16);
     bn_y = BN("3be31597a8ba0cf943af84d9380a88eeb4691c0cfcfcacf27404418ecee6dfb", 16);
     EXPECT_FALSE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::ED25519));
+
+    bn_x = BN("40fd002e38ea01a01b2702eb7c643e9decc2894cbf31765922e281939ab542c", 16);
+    bn_y = BN("109f720a79e2a41471f054ca885efd90c8cfbbec37991d1b6343991e0a3e740", 16);
+    EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::STARK));
+    bn_x = BN("2f52066635c139fc2f64eb0bd5e3fd7a705f576854ec4f00aa60361fddb981b", 16);
+    bn_y = BN("6d78a24d8a5f97fc600318ce16b3c840315979c3273078ec1a285f217ee6a26", 16);
+    EXPECT_TRUE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::STARK));
+    bn_x = BN("6a0767a1fd60d5b9027a35af1b68e57a1c366ebcde2006cdd07af27043ef674", 16);
+    bn_y = BN("8606b72c0ca0498b8c1817ed7922d550894c324f5efdfc85a19a1ae382411ca2", 16);
+    EXPECT_FALSE(CurvePoint::ValidatePoint(bn_x, bn_y, safeheron::curve::CurveType::STARK));
 }
 
 int main(int argc, char **argv) {

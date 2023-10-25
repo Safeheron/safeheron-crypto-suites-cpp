@@ -158,6 +158,101 @@ TEST(Bip32, CreateHDKey) {
     }
 }
 
+//SECP256K1
+void testCreate_with_false_ret(const std::string &seed, const std::string &extended_xprv, const std::string &extended_xpub) {
+
+    std::string seed_bytes = hex::DecodeFromHex(seed);
+    HDKey hd_root;
+    hd_root.FromSeed(CurveType::SECP256K1, reinterpret_cast<const uint8_t *>(seed_bytes.c_str()), seed_bytes.length());
+
+    BN hd_root_priv;
+    CurvePoint hd_root_pub;
+    uint8_t hd_root_chaincode[32];
+    hd_root.GetPrivateKey(hd_root_priv);
+    hd_root.GetPublicKey(hd_root_pub);
+    hd_root.GetChainCode(hd_root_chaincode);
+
+    uint8_t m[32 + 32];
+    safeheron::hash::CHMAC_SHA512 hmac((const uint8_t *)"Bitcoin seed", strlen("Bitcoin seed"));
+    hmac.Write(reinterpret_cast<const uint8_t *>(seed_bytes.c_str()), seed_bytes.length());
+    hmac.Finalize(m);
+
+    const Curve *curv = safeheron::curve::GetCurveParam(CurveType::SECP256K1);
+
+    BN priv = BN::FromBytesBE(m, 32);
+    assert((priv != 0) && (priv <= curv->n));
+    uint8_t chaincode[32];
+    memcpy(chaincode, m+32, 32);
+
+    HDKey hd_root1;
+    bool ok = HDKey::CreateHDKey(hd_root1,CurveType::SECP256K1, priv, chaincode);
+    EXPECT_TRUE(ok);
+
+    BN hd_root1_priv;
+    CurvePoint hd_root1_pub;
+    uint8_t hd_root1_chaincode[32];
+    hd_root1.GetPrivateKey(hd_root1_priv);
+    hd_root1.GetPublicKey(hd_root1_pub);
+    hd_root1.GetChainCode(hd_root1_chaincode);
+
+    CurvePoint pub = curv->g * priv;
+    HDKey hd_root2;
+    ok = HDKey::CreateHDKey(hd_root2,CurveType::SECP256K1, pub, chaincode);
+    EXPECT_TRUE(ok);
+
+    CurvePoint hd_root2_pub;
+    uint8_t hd_root2_chaincode[32];
+
+    hd_root2.GetPublicKey(hd_root2_pub);
+    hd_root2.GetChainCode(hd_root2_chaincode);
+
+    HDKey hd_root3;
+    hd_root3.FromExtendedPrivateKey(extended_xprv, CurveType::SECP256K1);
+    BN hd_root3_priv;
+    CurvePoint hd_root3_pub;
+    uint8_t hd_root3_chaincode[32];
+    hd_root3.GetPrivateKey(hd_root3_priv);
+    hd_root3.GetPublicKey(hd_root3_pub);
+    hd_root3.GetChainCode(hd_root3_chaincode);
+
+    HDKey hd_root4;
+    hd_root4.FromExtendedPublicKey(extended_xpub, CurveType::SECP256K1);
+    CurvePoint hd_root4_pub;
+    uint8_t hd_root4_chaincode[32];
+    hd_root4.GetPublicKey(hd_root4_pub);
+    hd_root4.GetChainCode(hd_root4_chaincode);
+
+
+    //verify
+    EXPECT_TRUE(hd_root_priv == priv);
+    EXPECT_TRUE(hd_root_pub == pub);
+    EXPECT_TRUE(strncmp((char *)hd_root_chaincode, (char *)chaincode, 32) == 0);
+
+    EXPECT_TRUE(hd_root1_priv == priv);
+    EXPECT_TRUE(hd_root1_pub == pub);
+    EXPECT_TRUE(strncmp((char *)hd_root1_chaincode, (char *)chaincode, 32) == 0);
+
+    EXPECT_TRUE(hd_root2_pub == pub);
+    EXPECT_TRUE(strncmp((char *)hd_root2_chaincode, (char *)chaincode, 32) == 0);
+
+    EXPECT_TRUE(hd_root3_priv == priv);
+    EXPECT_TRUE(hd_root3_pub == pub);
+    EXPECT_TRUE(strncmp((char *)hd_root3_chaincode, (char *)chaincode, 32) == 0);
+
+    EXPECT_TRUE(hd_root4_pub == pub);
+    EXPECT_TRUE(strncmp((char *)hd_root4_chaincode, (char *)chaincode, 32) == 0);
+
+}
+
+TEST(Bip32, CreateHDKey_with_false_ret) {
+    for(size_t i = 0; i < test_vector.size(); ++i) {
+        std::string seed = test_vector[i][0];
+        std::string xprv = test_vector[i][2];
+        std::string xpub = test_vector[i][1];
+        testCreate_with_false_ret(seed, xprv, xpub);
+    }
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

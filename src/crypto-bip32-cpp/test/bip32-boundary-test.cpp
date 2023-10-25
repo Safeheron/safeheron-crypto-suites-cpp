@@ -43,20 +43,24 @@ TEST(bip32, InvalidPath) {
     std::string illegal_path2 = " / / / / ";
     std::string illegal_path3 = "223 / 336 / mqr";
 
-    HDKey hdchild1 = hd_root.PrivateCKDPath(illegal_path1);
-    HDKey hdchild2 = hd_root.PrivateCKDPath(illegal_path2);
-    HDKey hdchild3 = hd_root.PrivateCKDPath(illegal_path3);
-    std::string hdchild1_xprv;
-    hdchild1.ToExtendedPrivateKey(hdchild1_xprv);
-    std::cout << "hdchild1 xprv: " << hdchild1_xprv << std::endl;
+    try {
+        HDKey hdchild1 = hd_root.PrivateCKDPath(illegal_path1);
+        HDKey hdchild2 = hd_root.PrivateCKDPath(illegal_path2);
+        HDKey hdchild3 = hd_root.PrivateCKDPath(illegal_path3);
+        std::string hdchild1_xprv;
+        hdchild1.ToExtendedPrivateKey(hdchild1_xprv);
+        std::cout << "hdchild1 xprv: " << hdchild1_xprv << std::endl;
 
-    std::string hdchild2_xprv;
-    hdchild2.ToExtendedPrivateKey(hdchild2_xprv);
-    std::cout << "hdchild2 xprv: " << hdchild2_xprv << std::endl;
+        std::string hdchild2_xprv;
+        hdchild2.ToExtendedPrivateKey(hdchild2_xprv);
+        std::cout << "hdchild2 xprv: " << hdchild2_xprv << std::endl;
 
-    std::string hdchild3_xprv;
-    hdchild3.ToExtendedPrivateKey(hdchild3_xprv);
-    std::cout << "hdchild3 xprv: " << hdchild3_xprv << std::endl;
+        std::string hdchild3_xprv;
+        hdchild3.ToExtendedPrivateKey(hdchild3_xprv);
+        std::cout << "hdchild3 xprv: " << hdchild3_xprv << std::endl;
+    } catch (std::exception &e) {
+        std::cout << "error: " << e.what() << std::endl;
+    }
 }
 
 int main(int argc, char **argv) {

@@ -1,6 +1,6 @@
 #include "pail_dec_modulo_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha512.h"
+#include "crypto-hash/safe_hash512.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA512;
+using safeheron::hash::CSafeHash512;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -61,9 +61,19 @@ void PailDecModuloProof::Prove(const PailDecModuloSetUp &setup, const PailDecMod
     // gamma = alpha  mod q
     gamma_ = alpha % q;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N_tilde || s || t || N0 || q || C || x || S || T || A || gamma_)
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     q.ToBytesBE(str);
@@ -80,20 +90,17 @@ void PailDecModuloProof::Prove(const PailDecModuloSetUp &setup, const PailDecMod
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     gamma_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     // z1 = alpha + e * y
-    z1_ = alpha + e * y;
+    z1_ = alpha + e * y ;
     // z2 = v + e * mu
     z2_ = v + e * mu;
-    // w = r * rho^e
-    w_ = ( r * rho.PowM(e, N0Sqr) ) % N0Sqr;
+    // w = r * rho^e  mod N0
+    w_ = ( r * rho.PowM(e, N0Sqr) ) % N0;
 }
 
 bool PailDecModuloProof::Verify(const PailDecModuloSetUp &setup, const PailDecModuloStatement &statement) const {
@@ -115,9 +122,19 @@ bool PailDecModuloProof::Verify(const PailDecModuloSetUp &setup, const PailDecMo
     if(A_.Gcd(N0) != BN::ONE) return false;
     if(w_.Gcd(N0) != BN::ONE) return false;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N_tilde || s || t || N0 || q || C || x || S || T || A || gamma_)
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     q.ToBytesBE(str);
@@ -134,13 +151,10 @@ bool PailDecModuloProof::Verify(const PailDecModuloSetUp &setup, const PailDecMo
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     gamma_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     bool ok = true;
     BN left_num;
@@ -152,7 +166,7 @@ bool PailDecModuloProof::Verify(const PailDecModuloSetUp &setup, const PailDecMo
     ok = left_num == right_num;
     if(!ok) return false;
 
-    // z1 = r + e * x    mod q
+    // z1 = gamma + e * x    mod q
     left_num = z1_ % q;
     right_num = ( gamma_ + e * x ) % q;
     ok = left_num == right_num;

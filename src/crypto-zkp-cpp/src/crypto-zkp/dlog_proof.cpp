@@ -1,6 +1,6 @@
 #include "dlog_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -35,10 +35,13 @@ void DLogProof::InternalProveWithR(const BN &sk, const CurvePoint &g, const BN &
     g_r_ = g * r;
     pk_ = g * sk;
 
-    // c = H(G || g^r || g^sk || UserID || OtherInfo)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || G || g^r || g^sk || UserID || OtherInfo)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     g.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     g.y().ToBytes32BE(str);
@@ -51,9 +54,6 @@ void DLogProof::InternalProveWithR(const BN &sk, const CurvePoint &g, const BN &
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     pk_.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN c = BN::FromBytesBE(sha256_digest, 32);
     c = c % order;
@@ -67,10 +67,13 @@ bool DLogProof::InternalVerify(const CurvePoint &g) const {
     const curve::Curve *curv = curve::GetCurveParam(g.GetCurveType());
     if(curv == nullptr) return false;
 
-    // c = H(G || g^r || g^sk || UserID || OtherInfo)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || G || g^r || g^sk || UserID || OtherInfo)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     g.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     g.y().ToBytes32BE(str);

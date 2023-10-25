@@ -69,6 +69,7 @@ TEST(Bip32, PrivateCKDTestCase_Secp256k1) {
     }
 }
 
+
 const static std::vector<std::vector<std::string>> test_vector {
         {
             "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
@@ -151,6 +152,41 @@ TEST(Bip32, PrivCKD) {
         }
     }
 }
+
+void test_PrivCKD_with_false_ret(const std::string &root_xprv, const std::string &path, const std::string &child_xprv, const std::string &child_xpub) {
+    HDKey hd_root;
+    hd_root.FromExtendedPrivateKey(root_xprv, CurveType::SECP256K1);
+    HDKey child_key;
+    bool ok = hd_root.PrivateCKDPath(child_key, path);
+    EXPECT_TRUE(ok);
+    //HDKey child_key = hd_root.PrivateCKDPath(path);
+    std::string child_xprv_gen;
+    std::string child_xpub_gen;
+    child_key.ToExtendedPrivateKey(child_xprv_gen);
+    child_key.ToExtendedPublicKey(child_xpub_gen);
+    EXPECT_TRUE(child_xpub == child_xpub_gen);
+    EXPECT_TRUE(child_xprv == child_xprv_gen);
+}
+
+TEST(Bip32, PrivCKD_with_false_ret) {
+    for(size_t i = 0; i < test_vector.size(); ++i) {
+        const std::string root_xprv = test_vector[i][0];
+        size_t j = 1;
+        std::string path;
+        std::string child_xprv;
+        std::string child_xpub;
+        while (j < test_vector[i].size()) {
+            path = test_vector[i][j];
+            j++;
+            child_xprv = test_vector[i][j];
+            j++;
+            child_xpub = test_vector[i][j];
+            j++;
+            test_PrivCKD_with_false_ret(root_xprv, path, child_xprv, child_xpub);
+        }
+    }
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

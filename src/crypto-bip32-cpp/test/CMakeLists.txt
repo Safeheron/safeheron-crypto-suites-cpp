@@ -57,6 +57,9 @@ add_test(NAME bip32-ed25519-WithJs-test COMMAND bip32-ed25519-WithJs-test)
 add_executable(generate-data-test generate-data-test.cpp)
 add_test(NAME generate-data-test COMMAND generate-data-test)
 
+#add_executable(bip32-verification-test bip32-verification-test.cpp)
+#add_test(NAME bip32-verification-test COMMAND bip32-verification-test)
+
 add_executable(bip32-boundary-test bip32-boundary-test.cpp)
 add_test(NAME bip32-boundary-test COMMAND bip32-boundary-test)
 

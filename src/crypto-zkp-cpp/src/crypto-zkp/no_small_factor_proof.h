@@ -20,6 +20,8 @@ namespace no_small_factor_proof{
  * Prove relation:
  *      - N0 = pq
  *      - p, q > 2^l
+ *
+ * - Appendix C.5 (Figure 28) in [MPC-CMP](https://eprint.iacr.org/2021/060.pdf)
  */
 
 struct NoSmallFactorSetUp{

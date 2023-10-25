@@ -1,6 +1,6 @@
 #include "heg_proof_v3.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -44,13 +44,24 @@ void HEGProof_V3::ProveWithR(const HEGStatement_V3 &statement, const HEGWitness_
     CurvePoint Alpha = R * a;
     CurvePoint Beta =  G * a + H * b;
 
-    // c = H(T || S || R || Alpha || Beta)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || T || G || H || S || R || ord || Alpha || Beta)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     T.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     T.y().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    G.x().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    G.y().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    H.x().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    H.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     S.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -60,6 +71,8 @@ void HEGProof_V3::ProveWithR(const HEGStatement_V3 &statement, const HEGWitness_
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     R.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    ord.ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha.y().ToBytes32BE(str);
@@ -68,9 +81,6 @@ void HEGProof_V3::ProveWithR(const HEGStatement_V3 &statement, const HEGWitness_
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Beta.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, 32);
@@ -96,13 +106,24 @@ bool HEGProof_V3::Verify(const HEGStatement_V3 &statement) const {
     const curve::CurvePoint &R = statement.R_;
     const safeheron::bignum::BN &ord = statement.ord_;
 
-    // c = H(T || S || R || Alpha || Beta)
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // c = H( Salt || T || G || H || S || R || ord || Alpha || Beta)
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
     T.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     T.y().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    G.x().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    G.y().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    H.x().ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    H.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     S.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
@@ -112,6 +133,8 @@ bool HEGProof_V3::Verify(const HEGStatement_V3 &statement) const {
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     R.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    ord.ToBytes32BE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha_.x().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Alpha_.y().ToBytes32BE(str);
@@ -120,9 +143,6 @@ bool HEGProof_V3::Verify(const HEGStatement_V3 &statement) const {
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     Beta_.y().ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
 
     BN c = BN::FromBytesBE(sha256_digest, 32);

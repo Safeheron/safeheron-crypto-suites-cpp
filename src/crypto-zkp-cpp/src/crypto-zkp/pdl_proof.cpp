@@ -1,6 +1,6 @@
 #include "pdl_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-paillier/pail.h"
 #include "crypto-commitment/commitment.h"
@@ -11,7 +11,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using safeheron::pail::PailPubKey;
 using safeheron::pail::PailPrivKey;
 using google::protobuf::util::Status;

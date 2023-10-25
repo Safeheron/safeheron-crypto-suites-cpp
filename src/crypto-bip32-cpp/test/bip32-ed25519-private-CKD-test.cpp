@@ -74,6 +74,32 @@ TEST(Bip32, PrivateCKDTestCase_Ed25519) {
     }
 }
 
+void testprivateCKD_Ed25519_with_false_ret(const string &xprv, const string &path, const string &child_xprv) {
+    bool ok;
+    HDKey root_hd_key;
+    ok = root_hd_key.FromExtendedPrivateKey(xprv, CurveType::ED25519);
+    ASSERT_TRUE(ok);
+    std::cout << "path: " << path << std::endl;
+    HDKey child_hd_key;
+    ok = root_hd_key.PrivateCKDPath(child_hd_key, path.c_str());
+    ASSERT_TRUE(ok);
+    string t_child_xprv;
+    child_hd_key.ToExtendedPrivateKey(t_child_xprv);
+    //std::cout << "child_xprv: " << child_xprv << std::endl;
+    ASSERT_EQ(t_child_xprv, child_xprv);
+}
+
+TEST(Bip32, PrivateCKDTestCase_Ed25519_with_false_ret) {
+    for (size_t i = 0; i < case_data_root_xprv_Ed25519.size(); i++) {
+        for (size_t j = 0; j < case_data_private_ckd_child_key_Ed25519[i].size(); j++) {
+            const string &xprv = case_data_root_xprv_Ed25519[i];
+            const string &path = case_data_private_ckd_child_key_Ed25519[i][j][0];
+            const string &child_xprv = case_data_private_ckd_child_key_Ed25519[i][j][1];
+            testprivateCKD_Ed25519_with_false_ret(xprv, path, child_xprv);
+        }
+    }
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

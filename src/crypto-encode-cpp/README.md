@@ -4,59 +4,7 @@
 
 Encoding library in C++ for hex, base58 and base64.
 
-# Prerequisites
 
-- [crypto-hash-cpp](https://github.com/safeheron/crypto-hash-cpp.git). See the [crypto-hash-cpp Installation Instructions](https://github.com/safeheron/crypto-hash-cpp/blob/main/README.md#build-and-install)
- 
-# Build and Install
-
-Linux and Mac are supported now.  After obtaining the Source, have a look at the installation script.
-
-```shell
-git clone https://github.com/safeheron/crypto-encode-cpp.git
-cd crypto-encode-cpp
-mkdir build && cd build
-# Turn on the switcher to enable tests; by default, turn off it if you don't wanna to build the test cases.
-cmake .. -DENABLE_TESTS=ON
-make
-make test # If you set ENABLE_TESTS ON
-sudo make install
-```
-
-More platforms such as Windows would be supported soon.
-
-
-# To start using crypto-encode-cpp
-
-## CMake
-
-CMake is your best option. It supports building on Linux, MacOS and Windows (soon) but also has a good chance of working on other platforms (no promises!). cmake has good support for crosscompiling and can be used for targeting the Android platform.
-
-To build crypto-bn-cpp from source, follow the BUILDING guide.
-
-The canonical way to discover dependencies in CMake is the find_package command.
-
-```shell
-project(XXXX)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_BUILD_TYPE "Release")
-
-find_package(CryptoEncode REQUIRED)
-
-add_executable(${PROJECT_NAME} XXXX.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CryptoEncode_INCLUDE_DIRS}
-        /usr/local/include  # This directory is included default on linux but not on Mac os
-        )
-
-# This directory is included default on linux but not on Mac os
-target_link_directories(example PUBLIC /usr/local/lib)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE
-        CryptoHash
-        )
-```
 
 ## Example
 

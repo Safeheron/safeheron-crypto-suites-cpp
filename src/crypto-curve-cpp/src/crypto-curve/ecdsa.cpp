@@ -19,8 +19,8 @@ namespace curve {
 namespace ecdsa {
 
 bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t j) {
-    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
+    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
 
     if(j > 3) return false;
@@ -57,8 +57,8 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type,
 }
 
 bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t v){
-    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
+    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
     safeheron::curve::CurvePoint pub;
     bool ok = RecoverPublicKey(pub, c_type, h, r, s, v);
@@ -70,8 +70,8 @@ bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
                      const uint8_t *sig64, uint32_t sig_len,
                      const uint8_t *digest32, uint32_t digest32_len,
                      uint32_t v) {
-    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
+    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
     BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
@@ -80,8 +80,8 @@ bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
 }
 
 void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8_t *sig64){
-    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
+    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
     //truncate digest32 to 32 bytes
     uint8_t digest_cut[32];
@@ -106,8 +106,8 @@ void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8
 bool Verify(const CurveType c_type, const CurvePoint &pub,
             const uint8_t *digest32, const uint8_t *sig64)
 {
-    if ( (c_type != CurveType::SECP256K1) && (c_type != CurveType::P256) ){
-        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 )");
+    if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
+        throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
     if(c_type != pub.GetCurveType()) return false;
     const Curve *curv = safeheron::curve::GetCurveParam(c_type);

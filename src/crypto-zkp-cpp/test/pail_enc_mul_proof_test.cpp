@@ -59,6 +59,7 @@ TEST(ZKP, Pail_ENC_pail_enc_mul_proof_3)
 
     CTimer timer("time_cost_of_proof");
     safeheron::zkp::pail::PailEncMulProof proof;
+    proof.SetSalt("Salt");
     proof.Prove(statement, witness);
     ASSERT_TRUE(proof.Verify(statement));
     timer.End();
@@ -67,6 +68,7 @@ TEST(ZKP, Pail_ENC_pail_enc_mul_proof_3)
     proof.ToBase64(base64);
     safeheron::zkp::pail::PailEncMulProof proof2;
     ASSERT_TRUE(proof2.FromBase64(base64));
+    proof2.SetSalt("Salt");
     ASSERT_TRUE(proof2.Verify(statement));
 }
 

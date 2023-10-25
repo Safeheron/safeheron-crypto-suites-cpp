@@ -42,61 +42,7 @@ Now we must invoke the generator like this:
 **If usage don't update then you will get a small number with 32-bits length, and then it could easily be guessed out by the adversary.**
 
 
-# Prerequisites
 
-- [OpenSSL](https://github.com/openssl/openssl#documentation). See the [OpenSSL Installation Instructions](./OpenSSL-Installation.md)
-- [GoogleTest](https://github.com/google/googletest). **You need it to compile and run test cases**. See the [GoogleTest Installation Instructions](./GoogleTest-Installation.md)
-
-# Build and Install
-
-Linux and Mac are supported now.  After obtaining the Source, have a look at the installation script. 
-
-```shell
-git clone https://gitlab.com/safeheron/algogroup/crypto-bn-cpp.git
-cd crypto-bn-cpp
-mkdir build && cd build
-# Run "cmake .. -DOPENSSL_ROOT_DIR=Your-Root-Directory-of-OPENSSL" instead of the command below on Mac OS.
-# Turn on the switcher to enable tests; by default, turn off it if you don't wanna to build the test cases.
-cmake .. -DENABLE_TESTS=ON
-make
-make test
-sudo make install
-```
-
-More platforms such as Windows would be supported soon.
-
-
-# To start using crypto-bn-cpp
-
-## CMake
-
-CMake is your best option. It supports building on Linux, MacOS and Windows (soon) but also has a good chance of working on other platforms (no promises!). cmake has good support for crosscompiling and can be used for targeting the Android platform.
-
-To build crypto-bn-cpp from source, follow the BUILDING guide.
-
-The canonical way to discover dependencies in CMake is the find_package command.
-
-```shell
-project(XXXX)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_BUILD_TYPE "Release")
-
-find_package(OpenSSL REQUIRED)
-find_package(CryptoBN REQUIRED)
-
-add_executable(${PROJECT_NAME} XXXX.cpp)
-target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CryptoBN_INCLUDE_DIRS}
-)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    CryptoBN
-    OpenSSL::Crypto
-    pthread 
-    -ldl
-)
-```
 
 ## Using class BN 
 

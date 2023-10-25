@@ -1,6 +1,6 @@
 #include "dlog_equality_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha256.h"
+#include "crypto-hash/safe_hash256.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA256;
+using safeheron::hash::CSafeHash256;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -38,9 +38,19 @@ void DlogEqualityProof::Prove(const DlogEqualityStatement &statement, const BN &
     // B = h^alpha
     B_ = h * alpha;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // H( Salt ||  q || g || h || X || Y || A || B )
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    q.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    g.x().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    g.y().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h.y().ToBytesBE(str);
@@ -61,9 +71,6 @@ void DlogEqualityProof::Prove(const DlogEqualityStatement &statement, const BN &
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     B_.y().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;
@@ -79,9 +86,19 @@ bool DlogEqualityProof::Verify(const DlogEqualityStatement &statement) const {
     const safeheron::curve::CurvePoint &Y = statement.Y_;
     const safeheron::bignum::BN &q = statement.q_;
 
-    CSHA256 sha256;
-    uint8_t sha256_digest[CSHA256::OUTPUT_SIZE];
+    // H( Salt ||  q || g || h || X || Y || A || B )
+    CSafeHash256 sha256;
+    uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(salt_.length() > 0) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    q.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    g.x().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
+    g.y().ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h.x().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     h.y().ToBytesBE(str);
@@ -102,9 +119,6 @@ bool DlogEqualityProof::Verify(const DlogEqualityStatement &statement) const {
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     B_.y().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
     e = e % q;

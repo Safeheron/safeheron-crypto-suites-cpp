@@ -1,15 +1,16 @@
 #include "pail_enc_range_proof_v2.h"
 #include <google/protobuf/util/json_util.h>
-#include "crypto-hash/sha512.h"
+#include "crypto-hash/safe_hash512.h"
 #include "crypto-bn/rand.h"
 #include "crypto-encode/base64.h"
 #include "exception/located_exception.h"
+#include "../common.h"
 
 using std::string;
 using std::vector;
 using safeheron::bignum::BN;
 using safeheron::curve::CurvePoint;
-using safeheron::hash::CSHA512;
+using safeheron::hash::CSafeHash512;
 using google::protobuf::util::Status;
 using google::protobuf::util::MessageToJsonString;
 using google::protobuf::util::JsonStringToMessage;
@@ -58,26 +59,40 @@ void PailEncRangeProof_V2::Prove(const PailEncRangeSetUp_V2 &setup, const PailEn
     // C = s^alpha * t^gamma mod N_tilde
     C_ = ( s.PowM(alpha, N_tilde) * t.PowM(gamma, N_tilde) ) % N_tilde;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N_tilde || s || t || N0 || K || q || l || varepsilon || S || A || C)
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t byte4[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     K.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(byte4, l);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, varepsilon);
+    sha512.Write(byte4, 4);
     S_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     C_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     z1_ = e * k + alpha;
     z2_ = ( r * rho.PowM(e, N0) ) % N0;
@@ -109,26 +124,40 @@ bool PailEncRangeProof_V2::Verify(const PailEncRangeSetUp_V2 &setup, const PailE
 
     if(z1_ > limit_alpha || z1_ < BN::ZERO - limit_alpha) return false;
 
-    CSHA512 sha512;
-    uint8_t sha512_digest[CSHA512::OUTPUT_SIZE];
+    // H( Salt || N_tilde || s || t || N0 || K || q || l || varepsilon || S || A || C)
+    CSafeHash512 sha512;
+    uint8_t sha512_digest[CSafeHash512::OUTPUT_SIZE];
     string str;
+    uint8_t byte4[4];
+    if(salt_.length() > 0) {
+        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    N_tilde.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    s.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    t.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
     N0.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     K.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    q.ToBytesBE(str);
+    sha512.Write((const uint8_t *)(str.c_str()), str.length());
+    uint_to_byte4(byte4, l);
+    sha512.Write(byte4, 4);
+    uint_to_byte4(byte4, varepsilon);
+    sha512.Write(byte4, 4);
     S_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     C_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    if(salt_.length() > 0) {
-        sha512.Write((const uint8_t *)(salt_.c_str()), salt_.length());
-    }
     sha512.Finalize(sha512_digest);
     BN e = BN::FromBytesBE(sha512_digest, sizeof(sha512_digest) - 1);
     e = e % q;
-    if(sha512_digest[CSHA512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
+    if(sha512_digest[CSafeHash512::OUTPUT_SIZE - 1] & 0x01) e = e.Neg();
 
     bool ok = true;
     CurvePoint left_point;
