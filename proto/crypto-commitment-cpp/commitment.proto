@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package safeheron.proto;
+import "curve_point.proto";
+
+message KGD{
+    safeheron.proto.CurvePoint y = 1;
+    string blindFactor = 2;
+}
+
+message KGD_Num{
+    string num = 1;
+    string blindFactor = 2;
+}

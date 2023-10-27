@@ -1,0 +1,15 @@
+1. protobufjs: 
+pbjs -t static-module -o MPC.js mpc_context.proto
+pbts -o MPC.d.ts MPC.js
+
+// important
+pbjs --keep-case -t static-module -o message.js ecdsa_covaultgen.proto
+pbjs --keep-case -t static-module -o message.js ecdsa_cosignkeygen.proto
+pbjs --keep-case -t static-module -o message.js ecdsa_cosign.proto
+
+2. protobuf(google, c++)
+
+protoc --cpp_out=. basic_type.proto
+protoc --cpp_out=. ecdsa_cosign.proto
+protoc --cpp_out=. ecdsa_covaultgen.proto
+protoc --cpp_out=. ecdsa_cosignkeygen.proto

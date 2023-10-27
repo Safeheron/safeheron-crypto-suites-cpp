@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package safeheron.proto;
+
+message PailPub{
+    string n = 1;
+    string g = 2;
+}
+
+message PailPriv{
+    string n = 1;
+    string lambda = 2;
+    string mu = 3;
+    string p = 4;
+    string q = 5;
+    string pSqr = 6;
+    string qSqr = 7;
+    string pMinus1 = 8;
+    string qMinus1 = 9;
+    string hp = 10;
+    string hq = 11;
+    string qInvP = 12;
+    string pInvQ = 13;
+}
+

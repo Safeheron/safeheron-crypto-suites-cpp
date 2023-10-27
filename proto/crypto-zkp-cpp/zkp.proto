@@ -1,0 +1,254 @@
+syntax = "proto3";
+
+package safeheron.proto;
+import "curve_point.proto";
+
+message DLogProof{
+    CurvePoint pk = 1;
+    CurvePoint g_r = 2;
+    string res = 3;
+}
+
+message DLogProof_V2{
+    CurvePoint A = 2;
+    string z = 3;
+}
+
+message HegProof{
+    CurvePoint T = 1;
+    CurvePoint A3 = 2;
+    string z1 = 3;
+    string z2 = 4;
+}
+
+message HEGProof_V2{
+    CurvePoint Alpha = 1;
+    CurvePoint Beta = 2;
+    string t = 3;
+    string u = 4;
+}
+
+message LinearCombinationProof{
+    CurvePoint Alpha = 1;
+    string t = 3;
+    string u = 4;
+}
+
+message HEGProof_V3{
+    CurvePoint Alpha = 1;
+    CurvePoint Beta = 2;
+    string t = 3;
+    string u = 4;
+}
+
+message PailProof{
+    repeated string y_N_arr = 1;
+}
+
+message PailNProof{
+    repeated string y_N_arr = 1;
+}
+
+message AliceRangeProof{
+    string z = 1;
+    string u = 2;
+    string w = 3;
+    string s = 4;
+    string s1 = 5;
+    string s2 = 6;
+}
+
+message RingPedersenParamPub {
+    string N_tilde = 1;
+    string h1 = 2;
+    string h2 = 3;
+}
+
+message RingPedersenParamPriv {
+    string N_tilde = 1;
+    string p = 2;
+    string q = 3;
+    string h1 = 4;
+    string h2 = 5;
+    string alpha = 6;
+    string beta = 7;
+}
+
+message DLNProof{
+    repeated string alpha_arr = 1;
+    repeated string t_arr = 2;
+}
+
+message TwoDLNProof{
+    DLNProof dln_proof_1 = 1;
+    DLNProof dln_proof_2 = 2;
+}
+
+message PedersenProof{
+    CurvePoint Alpha = 3;
+    string t = 4;
+    string u = 5;
+}
+
+message PailEncRangeProof_V3{
+    message Z {
+        int32 j = 1; // j = 1, 2
+        string masked_x = 2;
+        string masked_r = 3;
+
+        string w1 = 4;
+        string w2 = 5;
+        string r1 = 6;
+        string r2 = 7;
+    }
+    repeated string c1_arr = 1;
+    repeated string c2_arr = 2;
+    repeated Z z_arr = 3;
+}
+
+message PailEncRangeProof_V1{
+    string z = 1;
+    string u = 2;
+    string w = 3;
+    string s = 4;
+    string s1 = 5;
+    string s2 = 6;
+}
+
+message PailEncRangeProof_V2{
+    string S = 1;
+    string A = 2;
+    string C = 3;
+    string z1 = 4;
+    string z2 = 5;
+    string z3 = 6;
+}
+
+message PailEncGroupEleRangeProof{
+    string S = 1;
+    string A = 2;
+    CurvePoint Y = 3;
+    string D = 4;
+    string z1 = 5;
+    string z2 = 6;
+    string z3 = 7;
+}
+
+message PailAffRangeProof{
+    string z = 2;
+    string z_prime = 3;
+    string t = 4;
+    string v = 5;
+    string w = 6;
+    string s = 7;
+    string s1 = 8;
+    string s2 = 9;
+    string t1 = 10;
+    string t2 = 11;
+}
+
+message PailAffGroupEleRangeProof_V1{
+    CurvePoint u = 1;
+    string z = 2;
+    string z_prime = 3;
+    string t = 4;
+    string v = 5;
+    string w = 6;
+    string s = 7;
+    string s1 = 8;
+    string s2 = 9;
+    string t1 = 10;
+    string t2 = 11;
+}
+
+message PailAffGroupEleRangeProof_V2{
+    string S = 1;
+    string T = 2;
+    string A = 3;
+    CurvePoint Bx = 4;
+    string By = 5;
+    string E = 6;
+    string F = 7;
+    string z1 = 8;
+    string z2 = 9;
+    string z3 = 10;
+    string z4 = 11;
+    string w = 12;
+    string wy = 13;
+}
+
+message DlogEqualityProof{
+    CurvePoint A = 1;
+    CurvePoint B = 2;
+    string z = 3;
+}
+
+message DlogElGamalComProof{
+    CurvePoint A = 1;
+    CurvePoint N = 2;
+    CurvePoint B = 3;
+    string z = 4;
+    string u = 5;
+}
+
+message PailEncElGamalComRangeProof{
+    string S = 1;
+    string D = 2;
+    CurvePoint Y = 3;
+    CurvePoint Z = 4;
+    string T = 5;
+    string z1 = 6;
+    string w = 7;
+    string z2 = 8;
+    string z3 = 9;
+}
+
+message NoSmallFactorProof{
+    string P = 1;
+    string Q = 2;
+    string A = 3;
+    string B = 4;
+    string T = 5;
+    string sigma = 6;
+    string z1 = 7;
+    string z2 = 8;
+    string w1 = 9;
+    string w2 = 10;
+    string v = 11;
+}
+
+message PailBlumModulusProof{
+    repeated string x_arr = 1;
+    repeated int32 a_arr = 2;
+    repeated int32 b_arr = 3;
+    repeated string z_arr = 4;
+    string w = 5;
+}
+
+message PailDecModuloProof{
+    string S = 1;
+    string T = 2;
+    string A = 3;
+    string gamma = 4;
+    string z1 = 5;
+    string z2 = 6;
+    string w = 7;
+}
+
+message PailEncMulProof{
+    string A = 1;
+    string B = 2;
+    string z = 3;
+    string u = 4;
+    string v = 5;
+}
+
+message PailMulGroupEleRangeProof{
+    string A = 1;
+    CurvePoint B = 2;
+    string E = 3;
+    string S = 4;
+    string z1 = 5;
+    string z2 = 6;
+    string w = 7;
+}
