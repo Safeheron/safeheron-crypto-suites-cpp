@@ -37,10 +37,10 @@ endif()
 
 
 add_executable(auth-enc-test auth-enc-test.cpp)
-add_test(NAME auth-enc-test COMMAND auth-enc-test)
+add_test(NAME ecies.auth-enc-test COMMAND auth-enc-test)
 
 add_executable(ecies-test ecies-test.cpp)
-add_test(NAME ecies-test COMMAND ecies-test)
+add_test(NAME ecies.ecies-test COMMAND ecies-test)
 
 add_executable(curve-param-test curve-param-test.cpp)
-add_test(NAME curve-param-test COMMAND curve-param-test)
+add_test(NAME ecies.curve-param-test COMMAND curve-param-test)

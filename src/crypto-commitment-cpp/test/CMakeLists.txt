@@ -19,6 +19,6 @@ else()
 endif()
 
 add_executable(commitment-test commitment-test.cpp)
-add_test(NAME commitment-test COMMAND commitment-test)
+add_test(NAME commitment.commitment-test COMMAND commitment-test)
 
 

@@ -66,9 +66,12 @@ TEST(curve, sign_and_verify)
     printf("/*******************P256 Sign/Verify*********************/\n");
     printf("\n\n");
     printf("/*******************STARK Sign/Verify*********************/\n");
+
+#if ENABLE_STARK
     test_curve_sign(CurveType::STARK,  1000);
     printf("/*******************STARK Sign/Verify*********************/\n");
     printf("\n\n");
+#endif // ENABLE_STARK
 }
 
 int main(int argc, char **argv) {

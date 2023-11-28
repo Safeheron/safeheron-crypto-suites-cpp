@@ -19,6 +19,6 @@ else()
 endif()
 
 add_executable(paillier-test paillier-test.cpp CTimer.cpp)
-add_test(NAME slow-paillier-test COMMAND paillier-test)
+add_test(NAME paillier.slow-paillier-test COMMAND paillier-test)
 
 

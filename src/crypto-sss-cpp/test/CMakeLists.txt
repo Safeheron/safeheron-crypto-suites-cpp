@@ -20,6 +20,6 @@ endif()
 
 
 add_executable(sss-test sss-test.cpp)
-add_test(NAME sss-test COMMAND sss-test)
+add_test(NAME sss.sss-test COMMAND sss-test)
 
 
