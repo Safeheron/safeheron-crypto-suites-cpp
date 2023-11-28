@@ -206,10 +206,11 @@ std::string CurvePoint::Inspect() const {
     if (curve_type_ == CurveType::P256) {
         c_name = "\ncurve p256";
     }
+#if ENABLE_STARK
     if (curve_type_ == CurveType::STARK) {
         c_name = "\ncurve stark";
     }
-
+#endif //ENABLE_STARK
     if (curve_type_ == CurveType::ED25519) {
         c_name = "\ncurve ed25519";
     }
@@ -765,9 +766,11 @@ bool CurvePoint::ToProtoObject(safeheron::proto::CurvePoint &point) const {
         case CurveType::P256:
             point.set_curve("p256");
             break;
+#if ENABLE_STARK
         case CurveType::STARK:
             point.set_curve("stark");
             break;
+#endif //ENABLE_STARK
         case CurveType::ED25519:
             point.set_curve("ed25519");
             break;
@@ -786,8 +789,10 @@ bool CurvePoint::FromProtoObject(const safeheron::proto::CurvePoint &point) {
         c_type = CurveType::SECP256K1;
     }else if(strncasecmp(point.curve().c_str(), "p256", point.curve().length()) == 0){
         c_type = CurveType::P256;
+#if ENABLE_STARK
     }else if(strncasecmp(point.curve().c_str(), "stark", point.curve().length()) == 0){
         c_type = CurveType::STARK;
+#endif //ENABLE_STARK
     }else if(strncasecmp(point.curve().c_str(), "ed25519", point.curve().length()) == 0) {
         c_type = CurveType::ED25519;
     }

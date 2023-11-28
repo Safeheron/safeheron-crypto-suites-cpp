@@ -55,6 +55,11 @@ add_subdirectory(src/crypto-bip32-cpp/src)
 add_subdirectory(src/crypto-ecies-cpp/src)
 add_subdirectory(src/crypto-bip39-cpp/src)
 
+option(ENABLE_STARK "Enable stark curve" OFF)
+if (${ENABLE_STARK})
+        add_definitions(-DENABLE_STARK)
+endif()
+
 option(ENABLE_TESTS "Enable tests" OFF)
 if (${ENABLE_TESTS})
     enable_testing()
