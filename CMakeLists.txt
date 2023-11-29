@@ -31,6 +31,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         -ldl
         )
 
+option(ENABLE_SNAP_SCOPE "Enable Snap Scope" OFF)
+if (${ENABLE_SNAP_SCOPE})
+    message(STATUS "Notice: ******************* Enable Snap Scope ******************* ")
+endif()
+
 add_subdirectory(src)
 
 option(ENABLE_STARK "Enable stark curve" OFF)
@@ -47,10 +52,12 @@ if (${ENABLE_TESTS})
     )
     link_directories(/usr/local/lib)
 
-    add_subdirectory(test/crypto-bip32)
+    if (NOT ${ENABLE_SNAP_SCOPE})
+        add_subdirectory(test/crypto-bip32)
+        add_subdirectory(test/crypto-commitment)
+    endif()
     add_subdirectory(test/crypto-bip39)
     add_subdirectory(test/crypto-bn)
-    add_subdirectory(test/crypto-commitment)
     add_subdirectory(test/crypto-curve)
     add_subdirectory(test/crypto-ecies)
     add_subdirectory(test/crypto-encode)

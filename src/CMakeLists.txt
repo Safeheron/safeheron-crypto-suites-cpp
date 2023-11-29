@@ -135,11 +135,16 @@ file(GLOB SOURCE_crypto-zkp
         crypto-suites/crypto-zkp/two_dln_proof.cpp
         )
 
+if (NOT ${ENABLE_SNAP_SCOPE})
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+            ${SOURCE_crypto-bip32}
+            ${SOURCE_crypto-commitment}
+            )
+endif()
+
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-        ${SOURCE_crypto-bip32}
         ${SOURCE_crypto-bip39}
         ${SOURCE_crypto-bn}
-        ${SOURCE_crypto-commitment}
         ${SOURCE_crypto-curve}
         ${SOURCE_crypto-ecies}
         ${SOURCE_crypto-encode}
