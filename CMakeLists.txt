@@ -18,17 +18,7 @@ find_package(OpenSSL REQUIRED)
 add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-        src/crypto-bn-cpp/src
-        src/crypto-hash-cpp/src
-        src/crypto-encode-cpp/src
-        src/crypto-curve-cpp/src
-        src/crypto-commitment-cpp/src
-        src/crypto-paillier-cpp/src
-        src/crypto-sss-cpp/src
-        src/crypto-zkp-cpp/src
-        src/crypto-bip32-cpp/src
-        src/crypto-ecies-cpp/src
-        src/crypto-bip39-cpp/src
+        src
         ${PROTOBUF_INCLUDE_DIRS}
         ${OPENSSL_INCLUDE_DIR}
         /usr/local/include
@@ -41,19 +31,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         -ldl
         )
 
-set(ENABLE_ASSEMBLE ON)
-add_definitions(-DENABLE_ASSEMBLE)
-add_subdirectory(src/crypto-bn-cpp/src)
-add_subdirectory(src/crypto-hash-cpp/src)
-add_subdirectory(src/crypto-encode-cpp/src)
-add_subdirectory(src/crypto-curve-cpp/src)
-add_subdirectory(src/crypto-commitment-cpp/src)
-add_subdirectory(src/crypto-paillier-cpp/src)
-add_subdirectory(src/crypto-sss-cpp/src)
-add_subdirectory(src/crypto-zkp-cpp/src)
-add_subdirectory(src/crypto-bip32-cpp/src)
-add_subdirectory(src/crypto-ecies-cpp/src)
-add_subdirectory(src/crypto-bip39-cpp/src)
+add_subdirectory(src)
 
 option(ENABLE_STARK "Enable stark curve" OFF)
 if (${ENABLE_STARK})
@@ -64,32 +42,22 @@ option(ENABLE_TESTS "Enable tests" OFF)
 if (${ENABLE_TESTS})
     enable_testing()
     include_directories(
-            src/crypto-bn-cpp/src
-            src/crypto-hash-cpp/src
-            src/crypto-encode-cpp/src
-            src/crypto-curve-cpp/src
-            src/crypto-commitment-cpp/src
-            src/crypto-paillier-cpp/src
-            src/crypto-sss-cpp/src
-            src/crypto-zkp-cpp/src
-            src/crypto-bip32-cpp/src
-            src/crypto-ecies-cpp/src
-            src/crypto-bip39-cpp/src
+            src/crypto-suites
             /usr/local/include
     )
     link_directories(/usr/local/lib)
 
-    add_subdirectory(src/crypto-bn-cpp/test)
-    add_subdirectory(src/crypto-hash-cpp/test)
-    add_subdirectory(src/crypto-encode-cpp/test)
-    add_subdirectory(src/crypto-curve-cpp/test)
-    add_subdirectory(src/crypto-commitment-cpp/test)
-    add_subdirectory(src/crypto-paillier-cpp/test)
-    add_subdirectory(src/crypto-sss-cpp/test)
-    add_subdirectory(src/crypto-zkp-cpp/test)
-    add_subdirectory(src/crypto-bip32-cpp/test)
-    add_subdirectory(src/crypto-ecies-cpp/test)
-    add_subdirectory(src/crypto-bip39-cpp/test)
+    add_subdirectory(test/crypto-bip32)
+    add_subdirectory(test/crypto-bip39)
+    add_subdirectory(test/crypto-bn)
+    add_subdirectory(test/crypto-commitment)
+    add_subdirectory(test/crypto-curve)
+    add_subdirectory(test/crypto-ecies)
+    add_subdirectory(test/crypto-encode)
+    add_subdirectory(test/crypto-hash)
+    add_subdirectory(test/crypto-paillier)
+    add_subdirectory(test/crypto-sss)
+    add_subdirectory(test/crypto-zkp)
 endif()
 
 include("cmake/setup_installation.cmake")

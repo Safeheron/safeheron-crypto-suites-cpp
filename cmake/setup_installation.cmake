@@ -41,17 +41,7 @@ install(
 ## Install head files
 install(
         DIRECTORY
-            src/crypto-bn-cpp/src/
-            src/crypto-hash-cpp/src/
-            src/crypto-encode-cpp/src/
-            src/crypto-curve-cpp/src/
-            src/crypto-commitment-cpp/src/
-            src/crypto-paillier-cpp/src/
-            src/crypto-sss-cpp/src/
-            src/crypto-zkp-cpp/src/
-            src/crypto-bip32-cpp/src/
-            src/crypto-ecies-cpp/src/
-            src/crypto-bip39-cpp/src/
+            src/crypto-suites
         DESTINATION include/safeheron
         FILES_MATCHING PATTERN "*.h"
 
@@ -84,16 +74,10 @@ install(
 ## Install proto files
 install(
         DIRECTORY
-        src/crypto-bn-cpp/proto/
-        src/crypto-hash-cpp/proto/
-        src/crypto-encode-cpp/proto/
-        src/crypto-curve-cpp/proto/
-        src/crypto-commitment-cpp/proto/
-        src/crypto-paillier-cpp/proto/
-        src/crypto-sss-cpp/proto/
-        src/crypto-zkp-cpp/proto/
-        src/crypto-bip32-cpp/proto/
-        src/crypto-ecies-cpp/proto/
-        DESTINATION include/safeheron/proto
+            proto/crypto-commitment/
+            proto/crypto-curve/
+            proto/crypto-paillier/
+            proto/crypto-zkp/
+        DESTINATION include/safeheron/crypto-suites/proto
         FILES_MATCHING PATTERN "*.proto"
 )
