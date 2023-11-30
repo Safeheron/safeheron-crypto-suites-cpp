@@ -1,9 +1,9 @@
-#include "rand.h"
-#include "../exception/safeheron_exceptions.h"
 #include <openssl/bn.h>
 #include <openssl/rand.h>
 #include <memory>
 #include <cassert>
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
 
 using safeheron::bignum::BN;
 using safeheron::exception::LocatedException;

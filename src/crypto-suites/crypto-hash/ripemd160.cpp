@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "ripemd160.h"
-#include "common.h"
 
 #include <string.h>
+#include "crypto-suites/crypto-hash/common.h"
+#include "crypto-suites/crypto-hash/ripemd160.h"
 
 namespace safeheron {
 namespace hash {

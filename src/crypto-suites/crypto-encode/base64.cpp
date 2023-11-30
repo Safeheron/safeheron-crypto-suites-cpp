@@ -7,8 +7,8 @@
  * https://www.safeheron.com/opensource/license.html
  */
 
-#include "base64.h"
-#include "base64_imp.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-encode/base64_imp.h"
 
 namespace safeheron {
 namespace encode {

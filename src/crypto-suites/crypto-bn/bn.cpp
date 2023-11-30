@@ -1,9 +1,9 @@
-#include "bn.h"
 #include <cassert>
 #include <cstring>
 #include <string>
 #include <openssl/bn.h>
-#include "../exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
 
 using safeheron::exception::LocatedException;
 using safeheron::exception::OpensslException;

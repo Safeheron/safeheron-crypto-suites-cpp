@@ -1,11 +1,11 @@
 #ifndef SAFEHERON_CRYPTO_PAILLIER_H
 #define SAFEHERON_CRYPTO_PAILLIER_H
 
-#include "../crypto-bn/bn.h"
-#include "proto_gen/paillier.pb.switch.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-paillier/proto_gen/paillier.pb.switch.h"
 
-#include "pail_pubkey.h"
-#include "pail_privkey.h"
+#include "crypto-suites/crypto-paillier/pail_pubkey.h"
+#include "crypto-suites/crypto-paillier/pail_privkey.h"
 
 
 namespace safeheron{

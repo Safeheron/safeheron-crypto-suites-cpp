@@ -2,8 +2,8 @@
 // Created by Sword03 on 2023/9/11.
 //
 
-#include "com512.h"
-#include "../crypto-bn/rand.h"
+#include "crypto-suites/crypto-commitment/com512.h"
+#include "crypto-suites/crypto-bn/rand.h"
 
 namespace safeheron {
 namespace commitment {

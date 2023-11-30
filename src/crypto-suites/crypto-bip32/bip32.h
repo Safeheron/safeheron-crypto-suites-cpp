@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "../crypto-curve/curve.h"
-#include "common.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-bip32/common.h"
 
 namespace safeheron {
 namespace bip32{

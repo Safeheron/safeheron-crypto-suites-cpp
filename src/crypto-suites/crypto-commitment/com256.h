@@ -1,9 +1,9 @@
 #ifndef SAFEHERONCRYPTOSUITES_COMMITMENT_COM256_H
 #define SAFEHERONCRYPTOSUITES_COMMITMENT_COM256_H
 
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve.h"
-#include "../crypto-hash/safe_hash256.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-hash/safe_hash256.h"
 
 namespace safeheron {
 namespace commitment {

@@ -1,10 +1,9 @@
 #ifndef SAFEHERON_CRYPTO_HMAC_SHA256_H
 #define SAFEHERON_CRYPTO_HMAC_SHA256_H
 
-#include "sha256.h"
-
 #include <stdint.h>
 #include <stdlib.h>
+#include "crypto-suites/crypto-hash/sha256.h"
 
 namespace safeheron{
 namespace hash{

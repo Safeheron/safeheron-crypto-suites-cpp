@@ -1,4 +1,4 @@
-#include "hd_path.h"
+#include "crypto-suites/crypto-bip32/hd_path.h"
 
 namespace safeheron {
 namespace bip32 {

@@ -1,9 +1,9 @@
-#include "eddsa.h"
-#include "../exception/safeheron_exceptions.h"
-#include "../crypto-bn/rand.h"
-#include "../crypto-hash/sha512.h"
-#include "../crypto-encode/hex.h"
-#include "ed25519_ex.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-hash/sha512.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-curve/eddsa.h"
+#include "crypto-suites/crypto-curve/ed25519_ex.h"
 
 using safeheron::exception::LocatedException;
 

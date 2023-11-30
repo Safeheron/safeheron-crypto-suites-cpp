@@ -1,7 +1,6 @@
-#include "common.h"
-#include "chacha20.h"
-
 #include <string.h>
+#include "crypto-suites/crypto-hash/common.h"
+#include "crypto-suites/crypto-hash/chacha20.h"
 
 namespace safeheron {
 namespace hash {

@@ -1,6 +1,6 @@
-#include "commitment.h"
-#include "../crypto-hash/safe_hash256.h"
-#include "../crypto-bn/rand.h"
+#include "crypto-suites/crypto-hash/safe_hash256.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-commitment/commitment.h"
 
 using safeheron::bignum::BN;
 using safeheron::hash::CSafeHash256;

@@ -1,7 +1,7 @@
 #ifndef CRYPTOHASH_SAFE_HASH_SHA_256_H
 #define CRYPTOHASH_SAFE_HASH_SHA_256_H
 
-#include "sha256.h"
+#include "crypto-suites/crypto-hash/sha256.h"
 
 namespace safeheron{
 namespace hash{

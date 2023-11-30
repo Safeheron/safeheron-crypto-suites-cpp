@@ -1,4 +1,4 @@
-#include "safe_hash256.h"
+#include "crypto-suites/crypto-hash/safe_hash256.h"
 
 namespace safeheron{
 namespace hash{

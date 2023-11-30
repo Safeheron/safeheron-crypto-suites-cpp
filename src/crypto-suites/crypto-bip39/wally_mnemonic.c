@@ -1,10 +1,9 @@
-#include "wally_mnemonic.h"
-
 #include <stdlib.h>
 #include <string.h>
 
-#include "internal.h"
-#include "wordlist.h"
+#include "crypto-suites/crypto-bip39/internal.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
+#include "crypto-suites/crypto-bip39/wally_mnemonic.h"
 
 #define U8_AT(bytes, pos) (bytes)[(pos) / 8u]
 #define U8_MASK(pos) (1u << (7u - (pos) % 8u))

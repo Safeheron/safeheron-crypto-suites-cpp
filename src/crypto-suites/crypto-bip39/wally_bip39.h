@@ -1,7 +1,7 @@
 #ifndef CRYPTO_BIP39_C_BIP39_H
 #define CRYPTO_BIP39_C_BIP39_H
 #include <stddef.h>
-#include "wordlist.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
 
 #ifdef __cplusplus
 extern "C" {

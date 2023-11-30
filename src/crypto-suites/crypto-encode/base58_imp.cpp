@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "base58.h"
 
 #include <assert.h>
 #include <string.h>
-#include "../crypto-hash/hash256.h"
+#include "crypto-suites/crypto-hash/hash256.h"
+#include "crypto-suites/crypto-encode/base58.h"
 
 using safeheron::hash::CHash256;
 

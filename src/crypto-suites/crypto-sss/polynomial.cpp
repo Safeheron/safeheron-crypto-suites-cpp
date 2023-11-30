@@ -1,5 +1,5 @@
-#include "polynomial.h"
-#include "../crypto-bn/rand.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-sss/polynomial.h"
 
 using std::vector;
 using safeheron::bignum::BN;

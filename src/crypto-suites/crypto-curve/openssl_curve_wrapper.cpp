@@ -1,7 +1,7 @@
-#include "openssl_curve_wrapper.h"
 #include <cassert>
 #include <openssl/ec.h>
 #include <cstring>
+#include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
 
 namespace safeheron{
 namespace _openssl_curve_wrapper {

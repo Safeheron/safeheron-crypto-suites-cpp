@@ -5,8 +5,8 @@
 #ifndef CRYPTOHASH_HASH160_H
 #define CRYPTOHASH_HASH160_H
 
-#include "sha256.h"
-#include "ripemd160.h"
+#include "crypto-suites/crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/ripemd160.h"
 
 namespace safeheron{
 namespace hash{

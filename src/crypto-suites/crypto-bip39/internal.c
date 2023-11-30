@@ -1,7 +1,7 @@
-#include "internal.h"
 #include <stdlib.h>
 #include <string.h>
-#include "memzero.h"
+#include "crypto-suites/crypto-bip39/memzero.h"
+#include "crypto-suites/crypto-bip39/internal.h"
 
 void wally_clear(void *p, size_t len) {
     crypto_bip39_memzero(p, len);

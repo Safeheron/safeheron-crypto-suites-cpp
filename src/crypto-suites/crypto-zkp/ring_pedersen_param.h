@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_CRYPTO_ZKP_DLN_RING_PEDERSEN_PARAM_PUB_H
 #define SAFEHERON_CRYPTO_ZKP_DLN_RING_PEDERSEN_PARAM_PUB_H
-#include "../crypto-bn/bn.h"
-#include "proto_gen/zkp.pb.switch.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-zkp/proto_gen/zkp.pb.switch.h"
 
 namespace safeheron{
 namespace zkp {

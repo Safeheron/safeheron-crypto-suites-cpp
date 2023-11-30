@@ -1,12 +1,12 @@
 #ifndef CPP_MPC_COMMITMENT_H
 #define CPP_MPC_COMMITMENT_H
 
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve.h"
-#include "kgd_number.h"
-#include "kgd_curve_point.h"
-#include "com256.h"
-#include "com512.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-commitment/kgd_number.h"
+#include "crypto-suites/crypto-commitment/kgd_curve_point.h"
+#include "crypto-suites/crypto-commitment/com256.h"
+#include "crypto-suites/crypto-commitment/com512.h"
 
 namespace safeheron{
 namespace commitment {

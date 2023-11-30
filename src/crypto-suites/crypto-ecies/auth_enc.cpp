@@ -1,10 +1,10 @@
-#include "auth_enc.h"
-#include "ecies.h"
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve.h"
-#include "../exception/safeheron_exceptions.h"
-#include "../crypto-hash/sha256.h"
-#include "../crypto-encode/hex.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-hash/sha256.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-ecies/auth_enc.h"
+#include "crypto-suites/crypto-ecies/ecies.h"
 
 using namespace safeheron::bignum;
 using namespace safeheron::curve;

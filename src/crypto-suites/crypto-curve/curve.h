@@ -1,10 +1,10 @@
 #ifndef SAFEHERON_CURVE_H
 #define SAFEHERON_CURVE_H
 
-#include "../crypto-bn/bn.h"
-#include "curve_point.h"
-#include "ecdsa.h"
-#include "eddsa.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve_point.h"
+#include "crypto-suites/crypto-curve/ecdsa.h"
+#include "crypto-suites/crypto-curve/eddsa.h"
 
 namespace safeheron{
 namespace curve {

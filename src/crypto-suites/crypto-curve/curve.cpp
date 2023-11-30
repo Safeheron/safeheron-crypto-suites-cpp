@@ -1,6 +1,6 @@
-#include "curve.h"
 #include <openssl/ec.h>
 #include <openssl/obj_mac.h>
+#include "crypto-suites/crypto-curve/curve.h"
 
 namespace safeheron{
 namespace curve{

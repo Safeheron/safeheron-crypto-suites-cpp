@@ -3,10 +3,10 @@
 //
 
 #include <cstring>
-#include "bip39.h"
-#include "wally_bip39.h"
-#include "wordlist.h"
-#include "internal.h"
+#include "crypto-suites/crypto-bip39/bip39.h"
+#include "crypto-suites/crypto-bip39/wally_bip39.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
+#include "crypto-suites/crypto-bip39/internal.h"
 
 /* Maximum length including up to 2 bytes for checksum */
 #define BIP39_ENTROPY_LEN_MAX (BIP39_ENTROPY_LEN_320 + sizeof(unsigned char) * 2)

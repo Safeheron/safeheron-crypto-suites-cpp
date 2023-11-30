@@ -7,7 +7,7 @@
 
 #include<string>
 #include<vector>
-#include "language.h"
+#include "crypto-suites/crypto-bip39/language.h"
 
 namespace safeheron {
 namespace bip39 {

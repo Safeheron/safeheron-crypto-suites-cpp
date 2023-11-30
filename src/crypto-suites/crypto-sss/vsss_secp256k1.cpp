@@ -1,4 +1,4 @@
-#include "vsss_secp256k1.h"
+#include "crypto-suites/crypto-sss/vsss_secp256k1.h"
 
 using std::vector;
 using safeheron::bignum::BN;

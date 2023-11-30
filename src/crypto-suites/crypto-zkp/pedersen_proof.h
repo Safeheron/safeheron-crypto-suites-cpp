@@ -3,9 +3,9 @@
 
 #include <string>
 #include <utility>
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve.h"
-#include "proto_gen/zkp.pb.switch.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-zkp/proto_gen/zkp.pb.switch.h"
 
 namespace safeheron{
 namespace zkp{

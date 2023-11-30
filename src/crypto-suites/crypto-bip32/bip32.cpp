@@ -1,11 +1,11 @@
-#include "bip32.h"
-#include "hd_path.h"
-#include "bip32_ed25519.h"
-#include "bip32_ecdsa.h"
-#include "common.h"
-#include "memzero.h"
+#include "crypto-suites/exception/located_exception.h"
+#include "crypto-suites/crypto-bip32/bip32.h"
+#include "crypto-suites/crypto-bip32/hd_path.h"
+#include "crypto-suites/crypto-bip32/bip32_ed25519.h"
+#include "crypto-suites/crypto-bip32/bip32_ecdsa.h"
+#include "crypto-suites/crypto-bip32/common.h"
+#include "crypto-suites/crypto-bip32/memzero.h"
 
-#include "../exception/located_exception.h"
 
 using safeheron::bignum::BN;
 using safeheron::curve::Curve;

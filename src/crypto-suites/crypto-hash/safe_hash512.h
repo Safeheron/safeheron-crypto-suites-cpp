@@ -1,7 +1,7 @@
 #ifndef CRYPTOHASH_SAFE_HASH_SHA_512_H
 #define CRYPTOHASH_SAFE_HASH_SHA_512_H
 
-#include "sha512.h"
+#include "crypto-suites/crypto-hash/sha512.h"
 
 namespace safeheron{
 namespace hash{

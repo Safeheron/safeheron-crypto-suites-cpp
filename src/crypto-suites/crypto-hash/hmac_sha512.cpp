@@ -1,6 +1,5 @@
-#include "hmac_sha512.h"
-
 #include <string.h>
+#include "crypto-suites/crypto-hash/hmac_sha512.h"
 
 namespace safeheron {
 namespace hash {

@@ -2,8 +2,8 @@
 #define SAFEHERON_CRYPTO_POLYNOMIAL_H
 
 #include <vector>
-#include "../crypto-curve/curve.h"
-#include "../crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-bn/bn.h"
 
 namespace safeheron{
 namespace sss{

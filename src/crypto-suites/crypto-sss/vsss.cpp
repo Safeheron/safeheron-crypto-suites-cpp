@@ -1,4 +1,4 @@
-#include "vsss.h"
+#include "crypto-suites/crypto-sss/vsss.h"
 
 using std::vector;
 using safeheron::bignum::BN;

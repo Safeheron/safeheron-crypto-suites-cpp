@@ -1,7 +1,7 @@
-#include "wordlist.h"
 #include <stdlib.h>
 #include <string.h>
-#include "internal.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
+#include "crypto-suites/crypto-bip39/internal.h"
 
 static int bstrcmp(const void *l, const void *r)
 {

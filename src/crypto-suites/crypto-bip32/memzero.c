@@ -1,4 +1,4 @@
-#include "memzero.h"
+#include "crypto-suites/crypto-bip32/memzero.h"
 #ifndef __STDC_WANT_LIB_EXT1__
 #define __STDC_WANT_LIB_EXT1__ 1  // C11's bounds-checking interface.
 #endif

@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_CRYPTO_VSSSSECP256K1_H
 #define SAFEHERON_CRYPTO_VSSSSECP256K1_H
 
-#include "vsss.h"
+#include "crypto-suites/crypto-sss/vsss.h"
 
 namespace safeheron {
 namespace sss {

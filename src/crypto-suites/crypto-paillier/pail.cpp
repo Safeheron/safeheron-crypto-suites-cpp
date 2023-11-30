@@ -1,6 +1,6 @@
-#include "pail.h"
 #include <cassert>
-#include "../crypto-bn/rand.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-paillier/pail.h"
 
 using safeheron::bignum::BN;
 

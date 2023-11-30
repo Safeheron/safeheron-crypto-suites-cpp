@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "sha256.h"
-#include "common.h"
 
 #include <assert.h>
 #include <string.h>
+#include "crypto-suites/crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/common.h"
 
 namespace safeheron {
 namespace hash {

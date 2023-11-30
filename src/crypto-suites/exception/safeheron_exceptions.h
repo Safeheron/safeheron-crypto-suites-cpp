@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_EXCEPTION_H
 #define SAFEHERON_EXCEPTION_H
 
-#include "located_exception.h"
+#include "crypto-suites/exception/located_exception.h"
 
 namespace safeheron{
 namespace exception{

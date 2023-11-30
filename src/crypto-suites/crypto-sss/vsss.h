@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_CRYPTO_VSSS_H
 #define SAFEHERON_CRYPTO_VSSS_H
 
-#include "polynomial.h"
+#include "crypto-suites/crypto-sss/polynomial.h"
 
 namespace safeheron{
 namespace sss {

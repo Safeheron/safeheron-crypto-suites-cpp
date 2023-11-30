@@ -6,8 +6,8 @@
 #ifndef SFEHERON_CURVE_EdDSA_H
 #define SFEHERON_CURVE_EdDSA_H
 
-#include "curve.h"
-#include "../crypto-bn/bn.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve.h"
 
 namespace safeheron{
 namespace curve {

@@ -31,10 +31,10 @@
 
 */
 
-#include "base64_imp.h"
 
 #include <algorithm>
 #include <stdexcept>
+#include "crypto-suites/crypto-encode/base64_imp.h"
 
 namespace safeheron {
 namespace encode {

@@ -1,9 +1,9 @@
 #ifndef SAFEHERON_CURVE_POINT_H
 #define SAFEHERON_CURVE_POINT_H
 
-#include "../crypto-bn/bn.h"
-#include "proto_gen/curve_point.pb.switch.h"
-#include "curve_type.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/proto_gen/curve_point.pb.switch.h"
+#include "crypto-suites/crypto-curve/curve_type.h"
 
 struct ec_group_st;
 struct ec_point_st;

@@ -1,6 +1,6 @@
-#include "ring_pedersen_param.h"
-#include "../crypto-encode/base64.h"
 #include <google/protobuf/util/json_util.h>
+#include "crypto-suites/crypto-zkp/ring_pedersen_param.h"
+#include "crypto-suites/crypto-encode/base64.h"
 
 using std::string;
 using safeheron::bignum::BN;

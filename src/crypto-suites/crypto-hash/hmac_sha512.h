@@ -1,10 +1,10 @@
 #ifndef SAFEHERON_CRYPTO_HMAC_SHA512_H
 #define SAFEHERON_CRYPTO_HMAC_SHA512_H
 
-#include "sha512.h"
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "crypto-suites/crypto-hash/sha512.h"
 
 namespace safeheron{
 namespace hash{

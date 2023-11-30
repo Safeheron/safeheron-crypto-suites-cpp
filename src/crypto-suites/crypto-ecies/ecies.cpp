@@ -1,10 +1,10 @@
-#include "ecies.h"
-#include "kdf.h"
-#include "symm.h"
-#include "hmac.h"
 #include <assert.h>
-#include "../crypto-bn/rand.h"
-#include "../crypto-curve/curve.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-ecies/ecies.h"
+#include "crypto-suites/crypto-ecies/kdf.h"
+#include "crypto-suites/crypto-ecies/symm.h"
+#include "crypto-suites/crypto-ecies/hmac.h"
 
 using namespace safeheron::bignum;
 using namespace safeheron::curve;

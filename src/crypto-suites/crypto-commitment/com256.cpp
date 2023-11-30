@@ -2,7 +2,7 @@
 // Created by Sword03 on 2023/9/11.
 //
 
-#include "com256.h"
+#include "crypto-suites/crypto-commitment/com256.h"
 
 namespace safeheron {
 namespace commitment {

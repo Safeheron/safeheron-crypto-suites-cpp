@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
-#include "../compat/endian.h"
+#include "crypto-suites/compat/endian.h"
 
 
 uint16_t static inline ReadLE16(const unsigned char* ptr)

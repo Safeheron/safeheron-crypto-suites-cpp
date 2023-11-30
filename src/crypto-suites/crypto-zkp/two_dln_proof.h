@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_CRYPTO_ZKP_TWO_DLN_PROOF_H
 #define SAFEHERON_CRYPTO_ZKP_TWO_DLN_PROOF_H
 
-#include "dln_proof.h"
+#include "crypto-suites/crypto-zkp/dln_proof.h"
 
 /**
  * Statement: δ = (N, h1, h2)

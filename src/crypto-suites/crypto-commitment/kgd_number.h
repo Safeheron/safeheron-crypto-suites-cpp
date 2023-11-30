@@ -1,8 +1,8 @@
 #ifndef CPP_MPC_KGD_NUMBER_H
 #define CPP_MPC_KGD_NUMBER_H
 
-#include "../crypto-bn/bn.h"
-#include "proto_gen/commitment.pb.switch.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-commitment/proto_gen/commitment.pb.switch.h"
 
 namespace safeheron{
 namespace commitment {

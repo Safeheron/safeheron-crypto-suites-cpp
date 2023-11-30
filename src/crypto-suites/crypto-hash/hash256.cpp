@@ -2,7 +2,7 @@
 // Created by Sword03 on 2022/3/11.
 //
 
-#include "hash256.h"
+#include "crypto-suites/crypto-hash/hash256.h"
 
 namespace safeheron{
 namespace hash{

@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "base58.h"
 #include <string.h>
 #include <stdexcept>
-#include "base58_imp.h"
+#include "crypto-suites/crypto-encode/base58.h"
+#include "crypto-suites/crypto-encode/base58_imp.h"
 
 namespace safeheron {
 namespace encode {

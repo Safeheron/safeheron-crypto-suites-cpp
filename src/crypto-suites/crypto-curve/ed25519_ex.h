@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "ed25519-donna/ed25519.h"
+#include "third_party/ed25519-donna/ed25519.h"
 
 /**
  * Multiplication with base point on curve Ed25519: pk = G * sk

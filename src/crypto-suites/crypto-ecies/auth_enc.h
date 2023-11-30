@@ -1,8 +1,8 @@
 #ifndef SAFEHERON_CRYPTO_AUTH_ENC_H
 #define SAFEHERON_CRYPTO_AUTH_ENC_H
 
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve_point.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve_point.h"
 
 
 namespace safeheron {

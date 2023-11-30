@@ -1,8 +1,6 @@
-#include "sha1.h"
-
-#include "common.h"
-
 #include <string.h>
+#include "crypto-suites/crypto-hash/common.h"
+#include "crypto-suites/crypto-hash/sha1.h"
 
 namespace safeheron {
 namespace hash {

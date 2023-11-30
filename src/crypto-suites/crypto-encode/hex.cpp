@@ -7,10 +7,10 @@
  * https://www.safeheron.com/opensource/license.html
  */
 
-#include "hex.h"
 #include <stdexcept>
 #include <memory>
-#include "hex_imp.h"
+#include "crypto-suites/crypto-encode/hex_imp.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 namespace safeheron {
 namespace encode {

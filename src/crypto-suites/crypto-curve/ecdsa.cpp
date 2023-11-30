@@ -1,10 +1,10 @@
-#include "ecdsa.h"
-#include "../crypto-bn/rand.h"
-#include "../crypto-encode/base64.h"
-#include "curve.h"
-#include "openssl_curve_wrapper.h"
 #include <openssl/ec.h>
-#include "../exception/safeheron_exceptions.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-curve/ecdsa.h"
+#include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
 
 using std::string;
 using safeheron::bignum::BN;

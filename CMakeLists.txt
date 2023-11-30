@@ -17,8 +17,9 @@ pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this look
 find_package(OpenSSL REQUIRED)
 add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
+include_directories(src)
+
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-        src
         ${PROTOBUF_INCLUDE_DIRS}
         ${OPENSSL_INCLUDE_DIR}
         /usr/local/include

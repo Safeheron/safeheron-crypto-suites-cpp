@@ -1,9 +1,9 @@
 #ifndef SAFEHERON_CRYPTO_ECIES_H
 #define SAFEHERON_CRYPTO_ECIES_H
 
-#include "../crypto-bn/bn.h"
-#include "../crypto-curve/curve_point.h"
 #include <string>
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-curve/curve_point.h"
 
 #define MAX_INPUT_DATA_LEN  4*1024*1024 // 4 MBytes
 #define MAX_CBC_IV_LEN      64  //in Bytes

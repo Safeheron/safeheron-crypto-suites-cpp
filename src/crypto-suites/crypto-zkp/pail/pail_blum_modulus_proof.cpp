@@ -1,9 +1,9 @@
-#include "pail_blum_modulus_proof.h"
 #include <google/protobuf/util/json_util.h>
-#include "../../crypto-hash/safe_hash256.h"
-#include "../../crypto-bn/rand.h"
-#include "../../crypto-encode/base64.h"
-#include "../../exception/located_exception.h"
+#include "crypto-suites/crypto-hash/safe_hash256.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/exception/located_exception.h"
+#include "crypto-suites/crypto-zkp/pail/pail_blum_modulus_proof.h"
 
 #define PRIME_UTIL 6370
 

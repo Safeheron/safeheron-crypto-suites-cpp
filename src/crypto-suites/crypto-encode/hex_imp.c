@@ -7,8 +7,8 @@
  * https://www.safeheron.com/opensource/license.html
  */
 
-#include "hex_imp.h"
 #include <string.h>
+#include "crypto-suites/crypto-encode/hex_imp.h"
 
 // tallymarker_hextobin
 int tallymarker_hex2bin(const char *str, uint8_t *bytes, size_t blen) {

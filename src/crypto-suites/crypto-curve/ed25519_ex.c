@@ -1,7 +1,7 @@
-#include "ed25519_ex.h"
+#include "crypto-suites/crypto-curve/ed25519_ex.h"
 
-#include "ed25519-donna/ed25519-donna.h"
-#include "ed25519-donna/ed25519-donna-memzero.h"
+#include "third_party/ed25519-donna/ed25519-donna.h"
+#include "third_party/ed25519-donna/ed25519-donna-memzero.h"
 #define memzero ed25519_donna_memzero
 
 void

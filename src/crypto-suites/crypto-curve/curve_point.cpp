@@ -1,12 +1,12 @@
-#include "curve_point.h"
 #include <cassert>
 #include <openssl/ec.h>
 #include <google/protobuf/util/json_util.h>
-#include "../crypto-encode/base64.h"
-#include "openssl_curve_wrapper.h"
-#include "ed25519_ex.h"
-#include "curve.h"
-#include "../exception/safeheron_exceptions.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-curve/curve_point.h"
+#include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
+#include "crypto-suites/crypto-curve/ed25519_ex.h"
+#include "crypto-suites/crypto-curve/curve.h"
 
 using std::string;
 using google::protobuf::util::Status;

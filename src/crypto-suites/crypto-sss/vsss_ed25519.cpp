@@ -1,4 +1,4 @@
-#include "vsss_ed25519.h"
+#include "crypto-suites/crypto-sss/vsss_ed25519.h"
 
 using std::vector;
 using safeheron::bignum::BN;

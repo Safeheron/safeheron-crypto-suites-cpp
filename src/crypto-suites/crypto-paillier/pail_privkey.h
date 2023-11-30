@@ -2,8 +2,8 @@
 #define SAFEHERON_CRYPTO_PAIL_PRIVKEY_H
 
 #include <string>
-#include "../crypto-bn/bn.h"
-#include "proto_gen/paillier.pb.switch.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-paillier/proto_gen/paillier.pb.switch.h"
 
 
 namespace safeheron{

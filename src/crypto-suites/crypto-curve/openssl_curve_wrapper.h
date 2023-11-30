@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
 #define SAFEHERON_OPENSSL_CURVE_WRAPPER_H_
 
-#include "../crypto-bn/bn.h"
+#include "crypto-suites/crypto-bn/bn.h"
 
 struct ec_group_st;
 struct ec_point_st;

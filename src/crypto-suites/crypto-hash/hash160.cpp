@@ -2,9 +2,9 @@
 // Created by Sword03 on 2022/3/11.
 //
 
-#include "hash160.h"
-#include "sha256.h"
-#include "ripemd160.h"
+#include "crypto-suites/crypto-hash/hash160.h"
+#include "crypto-suites/crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/ripemd160.h"
 
 namespace safeheron{
 namespace hash{

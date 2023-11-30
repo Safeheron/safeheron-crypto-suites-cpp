@@ -1,7 +1,7 @@
 #ifndef SAFEHERON_RANDOM_H
 #define SAFEHERON_RANDOM_H
 
-#include "bn.h"
+#include "crypto-suites/crypto-bn/bn.h"
 
 namespace safeheron {
 namespace rand {

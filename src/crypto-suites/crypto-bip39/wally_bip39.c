@@ -1,18 +1,18 @@
-#include "wally_bip39.h"
-
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "hash_wrapper.h"
-#include "internal.h"
-#include "wally_mnemonic.h"
-#include "wordlist.h"
+#include "crypto-suites/crypto-bip39/hash_wrapper.h"
+#include "crypto-suites/crypto-bip39/internal.h"
+#include "crypto-suites/crypto-bip39/wally_mnemonic.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
 
-#include "data/wordlists/english.c"
-#include "data/wordlists/chinese_simplified.c"
-#include "data/wordlists/chinese_traditional.c"
+#include "crypto-suites/crypto-bip39/data/wordlists/english.c"
+#include "crypto-suites/crypto-bip39/data/wordlists/chinese_simplified.c"
+#include "crypto-suites/crypto-bip39/data/wordlists/chinese_traditional.c"
+
+#include "crypto-suites/crypto-bip39/wally_bip39.h"
 
 /* Maximum length including up to 2 bytes for checksum */
 #define BIP39_ENTROPY_LEN_MAX (BIP39_ENTROPY_LEN_320 + sizeof(unsigned char) * 2)
