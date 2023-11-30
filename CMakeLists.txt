@@ -19,12 +19,6 @@ add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
 include_directories(src)
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-        ${PROTOBUF_INCLUDE_DIRS}
-        ${OPENSSL_INCLUDE_DIR}
-        /usr/local/include
-        )
-
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
 target_link_libraries(${CMAKE_PROJECT_NAME}
         ${PROTOBUF_LIBRARIES}

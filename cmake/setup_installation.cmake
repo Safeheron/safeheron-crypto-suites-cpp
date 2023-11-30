@@ -21,7 +21,7 @@ install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${exported_targets_name}
         ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include/safeheron
+        PUBLIC_HEADER DESTINATION include
 )
 
 install(
@@ -42,7 +42,7 @@ install(
 install(
         DIRECTORY
             src/crypto-suites
-        DESTINATION include/safeheron
+        DESTINATION include
         FILES_MATCHING PATTERN "*.h"
 
         # crypto-bip32-cpp
@@ -78,6 +78,6 @@ install(
             proto/crypto-curve/
             proto/crypto-paillier/
             proto/crypto-zkp/
-        DESTINATION include/safeheron/crypto-suites/proto
+        DESTINATION include/crypto-suites/proto
         FILES_MATCHING PATTERN "*.proto"
 )
