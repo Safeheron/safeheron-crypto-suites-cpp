@@ -33,7 +33,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 option(ENABLE_SNAP_SCOPE "Enable Snap Scope" OFF)
 if (${ENABLE_SNAP_SCOPE})
-    message(STATUS "Notice: ******************* Enable Snap Scope ******************* ")
+    message(STATUS "Notice: ******************* Enable Snap Scope in Crypto-Suites ******************* ")
 endif()
 
 add_subdirectory(src)

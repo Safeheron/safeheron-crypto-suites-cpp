@@ -100,59 +100,104 @@ file(GLOB SOURCE_crypto-sss
         crypto-suites/crypto-sss/vsss_secp256k1.cpp
         )
 
-file(GLOB SOURCE_crypto-zkp
-        crypto-suites/crypto-zkp/proto_gen/zkp.pb.switch.cc
-        crypto-suites/crypto-zkp/dln_proof.cpp
-        crypto-suites/crypto-zkp/dlog_proof.cpp
-        crypto-suites/crypto-zkp/dlog_proof_v2.cpp
-        crypto-suites/crypto-zkp/dlog_proof_v3.cpp
-        crypto-suites/crypto-zkp/heg_proof.cpp
-        crypto-suites/crypto-zkp/heg_proof_v2.cpp
-        crypto-suites/crypto-zkp/linear_combination_proof.cpp
-        crypto-suites/crypto-zkp/heg_proof_v3.cpp
-        crypto-suites/crypto-zkp/no_small_factor_proof.cpp
-        crypto-suites/crypto-zkp/pail_proof.cpp
-        crypto-suites/crypto-zkp/range_proof.cpp
-        crypto-suites/crypto-zkp/pedersen_proof.cpp
-        crypto-suites/crypto-zkp/dlog_elgamal_com_proof.cpp
-        crypto-suites/crypto-zkp/dlog_equality_proof.cpp
-        crypto-suites/crypto-zkp/pdl_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_n_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v3.cpp
-        crypto-suites/crypto-zkp/pail/pail_aff_range_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v1.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v2.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_group_ele_range_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v1.cpp
-        crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v2.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_elgamal_com_range_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_blum_modulus_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_dec_modulo_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_enc_mul_proof.cpp
-        crypto-suites/crypto-zkp/pail/pail_mul_group_ele_range_proof.cpp
-        crypto-suites/crypto-zkp/ring_pedersen_param_pub.cpp
-        crypto-suites/crypto-zkp/ring_pedersen_param_priv.cpp
-        crypto-suites/crypto-zkp/two_dln_proof.cpp
-        )
+if (${ENABLE_SNAP_SCOPE})
+    file(GLOB SOURCE_crypto-zkp
+            crypto-suites/crypto-zkp/proto_gen/zkp.pb.switch.cc
+            crypto-suites/crypto-zkp/dln_proof.cpp
+            crypto-suites/crypto-zkp/dlog_proof.cpp
+            crypto-suites/crypto-zkp/dlog_proof_v2.cpp
+            crypto-suites/crypto-zkp/dlog_proof_v3.cpp
+#            crypto-suites/crypto-zkp/heg_proof.cpp
+#            crypto-suites/crypto-zkp/heg_proof_v2.cpp
+#            crypto-suites/crypto-zkp/heg_proof_v3.cpp
+#            crypto-suites/crypto-zkp/linear_combination_proof.cpp
+            crypto-suites/crypto-zkp/no_small_factor_proof.cpp
+#            crypto-suites/crypto-zkp/pail_proof.cpp
+#            crypto-suites/crypto-zkp/range_proof.cpp
+#            crypto-suites/crypto-zkp/pedersen_proof.cpp
+            crypto-suites/crypto-zkp/dlog_elgamal_com_proof.cpp
+            crypto-suites/crypto-zkp/dlog_equality_proof.cpp
+#            crypto-suites/crypto-zkp/pdl_proof.cpp
+#            crypto-suites/crypto-zkp/pail/pail_n_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_aff_range_proof.cpp
+#            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v1.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v2.cpp
+#            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v3.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_group_ele_range_proof.cpp
+#            crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v1.cpp
+            crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v2.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_elgamal_com_range_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_blum_modulus_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_dec_modulo_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_mul_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_mul_group_ele_range_proof.cpp
+            crypto-suites/crypto-zkp/ring_pedersen_param_pub.cpp
+            crypto-suites/crypto-zkp/ring_pedersen_param_priv.cpp
+            crypto-suites/crypto-zkp/two_dln_proof.cpp
+            )
 
-if (NOT ${ENABLE_SNAP_SCOPE})
     target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+            ${SOURCE_crypto-bip39}
+            ${SOURCE_crypto-bn}
+            ${SOURCE_crypto-curve}
+            ${SOURCE_crypto-ecies}
+            ${SOURCE_crypto-encode}
+            ${SOURCE_crypto-hash}
+            ${SOURCE_crypto-paillier}
+            ${SOURCE_crypto-sss}
+            ${SOURCE_crypto-zkp}
+            )
+else()
+    file(GLOB SOURCE_crypto-zkp
+            crypto-suites/crypto-zkp/proto_gen/zkp.pb.switch.cc
+            crypto-suites/crypto-zkp/dln_proof.cpp
+            crypto-suites/crypto-zkp/dlog_proof.cpp
+            crypto-suites/crypto-zkp/dlog_proof_v2.cpp
+            crypto-suites/crypto-zkp/dlog_proof_v3.cpp
+            crypto-suites/crypto-zkp/heg_proof.cpp
+            crypto-suites/crypto-zkp/heg_proof_v2.cpp
+            crypto-suites/crypto-zkp/heg_proof_v3.cpp
+            crypto-suites/crypto-zkp/linear_combination_proof.cpp
+            crypto-suites/crypto-zkp/no_small_factor_proof.cpp
+            crypto-suites/crypto-zkp/pail_proof.cpp
+            crypto-suites/crypto-zkp/range_proof.cpp
+            crypto-suites/crypto-zkp/pedersen_proof.cpp
+            crypto-suites/crypto-zkp/dlog_elgamal_com_proof.cpp
+            crypto-suites/crypto-zkp/dlog_equality_proof.cpp
+            crypto-suites/crypto-zkp/pdl_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_n_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_aff_range_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v1.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v2.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v3.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_group_ele_range_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v1.cpp
+            crypto-suites/crypto-zkp/pail/pail_aff_group_ele_range_proof_v2.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_elgamal_com_range_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_blum_modulus_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_dec_modulo_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_enc_mul_proof.cpp
+            crypto-suites/crypto-zkp/pail/pail_mul_group_ele_range_proof.cpp
+            crypto-suites/crypto-zkp/ring_pedersen_param_pub.cpp
+            crypto-suites/crypto-zkp/ring_pedersen_param_priv.cpp
+            crypto-suites/crypto-zkp/two_dln_proof.cpp
+            )
+
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+            ${SOURCE_crypto-bip39}
+            ${SOURCE_crypto-bn}
+            ${SOURCE_crypto-curve}
+            ${SOURCE_crypto-ecies}
+            ${SOURCE_crypto-encode}
+            ${SOURCE_crypto-hash}
+            ${SOURCE_crypto-paillier}
+            ${SOURCE_crypto-sss}
+            ${SOURCE_crypto-zkp}
             ${SOURCE_crypto-bip32}
             ${SOURCE_crypto-commitment}
             )
 endif()
 
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-        ${SOURCE_crypto-bip39}
-        ${SOURCE_crypto-bn}
-        ${SOURCE_crypto-curve}
-        ${SOURCE_crypto-ecies}
-        ${SOURCE_crypto-encode}
-        ${SOURCE_crypto-hash}
-        ${SOURCE_crypto-paillier}
-        ${SOURCE_crypto-sss}
-        ${SOURCE_crypto-zkp}
-        )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE third_party)
 
