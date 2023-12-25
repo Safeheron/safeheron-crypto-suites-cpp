@@ -4,6 +4,7 @@
 #include <openssl/bn.h>
 #include "crypto-suites/crypto-bn/bn.h"
 #include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using safeheron::exception::LocatedException;
 using safeheron::exception::OpensslException;
@@ -121,8 +122,8 @@ BN::BN(long i)
 BN::BN(const char *str, int base)
         : bn_(nullptr)
 {
-    assert(str);
-    assert(base == 2 || base == 10 || base == 16);
+    ASSERT_THROW(str);
+    ASSERT_THROW(base == 2 || base == 10 || base == 16);
 
     int ret = 0;
     if (!(bn_ = BN_new())) {
@@ -191,7 +192,7 @@ BN::BN(const BN &num)
  */
 BN &BN::operator=(const BN &num)
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if (this == &num) {
         return *this;
     }
@@ -240,7 +241,7 @@ BN BN::operator+(const BN &num) const
 {
     BN n;
     int ret = 0;
-    assert(bn_ && n.bn_ && num.bn_);
+    ASSERT_THROW(bn_ && n.bn_ && num.bn_);
     if ((ret = BN_add(n.bn_, bn_, num.bn_)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add(n.bn_, bn_, num.bn_)) != 1");
     }
@@ -256,7 +257,7 @@ BN BN::operator-(const BN &num) const
 {
     BN n;
     int ret = 0;
-    assert(bn_ && n.bn_ && num.bn_);
+    ASSERT_THROW(bn_ && n.bn_ && num.bn_);
     if ((ret = BN_sub(n.bn_, bn_, num.bn_)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub(n.bn_, bn_, num.bn_)) != 1");
     }
@@ -274,7 +275,7 @@ BN BN::operator*(const BN &num) const
     BN_CTX* ctx = nullptr;
     int ret = 0;
 
-    assert(bn_ && n.bn_ && num.bn_);
+    ASSERT_THROW(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
@@ -300,7 +301,7 @@ BN BN::operator/(const BN &num) const
     BN_CTX* ctx = nullptr;
     int ret = 0;
 
-    assert(bn_ && n.bn_ && num.bn_);
+    ASSERT_THROW(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
@@ -323,7 +324,7 @@ BN BN::operator/(const BN &num) const
 BN &BN::operator+=(const BN &num)
 {
     int ret = 0;
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     if ((ret = BN_add(bn_, bn_, num.bn_)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add(bn_, bn_, num.bn_)) != 1");
     }
@@ -338,7 +339,7 @@ BN &BN::operator+=(const BN &num)
 BN &BN::operator-=(const BN &num)
 {
     int ret = 0;
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     if ((ret = BN_sub(bn_, bn_, num.bn_)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub(bn_, bn_, num.bn_)) != 1");
     }
@@ -355,7 +356,7 @@ BN &BN::operator*=(const BN &num)
     int ret = 0;
     BN_CTX* ctx = nullptr;
 
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
@@ -380,7 +381,7 @@ BN &BN::operator/=(const BN &num)
     int ret = 0;
     BN_CTX* ctx = nullptr;
 
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
@@ -405,7 +406,7 @@ BN BN::operator+(long si) const
     int ret = 0;
     BN n(*this);
 
-    assert(n.bn_);
+    ASSERT_THROW(n.bn_);
 
     if (si >= 0) {
         if ((ret = BN_add_word(n.bn_, si)) != 1) {
@@ -429,7 +430,7 @@ BN BN::operator-(long si) const
     int ret = 0;
     BN n(*this);
 
-    assert(n.bn_);
+    ASSERT_THROW(n.bn_);
 
     if (si >= 0) {
         if ((ret = BN_sub_word(n.bn_, si)) != 1) {
@@ -453,7 +454,7 @@ BN BN::operator*(long si) const
     int ret = 0;
     BN n(*this);
 
-    assert(n.bn_);
+    ASSERT_THROW(n.bn_);
 
     if (si >= 0) {
         if ((ret = BN_mul_word(n.bn_, si)) != 1) {
@@ -479,7 +480,7 @@ BN BN::operator/(long si) const
     BN n(*this);
     unsigned long ret = 0;
 
-    assert(n.bn_);
+    ASSERT_THROW(n.bn_);
     if (si >= 0) {
         if ((ret = BN_div_word(n.bn_, si)) == (BN_ULONG)-1) {
             throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(n.bn_, si)) == (BN_ULONG)-1");
@@ -503,7 +504,7 @@ BN &BN::operator+=(long si)
 {
     int ret = 0;
 
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if (si >= 0) {
         if ((ret = BN_add_word(bn_, si)) != 1) {
             throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_add_word(bn_, si)) != 1");
@@ -525,7 +526,7 @@ BN &BN::operator-=(long si)
 {
     int ret = 0;
 
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if (si >= 0) {
         if ((ret = BN_sub_word(bn_, si)) != 1) {
             throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_sub_word(bn_, si)) != 1");
@@ -547,7 +548,7 @@ BN &BN::operator*=(long si)
 {
     int ret = 0;
 
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if (si >= 0) {
         if ((ret = BN_mul_word(bn_, si)) != 1) {
             throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_mul_word(bn_, si)) != 1");
@@ -571,7 +572,7 @@ BN &BN::operator/=(long si)
 {
     unsigned long ret = 0;
 
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if (si >= 0) {
         if ((ret = BN_div_word(bn_, si)) == (BN_ULONG)-1) {
             throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_div_word(bn_, si)) == (BN_ULONG)-1");
@@ -596,7 +597,7 @@ BN BN::operator%(const BN &num) const
     BN n(*this);
     BN_CTX* ctx = nullptr;
 
-    assert(bn_ && n.bn_ && num.bn_);
+    ASSERT_THROW(bn_ && n.bn_ && num.bn_);
 
     if (!(ctx = BN_CTX_new())) {
         throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "!(ctx = BN_CTX_new())");
@@ -630,7 +631,7 @@ BN BN::operator<<(unsigned long ui) const
 {
     BN n;
     int ret = 0;
-    assert(bn_ && n.bn_);
+    ASSERT_THROW(bn_ && n.bn_);
     if ((ret = BN_lshift(n.bn_, bn_, ui)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_lshift(n.bn_, bn_, ui)) != 1");
     }
@@ -646,7 +647,7 @@ BN BN::operator>>(unsigned long ui) const
 {
     BN n;
     int ret = 0;
-    assert(bn_ && n.bn_);
+    ASSERT_THROW(bn_ && n.bn_);
     if ((ret = BN_rshift(n.bn_, bn_, ui)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_rshift(n.bn_, bn_, ui)) != 1");
     }
@@ -661,7 +662,7 @@ BN BN::operator>>(unsigned long ui) const
 BN &BN::operator<<=(unsigned long ui)
 {
     int ret = 0;
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if ((ret = BN_lshift(bn_, bn_, ui)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_lshift(bn_, bn_, ui)) != 1");
     }
@@ -676,7 +677,7 @@ BN &BN::operator<<=(unsigned long ui)
 BN &BN::operator>>=(unsigned long ui)
 {
     int ret = 0;
-    assert(bn_);
+    ASSERT_THROW(bn_);
     if ((ret = BN_rshift(bn_, bn_, ui)) != 1) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, ret, "(ret = BN_rshift(bn_, bn_, ui)) != 1");
     }
@@ -690,7 +691,7 @@ BN &BN::operator>>=(unsigned long ui)
  */
 bool BN::operator==(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == 0;
 }
 
@@ -701,7 +702,7 @@ bool BN::operator==(const BN &num) const
  */
 bool BN::operator!=(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) != 0;
 }
 
@@ -712,7 +713,7 @@ bool BN::operator!=(const BN &num) const
  */
 bool BN::operator<(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == -1;
 }
 
@@ -723,7 +724,7 @@ bool BN::operator<(const BN &num) const
  */
 bool BN::operator<=(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) <= 0;
 }
 
@@ -734,7 +735,7 @@ bool BN::operator<=(const BN &num) const
  */
 bool BN::operator>(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) == 1;
 }
 
@@ -745,7 +746,7 @@ bool BN::operator>(const BN &num) const
  */
 bool BN::operator>=(const BN &num) const
 {
-    assert(bn_ && num.bn_);
+    ASSERT_THROW(bn_ && num.bn_);
     return BN_cmp(bn_, num.bn_) >= 0;
 }
 
@@ -756,7 +757,7 @@ bool BN::operator>=(const BN &num) const
  */
 bool BN::operator==(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this == n;
 }
@@ -768,7 +769,7 @@ bool BN::operator==(long si) const
  */
 bool BN::operator!=(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this != n;
 }
@@ -780,7 +781,7 @@ bool BN::operator!=(long si) const
  */
 bool BN::operator>(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this > n;
 }
@@ -792,7 +793,7 @@ bool BN::operator>(long si) const
  */
 bool BN::operator<(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this < n;
 }
@@ -804,7 +805,7 @@ bool BN::operator<(long si) const
  */
 bool BN::operator>=(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this >= n;
 }
@@ -816,7 +817,7 @@ bool BN::operator>=(long si) const
  */
 bool BN::operator<=(long si) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(si);
     return *this <= n;
 }
@@ -826,7 +827,7 @@ bool BN::operator<=(long si) const
 */
 BN BN::Neg() const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     BN n(*this);
     if (n.IsNeg()) {
         BN_set_negative(n.bn_, 0);
@@ -845,7 +846,7 @@ BN BN::Neg() const
  */
 void BN::Div(const BN &d, BN &q, BN &r)
 {
-    assert(bn_ && d.bn_ && q.bn_ && r.bn_);
+    ASSERT_THROW(bn_ && d.bn_ && q.bn_ && r.bn_);
     int ret = 0;
     BN_CTX* ctx = nullptr;
     if (!(ctx = BN_CTX_new())) {
@@ -928,7 +929,7 @@ BN BN::Lcm(const BN &n) const
  */
 BN BN::PowM(const BN &y, const BN &m) const
 {
-    assert(bn_ && y.bn_ && m.bn_);
+    ASSERT_THROW(bn_ && y.bn_ && m.bn_);
     BN r;
     BN t_y = y.IsNeg()? y.Neg() : y;
     BN_CTX* ctx = nullptr;
@@ -1041,7 +1042,7 @@ bool BN::IsProbablyPrime() const
  */
 BN BN::FromHexStr(const char *str)
 {
-    assert(str);
+    ASSERT_THROW(str);
 
     BN n;
     int ret = 0;
@@ -1072,7 +1073,7 @@ BN BN::FromHexStr(const std::string &str)
  */
 BN BN::FromDecStr(const char *str)
 {
-    assert(str);
+    ASSERT_THROW(str);
 
     BN n;
     int ret = 0;
@@ -1136,7 +1137,7 @@ void BN::ToDecStr(std::string &str) const
  */
 BN BN::FromBytesBE(const uint8_t *buf, int len)
 {
-    assert(buf);
+    ASSERT_THROW(buf);
 
     BN n;
     if (!BN_bin2bn(buf, len, n.bn_)) {
@@ -1163,7 +1164,7 @@ BN BN::FromBytesBE(const std::string &buf)
  */
 BN BN::FromBytesLE(const uint8_t *buf, int len)
 {
-    assert(buf);
+    ASSERT_THROW(buf);
 
     BN n;
     if (!BN_lebin2bn(buf, len, n.bn_)) {
@@ -1247,8 +1248,8 @@ void BN::ToBytesLE(std::string &buf) const
  */
 void BN::ToBytes32BE(uint8_t *buf32, int blen) const
 {
-    assert(buf32);
-    assert(blen >= 32);
+    ASSERT_THROW(buf32);
+    ASSERT_THROW(blen >= 32);
     memset(buf32, 0, 32);
 
     int len = BN_num_bytes(bn_);
@@ -1287,8 +1288,8 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
  */
 void BN::ToBytes32LE(uint8_t *buf32, int blen) const
 {
-    assert(buf32);
-    assert(blen >= 32);
+    ASSERT_THROW(buf32);
+    ASSERT_THROW(blen >= 32);
     memset(buf32, 0, 32);
 
     int len = BN_num_bytes(bn_);
@@ -1349,7 +1350,7 @@ void BN::ToBytes32LE(std::string &buf) const
  */
 void BN::Hold(bignum_st* bn)
 {
-    assert(bn);
+    ASSERT_THROW(bn);
     if (bn_) {
         BN_clear_free(bn_);
         bn_ = nullptr;
@@ -1440,7 +1441,7 @@ BN BN::Min(const BN &a, const BN &b)
  */
 void BN::Swap(BN &a, BN &b)
 {
-    assert(a.bn_ && b.bn_);
+    ASSERT_THROW(a.bn_ && b.bn_);
     BN_swap(a.bn_, b.bn_);
 }
 
@@ -1450,7 +1451,7 @@ void BN::Swap(BN &a, BN &b)
  */
 void BN::SetBit(unsigned long index)
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
 
     int ret = 0;
     if ((ret = BN_set_bit(bn_, index)) != 1) {
@@ -1464,7 +1465,7 @@ void BN::SetBit(unsigned long index)
  */
 void BN::ClearBit(unsigned long index)
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
 
     int ret = 0;
     if ((ret = BN_clear_bit(bn_, index)) != 1) {
@@ -1479,7 +1480,7 @@ void BN::ClearBit(unsigned long index)
  */
 bool BN::IsBitSet(unsigned long index) const
 {
-    assert(bn_);
+    ASSERT_THROW(bn_);
     return BN_is_bit_set(bn_, index) == 1;
 }
 
@@ -1490,7 +1491,7 @@ bool BN::IsBitSet(unsigned long index) const
  */
 std::string BN::Inspect(int base) const
 {
-    assert(base == 10 || base == 16);
+    ASSERT_THROW(base == 10 || base == 16);
 
     std::string str;
     if (base == 10) {

@@ -1,6 +1,7 @@
 #include <cassert>
 #include "crypto-suites/crypto-bn/rand.h"
 #include "crypto-suites/crypto-paillier/pail.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using safeheron::bignum::BN;
 
@@ -14,7 +15,7 @@ namespace pail {
  * @param key_bits
  */
 void CreateKeyPair(PailPrivKey &priv, PailPubKey &pub, int key_bits) {
-    assert(key_bits == 1024 || key_bits == 2048 || key_bits == 3072 || key_bits == 4096);
+    ASSERT_THROW(key_bits == 1024 || key_bits == 2048 || key_bits == 3072 || key_bits == 4096);
     BN p = safeheron::rand::RandomSafePrimeStrict(key_bits / 2);
     BN q;
     // make sure: p != q

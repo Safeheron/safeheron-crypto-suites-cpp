@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-ecies/kdf.h"
 #include "crypto-suites/crypto-ecies/symm.h"
 #include "crypto-suites/crypto-ecies/hmac.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using namespace safeheron::bignum;
 using namespace safeheron::curve;
@@ -25,9 +26,9 @@ ECIES::ECIES() {
     hmac_ = new HMAC_sha512();
     symm_alg_ = SYMM_ALG::AES256_CBC;
 
-    assert(kdf_ != nullptr);
-    assert(symm_ != nullptr);
-    assert(hmac_ != nullptr);
+    ASSERT_THROW(kdf_ != nullptr);
+    ASSERT_THROW(symm_ != nullptr);
+    ASSERT_THROW(hmac_ != nullptr);
 }
 
 ECIES::~ECIES() {
@@ -95,7 +96,7 @@ bool ECIES::set_symm_alg(SYMM_ALG alg) {
             return false;
     }
 
-    assert(symm_);
+    ASSERT_THROW(symm_);
 
     return true;
 }
@@ -162,14 +163,14 @@ bool ECIES::set_kdf_type(KDF_TYPE kdf) {
             return false;
     }
 
-    assert(kdf_ != nullptr);
+    ASSERT_THROW(kdf_ != nullptr);
 
     return true;
 }
 
 // Return the KDF type is using currently
 KDF_TYPE ECIES::ECIES::get_kdf_type() {
-    assert(kdf_);
+    ASSERT_THROW(kdf_);
 
     int nid = kdf_->getHashNid();
     const char *class_name = typeid(kdf_).name();
@@ -244,14 +245,14 @@ bool ECIES::set_mac_type(HMAC_ALG mac) {
             return false;
     }
 
-    assert(hmac_ != nullptr);
+    ASSERT_THROW(hmac_ != nullptr);
 
     return true;
 }
 
 // Return the HMAC type is using currently
 HMAC_ALG ECIES::get_mac_type() {
-    assert(hmac_ != nullptr);
+    ASSERT_THROW(hmac_ != nullptr);
 
     const char *class_name = typeid(kdf_).name();
     if (memcmp(class_name, "HMAC_sha1", strlen("HMAC_sha1")) == 0) {
@@ -274,7 +275,7 @@ HMAC_ALG ECIES::get_mac_type() {
 // iv: IV bytes
 // len: IV length, in bytes
 bool ECIES::set_derivation_iv(const unsigned char *iv, const size_t len) {
-    assert(kdf_);
+    ASSERT_THROW(kdf_);
 
     if (len > MAX_SALT_IV_LEN) {
         return false;
@@ -290,7 +291,7 @@ bool ECIES::set_derivation_iv(const unsigned char *iv, const size_t len) {
 
 // Return the derivation IV data which is using in current KDF.
 void ECIES::get_derivation_iv(std::string &out_iv) {
-    assert(kdf_);
+    ASSERT_THROW(kdf_);
     kdf_->getIV(out_iv);
 }
 
@@ -300,7 +301,7 @@ void ECIES::get_derivation_iv(std::string &out_iv) {
 // iv: IV bytes
 // len: IV length, in bytes
 bool ECIES::set_mac_iv(const unsigned char *iv, const size_t len) {
-    assert(hmac_);
+    ASSERT_THROW(hmac_);
 
     if (len > MAX_SALT_IV_LEN) {
         return false;
@@ -316,7 +317,7 @@ bool ECIES::set_mac_iv(const unsigned char *iv, const size_t len) {
 
 // Return the encoding IV data which is using in current HMAC.
 void ECIES::get_mac_iv(std::string &out_iv) {
-    assert(hmac_);
+    ASSERT_THROW(hmac_);
     hmac_->getIV(out_iv);
 }
 
@@ -337,7 +338,7 @@ bool ECIES::Encrypt(const CurvePoint &pubkey,
     int iv_len = 0;
     uint8_t iv[MAX_CBC_IV_LEN] = {0};
 
-    assert(symm_);
+    ASSERT_THROW(symm_);
 
     // generate a rand number as the CBC IV
     iv_len = (symm_->getIVSize() + 7) / 8;
@@ -371,9 +372,9 @@ bool ECIES::EncryptWithIV(const CurvePoint &pubkey,
     if (curv == nullptr) return false;
 
     // checking status
-    assert(kdf_);
-    assert(symm_);
-    assert(hmac_);
+    ASSERT_THROW(kdf_);
+    ASSERT_THROW(symm_);
+    ASSERT_THROW(hmac_);
     symm_key_size = (symm_->getKeySize() + 7) / 8;
     mac_key_size = (hmac_->getBlockSize() + 7) / 8;
     if (symm_key_size <= 0 || mac_key_size <= 0) {
@@ -472,9 +473,9 @@ bool ECIES::Decrypt(const BN &privkey,
     if (curv == nullptr) return false;
 
     // checking status
-    assert(kdf_);
-    assert(symm_);
-    assert(hmac_);
+    ASSERT_THROW(kdf_);
+    ASSERT_THROW(symm_);
+    ASSERT_THROW(hmac_);
     symm_key_size = (symm_->getKeySize() + 7) / 8;
     mac_key_size = (hmac_->getBlockSize() + 7) / 8;
     if (symm_key_size <= 0 || mac_key_size <= 0) {
@@ -571,7 +572,7 @@ bool ECIES::EncryptPackWithIV(const CurvePoint &pubkey,
                               const unsigned char *in_plain, size_t in_plain_len,
                               const unsigned char *in_iv, size_t in_iv_len,
                               std::string &out_cypher) {
-    assert(symm_);
+    ASSERT_THROW(symm_);
 
     if (!EncryptWithIV(pubkey, in_plain, in_plain_len, in_iv, in_iv_len, out_cypher)) {
         return false;
@@ -587,7 +588,7 @@ bool ECIES::EncryptPackWithIV(const CurvePoint &pubkey,
 bool ECIES::EncryptPack(const CurvePoint &pubkey,
                         const unsigned char *in_plain, size_t in_plain_len,
                         std::string &out_cypher) {
-    assert(symm_);
+    ASSERT_THROW(symm_);
 
     std::string out_iv;
     if (!Encrypt(pubkey, in_plain, in_plain_len, out_iv, out_cypher)) {
@@ -604,7 +605,7 @@ bool ECIES::EncryptPack(const CurvePoint &pubkey,
 bool ECIES::DecryptPack(const BN &privkey,
                         const unsigned char *in_cypher, size_t in_cypher_len,
                         std::string &out_plain) {
-    assert(symm_);
+    ASSERT_THROW(symm_);
 
     int iv_len = (symm_->getIVSize() + 7) / 8;
     return Decrypt(privkey, in_cypher, in_cypher_len - iv_len,

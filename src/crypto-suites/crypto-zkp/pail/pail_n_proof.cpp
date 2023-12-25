@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/pail/pail_n_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;

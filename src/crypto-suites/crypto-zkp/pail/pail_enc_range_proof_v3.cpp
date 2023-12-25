@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v3.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -33,8 +34,8 @@ static BN SampleRange(const BN &min, const BN &max){
 }
 
 void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, const PailEncRangeWitness_V3 &witness) {
-    assert(CSafeHash256::OUTPUT_SIZE * 8 >= SECURITY_PARAMETER);
-    assert(statement.pail_pub_.n().BitLength() >= 2046);
+    ASSERT_THROW(CSafeHash256::OUTPUT_SIZE * 8 >= SECURITY_PARAMETER);
+    ASSERT_THROW(statement.pail_pub_.n().BitLength() >= 2046);
     const BN l = statement.l_;
     const BN double_l = statement.l_ * 2;
     for (uint32_t i = 0; i < SECURITY_PARAMETER; ++i) {

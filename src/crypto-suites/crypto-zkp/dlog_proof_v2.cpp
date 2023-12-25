@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/dlog_proof_v2.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -99,31 +100,31 @@ bool DLogProof_V2::InternalVerify(const curve::CurvePoint &X) const {
 
 
 void DLogProof_V2::Prove(const BN &x) {
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     BN alpha = RandomBNLt(curv_->n);
     ProveWithR(x, alpha);
 }
 
 void DLogProof_V2::ProveWithR(const BN &x, const BN &alpha) {
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     DLogProof_V2::InternalProveWithR(x, curv_->g, curv_->n, alpha);
 }
 
 bool DLogProof_V2::Verify(const curve::CurvePoint &X) const {
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     return DLogProof_V2::InternalVerify(X);
 }
 
 void DLogProof_V2::ProveEx(const BN &sk, curve::CurveType curve_type) {
     curv_ = curve::GetCurveParam(curve_type);
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     BN alpha = RandomBNLt(curv_->n);
     ProveWithREx(sk, alpha, curve_type);
 }
 
 void DLogProof_V2::ProveWithREx(const BN &x, const BN &alpha, curve::CurveType curve_type) {
     curv_ = curve::GetCurveParam(curve_type);
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     DLogProof_V2::InternalProveWithR(x, curv_->g, curv_->n, alpha);
 }
 

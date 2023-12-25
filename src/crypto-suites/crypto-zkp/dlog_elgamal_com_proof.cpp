@@ -4,6 +4,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/dlog_elgamal_com_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -34,7 +35,7 @@ void DlogElGamalComProof::Prove(const DlogElGamalComStatement &statement, const 
     const BN &y = witness.y_;
     const BN &lambda = witness.lambda_;
 
-    assert(X.GetCurveType() == g.GetCurveType());
+    ASSERT_THROW(X.GetCurveType() == g.GetCurveType());
 
     BN alpha = RandomBNLt(q);
     BN m = RandomBNLt(q);

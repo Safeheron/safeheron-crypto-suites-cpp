@@ -1,5 +1,6 @@
 #include "crypto-suites/crypto-bn/rand.h"
 #include "crypto-suites/crypto-sss/polynomial.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::vector;
 using safeheron::bignum::BN;
@@ -20,7 +21,7 @@ Polynomial::Polynomial(const BN &secret, const vector<BN> &coeArr, const BN &pri
 }
 
 Polynomial Polynomial::CreateRandomPolynomial(const BN &secret, int threshold, const BN &prime) {
-    assert(threshold > 1);
+    ASSERT_THROW(threshold > 1);
     vector<BN> vecCoe;
     for(int i = 1; i < threshold; ++i){
         BN coe = safeheron::rand::RandomBNLt(prime);
@@ -62,7 +63,7 @@ void Polynomial::GetYArray(vector<BN> &yArr, const vector<BN> &xArr) {
 void Polynomial::GetPoints(vector<Point> &vecPoint, const vector<BN> &xArr) {
     vector<BN> yArr;
     GetYArray(yArr, xArr);
-    assert(xArr.size() == yArr.size());
+    ASSERT_THROW(xArr.size() == yArr.size());
     for(size_t i = 0; i < xArr.size(); ++i){
         vecPoint.push_back(Point(xArr[i], yArr[i]));
     }

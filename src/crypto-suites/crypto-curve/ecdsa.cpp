@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-curve/curve.h"
 #include "crypto-suites/crypto-curve/ecdsa.h"
 #include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using safeheron::bignum::BN;
@@ -152,7 +153,7 @@ bool Verify(const CurveType c_type, const CurvePoint &pub, const uint8_t *digest
 
 bool Sig64ToDer(const uint8_t *sig64, uint8_t *der)
 {
-    assert(sig64 && der);
+    ASSERT_THROW(sig64 && der);
     bool ret = 0;
     int der_len = 0;
     BIGNUM* bn_r = nullptr;

@@ -4,6 +4,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/dlog_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -97,13 +98,13 @@ bool DLogProof::InternalVerify(const CurvePoint &g) const {
 
 
 void DLogProof::Prove(const BN &sk) {
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     BN r = RandomBNLt(curv_->n);
     ProveWithR(sk, r);
 }
 
 void DLogProof::ProveWithR(const BN &sk, const BN &r) {
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     DLogProof::InternalProveWithR(sk, curv_->g, curv_->n, r);
 }
 
@@ -115,14 +116,14 @@ bool DLogProof::Verify() const {
 
 void DLogProof::ProveEx(const BN &sk, curve::CurveType curve_type) {
     curv_ = curve::GetCurveParam(curve_type);
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     BN r = RandomBNLt(curv_->n);
     ProveWithREx(sk, r, curve_type);
 }
 
 void DLogProof::ProveWithREx(const BN &sk, const BN &r, curve::CurveType curve_type) {
     curv_ = curve::GetCurveParam(curve_type);
-    assert(curv_ != nullptr);
+    ASSERT_THROW(curv_ != nullptr);
     DLogProof::InternalProveWithR(sk, curv_->g, curv_->n, r);
 }
 

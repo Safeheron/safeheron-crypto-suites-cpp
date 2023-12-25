@@ -1,4 +1,5 @@
 #include "crypto-suites/crypto-sss/vsss.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::vector;
 using safeheron::bignum::BN;
@@ -22,7 +23,7 @@ void MakeSharesWithCommits(vector<Point> &shares, vector<CurvePoint> &commits, c
 
 void MakeSharesWithCommitsAndCoes(vector<Point> &shares, vector<CurvePoint> &commits, const BN &secret, int threshold,
                                  const vector<BN> &shareIndexs, const vector<BN> &coeArray, const BN &prime, const CurvePoint &g) {
-    assert((int)(coeArray.size() + 1) == threshold);
+    ASSERT_THROW((int)(coeArray.size() + 1) == threshold);
     Polynomial poly(secret, coeArray, prime);
     poly.GetPoints(shares, shareIndexs);
     poly.GetCommits(commits, g);

@@ -4,6 +4,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/dlog_equality_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -29,7 +30,7 @@ void DlogEqualityProof::Prove(const DlogEqualityStatement &statement, const BN &
     const safeheron::curve::CurvePoint &Y = statement.Y_;
     const safeheron::bignum::BN &q = statement.q_;
 
-    assert(X.GetCurveType() == g.GetCurveType());
+    ASSERT_THROW(X.GetCurveType() == g.GetCurveType());
 
     BN alpha = RandomBNLt(q);
 

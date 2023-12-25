@@ -5,6 +5,7 @@
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/common.h"
 #include "crypto-suites/crypto-zkp/pail/pail_enc_elgamal_com_range_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -25,7 +26,7 @@ namespace pail {
 
 void PailEncElGamalComRangeProof::Prove(const PailEncElGamalComRangeSetUp &setup, const PailEncElGamalComRangeStatement &statement, const PailEncElGamalComRangeWitness &witness){
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(statement.X_.GetCurveType());
-    assert(curv);
+    ASSERT_THROW(curv);
 
     const BN &N_tilde = setup.N_tilde_;
     const BN &s = setup.s_;

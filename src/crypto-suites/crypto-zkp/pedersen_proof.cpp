@@ -4,6 +4,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/located_exception.h"
 #include "crypto-suites/crypto-zkp/pedersen_proof.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using std::vector;
@@ -25,7 +26,7 @@ namespace pedersen_proof {
 
 void PedersenProof::Prove(const PedersenStatement &statement, const PedersenWitness &witness) {
     const safeheron::curve::Curve * curv = curve::GetCurveParam(statement.G_.GetCurveType());
-    assert(curv);
+    ASSERT_THROW(curv);
     BN a = safeheron::rand::RandomBNLt(curv->n);
     BN b = safeheron::rand::RandomBNLt(curv->n);
     ProveWithR(statement, witness, a, b);
@@ -36,7 +37,7 @@ void PedersenProof::ProveWithR(const PedersenStatement &statement,
                                const safeheron::bignum::BN &a_lt_curveN,
                                const safeheron::bignum::BN &b_lt_curveN) {
     const safeheron::curve::Curve * curv = curve::GetCurveParam(statement.G_.GetCurveType());
-    assert(curv);
+    ASSERT_THROW(curv);
 
     // Alpha = a*G + b*H
     curve::CurvePoint A1 = statement.G_ * a_lt_curveN;
@@ -75,11 +76,11 @@ void PedersenProof::ProveWithR(const PedersenStatement &statement,
     BN c = BN::FromBytesBE(sha256_digest, sizeof(sha256_digest));
 
     // t = a + c * sigma mod q
-    assert(witness.sigma_ != 0);
+    ASSERT_THROW(witness.sigma_ != 0);
     BN t = (a_lt_curveN + c * witness.sigma_) % curv->n;
 
     // u = b + c * l mod q
-    assert(witness.l_ != 0);
+    ASSERT_THROW(witness.l_ != 0);
     BN u = (b_lt_curveN + c * witness.l_) % curv->n;
 
     Alpha_ = Alpha;

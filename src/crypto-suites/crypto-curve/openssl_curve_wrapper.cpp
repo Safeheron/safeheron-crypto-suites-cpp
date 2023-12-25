@@ -2,6 +2,7 @@
 #include <openssl/ec.h>
 #include <cstring>
 #include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
+#include "crypto-suites/common/custom_assert.h"
 
 namespace safeheron{
 namespace _openssl_curve_wrapper {
@@ -13,8 +14,8 @@ int encode_ec_point(const ec_group_st* grp, const ec_point_st *pub, uint8_t *pub
     BIGNUM* bn_x = nullptr;
     BIGNUM* bn_y = nullptr;
 
-    assert(pub);
-    assert(pub_key);
+    ASSERT_THROW(pub);
+    ASSERT_THROW(pub_key);
 
     if (!(bn_x = BN_new()) ||
         !(bn_y = BN_new())) {
@@ -119,8 +120,8 @@ int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *
     ECDSA_SIG* ecdsa_sig = nullptr;
     const int MAX_TRY_TIMES = 10000;
 
-    assert(grp);
-    assert(priv_key && digest32 && sig64);
+    ASSERT_THROW(grp);
+    ASSERT_THROW(priv_key && digest32 && sig64);
 
     if (!(priv = BN_new()) ||
         !(ec_key = EC_KEY_new_by_curve_name(EC_GROUP_get_curve_name(grp)))) {
@@ -207,8 +208,8 @@ int verify_digest(const ec_group_st* grp, const uint8_t *pub_key, const uint8_t 
     EC_KEY* ec_key = nullptr;
     ECDSA_SIG* ecdsa_sig = nullptr;
 
-    assert(grp);
-    assert(pub_key && sig64 && digest32 );
+    ASSERT_THROW(grp);
+    ASSERT_THROW(pub_key && sig64 && digest32 );
 
     // only support uncompress public key
     if (pub_key[0] != 0x04) {

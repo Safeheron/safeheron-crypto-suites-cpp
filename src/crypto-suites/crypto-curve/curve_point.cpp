@@ -7,6 +7,7 @@
 #include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
 #include "crypto-suites/crypto-curve/ed25519_ex.h"
 #include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using google::protobuf::util::Status;
@@ -61,7 +62,7 @@ CurvePoint::CurvePoint() {
 }
 
 CurvePoint::CurvePoint(CurveType c_type) {
-    assert(c_type != CurveType::INVALID_CURVE);
+    ASSERT_THROW(c_type != CurveType::INVALID_CURVE);
 
     curve_type_ = c_type;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
@@ -125,7 +126,7 @@ CurvePoint::CurvePoint(const safeheron::bignum::BN &x, const safeheron::bignum::
 {
     memset(&edwards_point_, 0, sizeof(edwards_point_));
 
-    assert(c_type != CurveType::INVALID_CURVE);
+    ASSERT_THROW(c_type != CurveType::INVALID_CURVE);
 
     curve_type_ = c_type;
     curve_grp_ = safeheron::curve::GetCurveGroup(curve_type_);
@@ -480,8 +481,8 @@ bool CurvePoint::DecodeEdwardsPoint(uint8_t *pub, CurveType c_type) {
 }
 
 CurvePoint CurvePoint::operator+(const CurvePoint &point) const {
-    assert(curve_type_ != CurveType::INVALID_CURVE);
-    assert(curve_type_ == point.curve_type_);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ == point.curve_type_);
     CurvePoint res(*this);
 
     uint32_t category = get_category(curve_type_);
@@ -507,14 +508,14 @@ CurvePoint CurvePoint::operator+(const CurvePoint &point) const {
 }
 
 CurvePoint CurvePoint::operator-(const CurvePoint &point) const {
-    assert(curve_type_ != CurveType::INVALID_CURVE);
-    assert(curve_type_ == point.curve_type_);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ == point.curve_type_);
     CurvePoint res = *this + point.Neg();
     return res;
 }
 
 CurvePoint CurvePoint::operator*(const safeheron::bignum::BN &bn) const {
-    assert(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     CurvePoint res(*this);
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(curve_type_);
     uint32_t category = get_category(curve_type_);
@@ -558,8 +559,8 @@ CurvePoint CurvePoint::operator*(long n) const {
 }
 
 CurvePoint &CurvePoint::operator+=(const CurvePoint &point){
-    assert(curve_type_ != CurveType::INVALID_CURVE);
-    assert(curve_type_ == point.curve_type_);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ == point.curve_type_);
     uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
@@ -583,14 +584,14 @@ CurvePoint &CurvePoint::operator+=(const CurvePoint &point){
 }
 
 CurvePoint &CurvePoint::operator-=(const CurvePoint &point){
-    assert(curve_type_ != CurveType::INVALID_CURVE);
-    assert(curve_type_ == point.curve_type_);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ == point.curve_type_);
     *this = *this + point.Neg();
     return *this;
 }
 
 CurvePoint &CurvePoint::operator*=(const safeheron::bignum::BN &bn){
-    assert(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(curve_type_);
     uint32_t category = get_category(curve_type_);
     switch (category) {
@@ -629,7 +630,7 @@ CurvePoint &CurvePoint::operator*=(long n){
 }
 
 CurvePoint CurvePoint::Neg() const {
-    assert(curve_type_ != CurveType::INVALID_CURVE);
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
 
     CurvePoint res(*this);
 

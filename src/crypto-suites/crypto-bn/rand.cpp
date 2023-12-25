@@ -4,6 +4,7 @@
 #include <cassert>
 #include "crypto-suites/crypto-bn/rand.h"
 #include "crypto-suites/exception/safeheron_exceptions.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using safeheron::bignum::BN;
 using safeheron::exception::LocatedException;
@@ -140,14 +141,14 @@ BN RandomBNLtCoPrime(const BN &max) {
 }
 
 BN RandomBNInRange(const safeheron::bignum::BN &min, const safeheron::bignum::BN &max){
-    assert(max > min);
+    ASSERT_THROW(max > min);
     BN range = max - min;
     BN r = RandomBNLt(range);
     return min + r;
 }
 
 BN RandomNegBNInSymInterval(const safeheron::bignum::BN &limit){
-    assert(limit > 0);
+    ASSERT_THROW(limit > 0);
     BN r = RandomBNLt(limit);
     uint8_t sign[1];
     RandomBytes(sign, 1);
