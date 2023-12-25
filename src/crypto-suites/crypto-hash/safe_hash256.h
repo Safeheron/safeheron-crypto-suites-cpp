@@ -18,12 +18,12 @@ namespace hash{
  * For example:
  * - SafeHash(a ) = Hash(a || $ || len(a) || 1)
  * - SafeHash(a || b ) = Hash(a || $ || len(a) || b || $ || len(b) || 2)
- * - SafeHash(a || b || c) = Hash(a || $ || len(a) || b || $ || len(b) ||  b || $ || len(b) || 3)
+ * - SafeHash(a || b || c) = Hash(a || $ || len(a) || b || $ || len(b) ||  c || $ || len(c) || 3)
 */
 class CSafeHash256 {
 private:
     CSHA256 sha;
-    uint32_t num{0};
+    uint64_t num{0};
 public:
     static const size_t OUTPUT_SIZE = CSHA256::OUTPUT_SIZE;
 
