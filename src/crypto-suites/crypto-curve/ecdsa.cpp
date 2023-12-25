@@ -160,11 +160,25 @@ bool Verify(const CurveType c_type, const CurvePoint &pub, const uint8_t *digest
     memcpy(digest_cut, digest32, 32);
     BN z = BN::FromBytesBE(digest_cut, 32);
 
+    // check n * pub  is infinity.
+    const CurvePoint expected_infinity = pub * curv->n;
+    bool ok = expected_infinity.IsInfinity();
+    if (!ok) return false;
+
+    // pub is not infinity
+    ok = !pub.IsInfinity();
+    if (!ok) return false;
+
+    // refer to https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm
     uint8_t r_part[32], s_part[32];
     memcpy(r_part, sig64, 32);
     memcpy(s_part, sig64+32, 32);
     BN r = BN::FromBytesBE(r_part, 32);
     BN s = BN::FromBytesBE(s_part, 32);
+
+    // r < n, s < n
+    ok = (r < curv->n) && (s < curv->n);
+    if (!ok) return false;
 
     BN u1 = (z * s.InvM(n)) % n;
     BN u2 = (r * s.InvM(n)) % n;
