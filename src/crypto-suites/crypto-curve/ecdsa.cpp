@@ -19,7 +19,7 @@ namespace safeheron{
 namespace curve {
 namespace ecdsa {
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t j) {
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t recovery_id) {
 #if ENABLE_STARK
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
 #else
@@ -28,40 +28,44 @@ bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, safeheron::curve::Curve
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
 
-    if(j > 3) return false;
     const safeheron::curve::Curve *curv = safeheron::curve::GetCurveParam(c_type);
+    // For curve Secp256k1, STARK, Secp256r1(P256), recovery_id \in {0, 1, 2, 3}
+    uint8_t enum_recovery_id = (curv->h + 1) * 2;
+    // recovery_id in [0, enum_recovery_id)
+    if(recovery_id >= enum_recovery_id) return false;
     // A set LSB signifies that the y-coordinate is odd
-    bool is_y_odd = j & 1;
-    bool is_second_key = j >> 1;
-    if (is_second_key && (r >= (curv->p % curv->n))) return false;
+    bool is_y_odd = recovery_id & 1;
+    // get j from recovery_id
+    bool j = recovery_id >> 1; // j \in {0, 1}
+    if ((j == 1) && (r >= (curv->p % curv->n))) return false;
 
+    // Refer to 4.1.6 Public Key Recovery Operation in [sec1-v2](https://www.secg.org/sec1-v2.pdf).
+    // Given j and parity of y-coordinate of Pub
     // x = r + j*n
-    BN x;
-    if (is_second_key){
-        x = r + curv->n * j;
-    } else{
-        x = r;
-    }
+    BN x = r + curv->n * j;
+    // compute R
     CurvePoint R;
     bool ok = R.PointFromX(x, is_y_odd, c_type);
     if (!ok) return false;
-    BN r_inv = r.InvM(curv->n);
-    BN n_m = curv->n - h % curv->n;
-    BN u1 = (n_m * r_inv) % curv->n;
-    BN u2 = (s * r_inv) % curv->n;
-
-    pub = curv->g * u1 + R * u2;
+    // check n * R  is infinity.
+    const CurvePoint expected_infinity = R * curv->n;
+    if (!expected_infinity.IsInfinity()) return false;
+    // Compute r^{-1}
+    const BN r_inv = r.InvM(curv->n);
+    const BN& e = h;
+    // Q = r^{−1} * (sR − eG)
+    pub = (R * s - curv->g * e) * r_inv;
     return true;
 }
 
-bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint32_t sig_len, const uint8_t *digest32, uint32_t digest32_len, uint32_t v){
+bool RecoverPublicKey(safeheron::curve::CurvePoint &pub, const CurveType c_type, const uint8_t *sig64, uint32_t sig_len, const uint8_t *digest32, uint32_t digest32_len, uint32_t recovery_id){
     BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
     BN s = BN::FromBytesBE(sig64 + 32, 32);
-    return RecoverPublicKey(pub, c_type, m , r , s, v);
+    return RecoverPublicKey(pub, c_type, m , r , s, recovery_id);
 }
 
-bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t v){
+bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron::curve::CurveType c_type, const safeheron::bignum::BN &h, const safeheron::bignum::BN &r, const safeheron::bignum::BN &s, uint32_t recovery_id){
 #if ENABLE_STARK
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
 #else
@@ -70,7 +74,7 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron
         throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )");
     }
     safeheron::curve::CurvePoint pub;
-    bool ok = RecoverPublicKey(pub, c_type, h, r, s, v);
+    bool ok = RecoverPublicKey(pub, c_type, h, r, s, recovery_id);
     if (!ok) return false;
     return pub == expected_pub;
 }
@@ -78,7 +82,7 @@ bool VerifyPublicKey(const safeheron::curve::CurvePoint &expected_pub, safeheron
 bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
                      const uint8_t *sig64, uint32_t sig_len,
                      const uint8_t *digest32, uint32_t digest32_len,
-                     uint32_t v) {
+                     uint32_t recovery_id) {
 #if ENABLE_STARK
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
 #else
@@ -89,10 +93,15 @@ bool VerifyPublicKey(const CurvePoint &pub, const CurveType c_type,
     BN m = BN::FromBytesBE(digest32, digest32_len);
     BN r = BN::FromBytesBE(sig64, 32);
     BN s = BN::FromBytesBE(sig64 + 32, 32);
-    return VerifyPublicKey(pub, c_type, m, r, s, v);
+    return VerifyPublicKey(pub, c_type, m, r, s, recovery_id);
 }
 
 void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8_t *sig64){
+    uint8_t recovery_id;
+    Sign(recovery_id, c_type, priv, digest32, sig64);
+}
+
+void Sign(uint8_t &recovery_id, const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8_t *sig64){
 #if ENABLE_STARK
     if(( c_type != CurveType::SECP256K1 ) && (c_type != CurveType::P256 ) && (c_type != CurveType::STARK )){
 #else
@@ -110,11 +119,25 @@ void Sign(const CurveType c_type, const BN &priv, const uint8_t *digest32, uint8
     const CurvePoint& g = curv->g;
     //generate k, r
     BN r, k, s;
+    BN half_n = curv->n >> 1;
     while (r.IsZero() || s.IsZero()) {
         k = safeheron::rand::RandomBNLt(n);
-        CurvePoint P = g * k;
-        r = P.x() % n;
+        CurvePoint R = g * k;
+        r = R.x() % n;
         s = (k.InvM(n) * (z + r * priv)) % n;
+        // Recovery ID(binary format): 000000xy
+        // x(Compare R.x and q):
+        //     - 0 j = 0 (R.x < q)
+        //     - 1 j = 1 (R.x > q)
+        // y(parity of y-coordinate of Pub):
+        //     - 0 y-coordinate of R is even
+        //     - 1 y-coordinate of R is odd
+        recovery_id = (R.y().IsOdd() ? 1 : 0) |     // is_y_odd
+                                  ((R.x() != r) ? 2 : 0);       // is_second_key
+        if (s > half_n){
+            s = curv->n - s;
+            recovery_id ^= 1;
+        }
     }
     r.ToBytes32BE(sig64);
     s.ToBytes32BE(sig64+32);

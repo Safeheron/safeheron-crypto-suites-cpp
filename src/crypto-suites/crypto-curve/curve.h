@@ -20,6 +20,7 @@ public:
     const safeheron::bignum::BN c; /**< A parameter to define the curve. */
     const safeheron::bignum::BN d; /**< A parameter to define the curve. */
     const safeheron::bignum::BN n; /**< Order of the group on the curve */
+    int32_t h; /**< cofactor of the curve */
     const CurvePoint g; /**< Base point of the group on the curve */
     const ec_group_st* grp; /**< A pointer to the struct indicating the group on the curve */
 
@@ -40,6 +41,7 @@ public:
           safeheron::bignum::BN _c,
           safeheron::bignum::BN _d,
           safeheron::bignum::BN _n,
+          int32_t h,
           CurvePoint _g);
 
     /**

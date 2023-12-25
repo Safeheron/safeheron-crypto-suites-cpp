@@ -16,6 +16,7 @@ const static Curve Secp256k1(
         safeheron::bignum::BN("0", 16), // undefined 'c' for Secp256k1
         safeheron::bignum::BN("0", 16), // undefined 'd' for Secp256k1
         safeheron::bignum::BN("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 16),
+        1,
         CurvePoint(
                 safeheron::bignum::BN("79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798", 16),
                 safeheron::bignum::BN("483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8", 16),
@@ -32,6 +33,7 @@ const static Curve Ed25519(
         safeheron::bignum::BN("1", 10),
         safeheron::bignum::BN("52036cee2b6ffe738cc740797779e89800700a4d4141d8ab75eb4dca135978a3", 16),
         safeheron::bignum::BN("1000000000000000000000000000000014def9dea2f79cd65812631a5cf5d3ed", 16),
+        8,
         CurvePoint(
                 safeheron::bignum::BN("216936d3cd6e53fec0a4e231fdd6dc5c692cc7609525a7b2c9562d608f25d51a", 16),
                 safeheron::bignum::BN("6666666666666666666666666666666666666666666666666666666666666658", 16),
@@ -48,6 +50,7 @@ const static Curve P256(
         safeheron::bignum::BN("0", 16), // undefined 'c' for Secp256r1(also named P256)
         safeheron::bignum::BN("0", 16), // undefined 'd' for Secp256r1(also named P256)
         safeheron::bignum::BN("ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551", 16),
+        1,
         CurvePoint(
                 safeheron::bignum::BN("6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296", 16),
                 safeheron::bignum::BN("4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5", 16),
@@ -64,6 +67,7 @@ const static Curve Stark(
         safeheron::bignum::BN("0", 16), // undefined 'c' for Stark curve
         safeheron::bignum::BN("0", 16), // undefined 'd' for Stark curve
         safeheron::bignum::BN("0800000000000010ffffffffffffffffb781126dcae7b2321e66a241adc64d2f", 16),
+        1,
         CurvePoint(
                 safeheron::bignum::BN("01ef15c18599971b7beced415a40f0c7deacfd9b0d1819e03d723d8bc943cfca", 16),
                 safeheron::bignum::BN("005668060aa49730b7be4801df46ec62de53ecd11abe43a32873000c36e8dc1f", 16),
@@ -94,7 +98,8 @@ Curve::Curve(const safeheron::bignum::BN _p,
           const safeheron::bignum::BN _c,
           const safeheron::bignum::BN _d,
           const safeheron::bignum::BN _n,
-          const CurvePoint _g) : p(_p), a(_a), b(_b), c(_c), d(_d), n(_n), g(_g), grp(nullptr) {
+          int32_t _h,
+          const CurvePoint _g) : p(_p), a(_a), b(_b), c(_c), d(_d), n(_n), h(_h), g(_g), grp(nullptr) {
     grp = GetCurveGroup(g.GetCurveType());
 }
 

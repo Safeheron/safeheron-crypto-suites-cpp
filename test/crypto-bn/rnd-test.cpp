@@ -114,6 +114,20 @@ TEST(Rand, TestExecption)
     std::cout << n.Inspect() << std::endl;
 }
 
+TEST(Rand, TestExecption_ASSERT_THROW_2)
+{
+    BN n;
+    try{
+        n = safeheron::rand::RandomBNInRange(BN(100), BN(90));
+    }catch(const LocatedException &e) {
+        std::cout << "Catch LocatedException: " << e.what() << std::endl;
+        std::string info = e.what();
+        bool ok = std::string::npos != info.find("max > min");
+        EXPECT_TRUE(ok);
+    }
+    std::cout << n.Inspect() << std::endl;
+}
+
 TEST(Rand, PrimeGenerate)
 {
     clock_t start, end;
