@@ -42,9 +42,6 @@ bool IKDF::baseKDF(int hash_nid, int iter_from,
 
     // get md result size in bytes
     switch (hash_nid) {
-        case NID_sha1:
-            md = EVP_sha1();
-            break;
         case NID_sha256:
             md = EVP_sha256();
             break;

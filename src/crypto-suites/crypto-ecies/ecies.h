@@ -23,7 +23,7 @@ class IHMAC;
  */
 enum class SYMM_ALG : unsigned int {
     INVALID_ALG = 0,
-    DESede_CBC = 1,
+//    DESede_CBC = 1,
     AES128_CBC = 2,
     AES192_CBC = 3,
     AES256_CBC = 4
@@ -34,15 +34,15 @@ enum class SYMM_ALG : unsigned int {
  */
 enum class KDF_TYPE : unsigned int {
     INVALID_TYPE = 0,
-    KDF_X9_63_With_SHA1 = 1,
+//    KDF_X9_63_With_SHA1 = 1,
     KDF_X9_63_With_SHA256 = 2,
     KDF_X9_63_With_SHA384 = 3,
     KDF_X9_63_With_SHA512 = 4,
-    KDF1_18033_With_SHA1 = 5,
+//    KDF1_18033_With_SHA1 = 5,
     KDF1_18033_With_SHA256 = 6,
     KDF1_18033_With_SHA384 = 7,
     KDF1_18033_With_SHA512 = 8,
-    KDF2_18033_With_SHA1 = 9,
+//    KDF2_18033_With_SHA1 = 9,
     KDF2_18033_With_SHA256 = 10,
     KDF2_18033_With_SHA384 = 11,
     KDF2_18033_With_SHA512 = 12
@@ -53,7 +53,7 @@ enum class KDF_TYPE : unsigned int {
  */
 enum class HMAC_ALG : unsigned int {
     INVALID_ALG = 0,
-    HMAC_SHA1 = 1,
+//    HMAC_SHA1 = 1,
     HMAC_SHA256 = 2,
     HMAC_SHA384 = 3,
     HMAC_SHA512 = 4

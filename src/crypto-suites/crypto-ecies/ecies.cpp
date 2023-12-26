@@ -79,9 +79,6 @@ bool ECIES::set_symm_alg(SYMM_ALG alg) {
 
     // create new object for symmetic
     switch (symm_alg_) {
-        case SYMM_ALG::DESede_CBC:
-            symm_ = new DESede();
-            break;
         case SYMM_ALG::AES128_CBC:
             symm_ = new AES(128);
             break;
@@ -95,8 +92,6 @@ bool ECIES::set_symm_alg(SYMM_ALG alg) {
             symm_alg_ = SYMM_ALG::INVALID_ALG;
             return false;
     }
-
-    ASSERT_THROW(symm_);
 
     return true;
 }
@@ -123,9 +118,6 @@ bool ECIES::set_kdf_type(KDF_TYPE kdf) {
 
     // construct the new interface object
     switch (kdf) {
-        case KDF_TYPE::KDF_X9_63_With_SHA1:
-            kdf_ = new KDF_X9_63(NID_sha1);
-            break;
         case KDF_TYPE::KDF_X9_63_With_SHA256:
             kdf_ = new KDF_X9_63(NID_sha256);
             break;
@@ -135,9 +127,6 @@ bool ECIES::set_kdf_type(KDF_TYPE kdf) {
         case KDF_TYPE::KDF_X9_63_With_SHA512:
             kdf_ = new KDF_X9_63(NID_sha512);
             break;
-        case KDF_TYPE::KDF1_18033_With_SHA1:
-            kdf_ = new KDF1_18033(NID_sha1);
-            break;
         case KDF_TYPE::KDF1_18033_With_SHA256:
             kdf_ = new KDF1_18033(NID_sha256);
             break;
@@ -146,9 +135,6 @@ bool ECIES::set_kdf_type(KDF_TYPE kdf) {
             break;
         case KDF_TYPE::KDF1_18033_With_SHA512:
             kdf_ = new KDF1_18033(NID_sha512);
-            break;
-        case KDF_TYPE::KDF2_18033_With_SHA1:
-            kdf_ = new KDF2_18033(NID_sha1);
             break;
         case KDF_TYPE::KDF2_18033_With_SHA256:
             kdf_ = new KDF2_18033(NID_sha256);
@@ -163,8 +149,6 @@ bool ECIES::set_kdf_type(KDF_TYPE kdf) {
             return false;
     }
 
-    ASSERT_THROW(kdf_ != nullptr);
-
     return true;
 }
 
@@ -175,9 +159,7 @@ KDF_TYPE ECIES::ECIES::get_kdf_type() {
     int nid = kdf_->getHashNid();
     const char *class_name = typeid(kdf_).name();
     if (memcmp(class_name, "KDF_X9_63", strlen("KDF_X9_63")) == 0) {
-        if (nid == NID_sha1)
-            return KDF_TYPE::KDF_X9_63_With_SHA1;
-        else if (nid == NID_sha256)
+        if (nid == NID_sha256)
             return KDF_TYPE::KDF_X9_63_With_SHA256;
         else if (nid == NID_sha384)
             return KDF_TYPE::KDF_X9_63_With_SHA384;
@@ -186,9 +168,7 @@ KDF_TYPE ECIES::ECIES::get_kdf_type() {
         else
             return KDF_TYPE::INVALID_TYPE;
     } else if (memcmp(class_name, "KDF1_18033", strlen("KDF1_18033")) == 0) {
-        if (nid == NID_sha1)
-            return KDF_TYPE::KDF1_18033_With_SHA1;
-        else if (nid == NID_sha256)
+        if (nid == NID_sha256)
             return KDF_TYPE::KDF1_18033_With_SHA256;
         else if (nid == NID_sha384)
             return KDF_TYPE::KDF1_18033_With_SHA384;
@@ -197,9 +177,7 @@ KDF_TYPE ECIES::ECIES::get_kdf_type() {
         else
             return KDF_TYPE::INVALID_TYPE;
     } else if (memcmp(class_name, "KDF2_18033", strlen("KDF2_18033")) == 0) {
-        if (nid == NID_sha1)
-            return KDF_TYPE::KDF2_18033_With_SHA1;
-        else if (nid == NID_sha256)
+        if (nid == NID_sha256)
             return KDF_TYPE::KDF2_18033_With_SHA256;
         else if (nid == NID_sha384)
             return KDF_TYPE::KDF2_18033_With_SHA384;
@@ -229,9 +207,6 @@ bool ECIES::set_mac_type(HMAC_ALG mac) {
 
     // construct the new interface object
     switch (mac) {
-        case HMAC_ALG::HMAC_SHA1:
-            hmac_ = new HMAC_sha1();
-            break;
         case HMAC_ALG::HMAC_SHA256:
             hmac_ = new HMAC_sha256();
             break;
@@ -245,8 +220,6 @@ bool ECIES::set_mac_type(HMAC_ALG mac) {
             return false;
     }
 
-    ASSERT_THROW(hmac_ != nullptr);
-
     return true;
 }
 
@@ -255,9 +228,7 @@ HMAC_ALG ECIES::get_mac_type() {
     ASSERT_THROW(hmac_ != nullptr);
 
     const char *class_name = typeid(kdf_).name();
-    if (memcmp(class_name, "HMAC_sha1", strlen("HMAC_sha1")) == 0) {
-        return HMAC_ALG::HMAC_SHA1;
-    } else if (memcmp(class_name, "HMAC_sha256", strlen("HMAC_sha256")) == 0) {
+    if (memcmp(class_name, "HMAC_sha256", strlen("HMAC_sha256")) == 0) {
         return HMAC_ALG::HMAC_SHA256;
     } else if (memcmp(class_name, "HMAC_sha384", strlen("HMAC_sha384")) == 0) {
         return HMAC_ALG::HMAC_SHA384;

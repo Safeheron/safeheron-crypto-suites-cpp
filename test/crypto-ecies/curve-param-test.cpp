@@ -88,25 +88,23 @@ void testCurveEncWithParams(const std::string &message,
 
 TEST(Curve_ENC, ECIES_WithParams)
 {
-    const safeheron::ecies::SYMM_ALG symm_algs[] = {safeheron::ecies::SYMM_ALG::DESede_CBC,
+    const safeheron::ecies::SYMM_ALG symm_algs[] = {
                                               safeheron::ecies::SYMM_ALG::AES128_CBC,
                                               safeheron::ecies::SYMM_ALG::AES192_CBC,
                                               safeheron::ecies::SYMM_ALG::AES256_CBC
                                               };
-    const safeheron::ecies::KDF_TYPE kdf_types[] = {safeheron::ecies::KDF_TYPE::KDF_X9_63_With_SHA1,
+    const safeheron::ecies::KDF_TYPE kdf_types[] = {
                                               safeheron::ecies::KDF_TYPE::KDF_X9_63_With_SHA256,
                                               safeheron::ecies::KDF_TYPE::KDF_X9_63_With_SHA384,
                                               safeheron::ecies::KDF_TYPE::KDF_X9_63_With_SHA512,
-                                              safeheron::ecies::KDF_TYPE::KDF1_18033_With_SHA1,
                                               safeheron::ecies::KDF_TYPE::KDF1_18033_With_SHA256,
                                               safeheron::ecies::KDF_TYPE::KDF1_18033_With_SHA384,
                                               safeheron::ecies::KDF_TYPE::KDF1_18033_With_SHA512,
-                                              safeheron::ecies::KDF_TYPE::KDF2_18033_With_SHA1,
                                               safeheron::ecies::KDF_TYPE::KDF2_18033_With_SHA256,
                                               safeheron::ecies::KDF_TYPE::KDF2_18033_With_SHA384,
                                               safeheron::ecies::KDF_TYPE::KDF2_18033_With_SHA512
                                               };
-    const safeheron::ecies::HMAC_ALG hmac_algs[] = {safeheron::ecies::HMAC_ALG::HMAC_SHA1,
+    const safeheron::ecies::HMAC_ALG hmac_algs[] = {
                                               safeheron::ecies::HMAC_ALG::HMAC_SHA256,
                                               safeheron::ecies::HMAC_ALG::HMAC_SHA384,
                                               safeheron::ecies::HMAC_ALG::HMAC_SHA512

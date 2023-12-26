@@ -40,21 +40,6 @@ protected:
     std::string cbc_iv_;
 };
 
-class DESede : public ISYMM {
-public:
-    DESede() {
-        cipher_ = nullptr;
-        key_size_ = 24 * 8;
-        block_size_ = 8 * 8;
-    };
-
-    virtual ~DESede() {};
-public:
-    bool initKey_CBC(const unsigned char *key, size_t key_size, const unsigned char *iv, size_t iv_size);
-
-    bool initKey_CBC(const std::string &key, const std::string &iv);
-};
-
 class AES : public ISYMM {
 public:
     AES(size_t key_size) {

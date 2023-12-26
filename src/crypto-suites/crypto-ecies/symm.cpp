@@ -125,34 +125,6 @@ bool ISYMM::decrypt(const std::string &in_cypher,
     return decrypt((const unsigned char *) in_cypher.c_str(), in_cypher.length(), out_plain);
 }
 
-
-bool DESede::initKey_CBC(const unsigned char *key,
-                         size_t key_size,
-                         const unsigned char *iv,
-                         size_t iv_size) {
-    if (!key || key_size != 24) {
-        return false;
-    }
-    if (!iv || iv_size != 8) {
-        return false;
-    }
-
-    key_.clear();
-    cbc_iv_.clear();
-    key_.assign((char *) key, key_size);
-    cbc_iv_.assign((char *) iv, iv_size);
-    cipher_ = EVP_des_ede3_cbc();
-
-    return true;
-}
-
-bool DESede::initKey_CBC(const std::string &key,
-                         const std::string &iv) {
-    return initKey_CBC((const unsigned char *) key.c_str(), key.length(),
-                       (const unsigned char *) iv.c_str(), iv.length());
-}
-
-
 bool AES::initKey_CBC(const unsigned char *key,
                       size_t key_size,
                       const unsigned char *iv,
