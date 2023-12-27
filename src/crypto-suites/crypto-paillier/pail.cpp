@@ -84,7 +84,7 @@ void CreateKeyPair1024(PailPrivKey &priv, PailPubKey &pub) {
 }
 
 /**
- * Create a Paillier Key Pair (key size == 1024 bit)
+ * Create a Paillier Key Pair (key size == 2048 bit)
  *
  * @param key_bits
  */
@@ -93,7 +93,7 @@ void CreateKeyPair2048(PailPrivKey &priv, PailPubKey &pub) {
 }
 
 /**
- * Create a Paillier Key Pair (key size == 1024 bit)
+ * Create a Paillier Key Pair (key size == 3072 bit)
  *
  * @param key_bits
  */
@@ -102,7 +102,7 @@ void CreateKeyPair3072(PailPrivKey &priv, PailPubKey &pub) {
 }
 
 /**
- * Create a Paillier Key Pair (key size == 1024 bit)
+ * Create a Paillier Key Pair (key size == 4096 bit)
  *
  * @param key_bits
  */

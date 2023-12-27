@@ -31,3 +31,6 @@ add_test(NAME bip39.bip39-28bytes-test COMMAND bip39-28bytes-test)
 
 add_executable(bip39-32bytes-test bip39-32bytes-test.cpp)
 add_test(NAME bip39.bip39-32bytes-test COMMAND bip39-32bytes-test)
+
+add_executable(bip39-official-test bip39-official-test.cpp)
+add_test(NAME bip39.bip39-official-test COMMAND bip39-official-test)
