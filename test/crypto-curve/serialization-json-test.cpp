@@ -49,10 +49,35 @@ void testSerialize(CurveType cType){
 
     // json string
     std::string jsonStr;
+    // p0 => json
     EXPECT_TRUE(p0.ToJsonString(jsonStr));
-    std::cout << jsonStr << std::endl;
+    std::cout << "p0: " << jsonStr << std::endl;
+    // json => p1
     EXPECT_TRUE(p1.FromJsonString(jsonStr));
+    // p1 => json
+    EXPECT_TRUE(p1.ToJsonString(jsonStr));
+    std::cout << "p1: " << jsonStr << std::endl;
+    // p0 == p1
     EXPECT_TRUE(p0 == p1);
+}
+
+void testSerializeInfinityPoint(CurveType cType){
+    CurvePoint p0(cType);
+    CurvePoint p1;
+
+    // json string
+    std::string jsonStr;
+    // p0 => json
+    EXPECT_TRUE(p0.ToJsonString(jsonStr));
+    std::cout << "p0: " << jsonStr << std::endl;
+    // json => p1
+    EXPECT_TRUE(p1.FromJsonString(jsonStr));
+    // p1 => json
+    EXPECT_TRUE(p1.ToJsonString(jsonStr));
+    std::cout << "p1: " << jsonStr << std::endl;
+    // p0 == p1
+    EXPECT_TRUE(p0 == p1);
+    EXPECT_TRUE(p1.IsInfinity());
 }
 
 TEST(CurvePoint, Serialize)
@@ -60,6 +85,16 @@ TEST(CurvePoint, Serialize)
     testSerialize(CurveType::SECP256K1);
     testSerialize(CurveType::P256);
     testSerialize(CurveType::ED25519);
+#if ENABLE_STARK
+    testSerialize(CurveType::STARK);
+#endif // ENABLE_STARK
+
+    testSerializeInfinityPoint(CurveType::SECP256K1);
+    testSerializeInfinityPoint(CurveType::P256);
+    testSerializeInfinityPoint(CurveType::ED25519);
+#if ENABLE_STARK
+    testSerializeInfinityPoint(CurveType::STARK);
+#endif // ENABLE_STARK
 }
 
 int main(int argc, char **argv) {

@@ -66,7 +66,7 @@ public:
         info_.append(message + src_offset, src_len);
     }
 
-    virtual const char* what() const throw () {
+    virtual const char* what() const noexcept {
         return info_.c_str();
     }
 

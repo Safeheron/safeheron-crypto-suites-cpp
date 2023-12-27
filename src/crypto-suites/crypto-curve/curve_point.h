@@ -149,7 +149,7 @@ public:
      * @warning It will return false if the input parameter is invalid.
      * @return true if it succeed, false otherwise.
      */
-    bool PointFromX(safeheron::bignum::BN &x, bool yIsOdd, CurveType c_type);
+    bool PointFromX(const safeheron::bignum::BN &x, bool yIsOdd, CurveType c_type);
 
     /**
      * Set this CurvePoint with the specified coordinate y, parity of coordinate x and curve type.
@@ -159,11 +159,12 @@ public:
      * @warning It only works on Edwards curves, and it will return false if the input parameter is invalid.
      * @return true if it succeeded, false otherwise.
      */
-    bool PointFromY(safeheron::bignum::BN &y, bool xIsOdd, CurveType c_type);
+    bool PointFromY(const safeheron::bignum::BN &y, bool xIsOdd, CurveType c_type);
 
     /**
      * Encode this CurvePoint into 33 bytes(compressed format).
      * @param[out] pub33
+     * @warning Throw exception if point is infinity.
      */
     void EncodeCompressed(uint8_t* pub33) const;
 
@@ -178,6 +179,7 @@ public:
     /**
      * Encode this CurvePoint into 65 bytes(format of full public key).
      * @param[out] pub33
+     * @warning Throw exception if point is infinity.
      */
     void EncodeFull(uint8_t* pub65) const;
 
@@ -202,7 +204,64 @@ public:
      * @param[in] c_type
      * @return
      */
-    bool DecodeEdwardsPoint(uint8_t *pub32, CurveType c_type);
+    bool DecodeEdwardsPoint(const uint8_t *pub32, CurveType c_type);
+
+    /**
+     * Encode this CurvePoint into compressed format(02/03 + X).
+     *
+     * Refer to section 2.3.3 Elliptic-Curve-Point-to-Octet-String Conversion in "SEC 1: Elliptic Curve Cryptography"(https://secg.org/sec1-v2.pdf)
+     *
+     * @param[out] bytes
+     */
+    void EncodeCompressed(std::string & bytes) const;
+
+    /**
+     * Decode compressed format and set this CurvePoint.
+     *
+     * Refer to section 2.3.3 Elliptic-Curve-Point-to-Octet-String Conversion in "SEC 1: Elliptic Curve Cryptography"(https://secg.org/sec1-v2.pdf)
+     *
+     * @param[in] bytes
+     * @param[in] c_type
+     * @return true if it succeeded, false otherwise.
+     */
+    bool DecodeCompressed(const std::string &bytes, CurveType c_type);
+
+    /**
+     * Encode this CurvePoint into full format.
+     *
+     * Refer to section 2.3.3 Elliptic-Curve-Point-to-Octet-String Conversion in "SEC 1: Elliptic Curve Cryptography"(https://secg.org/sec1-v2.pdf)
+     *
+     * @param[out] bytes
+     */
+    void EncodeFull(std::string &bytes) const;
+
+    /**
+     * Decode full format and set this CurvePoint.
+     *
+     * Refer to section 2.3.3 Elliptic-Curve-Point-to-Octet-String Conversion in "SEC 1: Elliptic Curve Cryptography"(https://secg.org/sec1-v2.pdf)
+     *
+     * @param[in] bytes
+     * @param[in] c_type
+     * @return true if it succeeded, false otherwise.
+     */
+    bool DecodeFull(const std::string &bytes, CurveType c_type);
+
+    /**
+     * Encode the edwards point into edwards format.
+     *
+     * @warning It will throw an exception if this CurvePoint came from a curve different from Ed25519.
+     * @param[out] bytes
+     */
+    void EncodeEdwardsPoint(std::string &bytes) const;
+
+    /**
+     * Decode bytes as an Edward point and set this CurvePoint.
+     *
+     * @param[in] bytes
+     * @param[in] c_type
+     * @return
+     */
+    bool DecodeEdwardsPoint(const std::string &bytes, CurveType c_type);
 
     /**
      * Addition on curve.
@@ -349,12 +408,14 @@ public:
     /**
      * Get coordinate x of the point
      * @return coordinate x
+     * @warning throw exception if the point is infinity and the curve is not Ed25519
      */
     safeheron::bignum::BN x() const;
 
     /**
      * Get coordinate y of the point
      * @return coordinate y
+     * @warning throw exception if the point is infinity and the curve is not Ed25519
      */
     safeheron::bignum::BN y() const;
 

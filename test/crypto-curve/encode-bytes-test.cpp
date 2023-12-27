@@ -175,6 +175,13 @@ TEST(CurvePoint, UniverseEncode)
                        "02602c797e30ca6d754470b60ed2bc8677207e8e4ed836f81444951f224877f94f",
                        "04602c797e30ca6d754470b60ed2bc8677207e8e4ed836f81444951f224877f94f637ffcaa7a1b2477c8e44d54c898bfcf2576a6853de0e843ba8874b06ae87b2c",
                        CurveType::ED25519);
+#if ENABLE_STARK
+    testUniverseEncode("03909690e1123c80678a7ba0fde0e8447f6f02b3f6b960034d1e93524f8b476",
+                       "07122e9063d239d89d4e336753845b76f2b33ca0d7f0c1acd4b9fe974994cc19",
+                       "03003909690e1123c80678a7ba0fde0e8447f6f02b3f6b960034d1e93524f8b476",
+                       "04003909690e1123c80678a7ba0fde0e8447f6f02b3f6b960034d1e93524f8b47607122e9063d239d89d4e336753845b76f2b33ca0d7f0c1acd4b9fe974994cc19",
+                       CurveType::STARK);
+#endif // ENABLE_STARK
 }
 
 void testEdwardsEncode(const char *x_hex, const char *y_hex, const std::string &pub32_hex, CurveType cType){
@@ -231,6 +238,201 @@ TEST(CurvePoint, EncodeEdwards)
                       CurveType::ED25519);
 }
 
+void testEncodeCompressed(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        std::string bytes;
+        // p0 => bytes => hex0
+        p0.EncodeCompressed(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeCompressed(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeCompressed(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+
+void testEncodeFull(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        std::string bytes;
+        // p0 => bytes => hex0
+        p0.EncodeFull(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeFull(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeFull(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+void testEncodeEdwards(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        std::string bytes;
+        // p0 => bytes => hex0
+        p0.EncodeEdwardsPoint(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeEdwardsPoint(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeEdwardsPoint(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+TEST(CurvePoint, EncodeBytes_2)
+{
+    testEncodeCompressed(CurveType::SECP256K1);
+    testEncodeCompressed(CurveType::P256);
+#if ENABLE_STARK
+    testEncodeCompressed(CurveType::STARK);
+#endif // ENABLE_STARK
+    testEncodeCompressed(CurveType::ED25519);
+
+    testEncodeFull(CurveType::SECP256K1);
+    testEncodeFull(CurveType::P256);
+#if ENABLE_STARK
+    testEncodeFull(CurveType::STARK);
+#endif // ENABLE_STARK
+    testEncodeFull(CurveType::ED25519);
+
+    testEncodeEdwards(CurveType::ED25519);
+}
+
+void testEncodeCompressed_OldVersion(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        uint8_t bytes[33];
+        // p0 => bytes => hex0
+        p0.EncodeCompressed(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes, 33);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeCompressed(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeCompressed(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes, 33);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+
+void testEncodeFull_OldVersion(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        uint8_t bytes[65];
+        // p0 => bytes => hex0
+        p0.EncodeFull(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes, 65);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeFull(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeFull(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes, 65);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+void testEncodeEdwards_OldVersion(CurveType cType){
+    const Curve *curv = safeheron::curve::GetCurveParam(cType);
+    for (int i = 0; i < 10; ++i) {
+        BN r = safeheron::rand::RandomBNLt(curv->n);
+        CurvePoint p0 = curv->g * r;
+        CurvePoint p1(cType);
+        std::string hex0, hex1;
+
+        uint8_t bytes[32];
+        // p0 => bytes => hex0
+        p0.EncodeEdwardsPoint(bytes);
+        hex0 = safeheron::encode::hex::EncodeToHex(bytes, 32);
+        std::cout << "p0: " << hex0 << std::endl;
+        // bytes => p1
+        EXPECT_TRUE(p1.DecodeEdwardsPoint(bytes, cType));
+        // p1 => bytes => hex1
+        p1.EncodeEdwardsPoint(bytes);
+        hex1 = safeheron::encode::hex::EncodeToHex(bytes, 32);
+        std::cout << "p1: " << hex1 << std::endl;
+        // p0 == p1
+        EXPECT_TRUE(p0 == p1);
+        // hex0 = hex1
+        EXPECT_TRUE(hex0 == hex1);
+    }
+}
+
+TEST(CurvePoint, EncodeBytes_1)
+{
+    testEncodeCompressed_OldVersion(CurveType::SECP256K1);
+    testEncodeCompressed_OldVersion(CurveType::P256);
+#if ENABLE_STARK
+    testEncodeCompressed_OldVersion(CurveType::STARK);
+#endif // ENABLE_STARK
+    testEncodeCompressed_OldVersion(CurveType::ED25519);
+
+    testEncodeFull_OldVersion(CurveType::SECP256K1);
+    testEncodeFull_OldVersion(CurveType::P256);
+#if ENABLE_STARK
+    testEncodeFull_OldVersion(CurveType::STARK);
+#endif // ENABLE_STARK
+    testEncodeFull_OldVersion(CurveType::ED25519);
+
+    testEncodeEdwards_OldVersion(CurveType::ED25519);
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

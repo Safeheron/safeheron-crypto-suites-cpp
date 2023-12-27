@@ -1,95 +1,96 @@
 #include <cassert>
 #include <openssl/ec.h>
 #include <cstring>
+#include "crypto-suites/common/ByteArrayDeleter.h"
 #include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
 #include "crypto-suites/common/custom_assert.h"
 
+using safeheron::common::ByteArrayDeleter;
+
 namespace safeheron{
 namespace _openssl_curve_wrapper {
-int encode_ec_point(const ec_group_st* grp, const ec_point_st *pub, uint8_t *pub_key, bool compress)
+int encode_ec_point(const ec_group_st* grp, const ec_point_st *pub,  uint8_t* pub_bytes, int pub_bytes_len, bool compress)
 {
     int ret = 0;
-    bool at_infinity = false;
-    uint8_t tmp[64] = {0};
     BIGNUM* bn_x = nullptr;
     BIGNUM* bn_y = nullptr;
 
-    ASSERT_THROW(pub);
-    ASSERT_THROW(pub_key);
+    // clear output pub_bytes
+    memset(pub_bytes, 0, pub_bytes_len);
 
-    if (!(bn_x = BN_new()) ||
-        !(bn_y = BN_new())) {
+    // check pointer is not null
+    if(!pub || !pub_bytes) {
+        ret = -1;
         goto err;
     }
 
+    // check point is not infinity
     if (EC_POINT_is_at_infinity(grp, pub) == 1) {
-        at_infinity = true;
+        ret = -2;
+        goto err;
     }
 
-    if (!at_infinity) {
-        if ((ret = EC_POINT_get_affine_coordinates(grp, pub, bn_x, bn_y, nullptr)) != 1) {
-            ret = -1;
-            goto err;
-        }
+    if (!(bn_x = BN_new()) ||
+        !(bn_y = BN_new())) {
+        ret = -3;
+        goto err;
     }
-    else {
-        BN_zero(bn_x);
-        BN_zero(bn_y);
+
+    if ((ret = EC_POINT_get_affine_coordinates(grp, pub, bn_x, bn_y, nullptr)) != 1) {
+        ret = -4;
+        goto err;
     }
 
     if (compress) {
-        memset(pub_key, 0, 33);
+        // For Secp256k1, P256, StarkCurve, pub_bytes_len = 33, coordinate_bytes_len = 32
+        int coordinate_bytes_len = pub_bytes_len - 1;
+
+        // temp buffer
+        std::unique_ptr<uint8_t[], ByteArrayDeleter> tmp(new uint8_t[coordinate_bytes_len], ByteArrayDeleter(coordinate_bytes_len));
+        memset(tmp.get(), 0, coordinate_bytes_len);
+
+        // first byte
         if (BN_is_odd(bn_y)) {
-            pub_key[0] = 0x03;
+            pub_bytes[0] = 0x03;
+        } else {
+            pub_bytes[0] = 0x02;
         }
-        else {
-            pub_key[0] = 0x02;
+        // encode x-coordinate
+        if ((ret = BN_bn2binpad(bn_x, tmp.get(), coordinate_bytes_len)) != coordinate_bytes_len) {
+            ret = -5;
+            goto err;
         }
-        if (!at_infinity) {
-            if ((ret = BN_bn2bin(bn_x, tmp)) == 0) {
-                ret = -1;
-                goto err;
-            }
-            if (ret < 32) {
-                uint8_t *des = pub_key + 33 - ret;
-                memcpy(des, tmp, ret);
-            } else {
-                uint8_t *src = tmp + ret - 32;
-                memcpy(pub_key + 1, src, 32);
-            }
-        }
+        // encode x in Big-Endian bytes
+        uint8_t *des = pub_bytes + 1;
+        memcpy(des, tmp.get(), coordinate_bytes_len);
         ret = 0;
     }
     else {
-        memset(pub_key, 0, 65);
-        pub_key[0] = 0x04;
-        //
-        if (!at_infinity) {
-            if ((ret = BN_bn2bin(bn_x, tmp)) == 0) {
-                ret = -1;
-                goto err;
-            }
-            if (ret < 32) {
-                uint8_t *des = pub_key + 33 - ret;
-                memcpy(des, tmp, ret);
-            } else {
-                uint8_t *src = tmp + ret - 32;
-                memcpy(pub_key + 1, src, 32);
-            }
-            //
-            if ((ret = BN_bn2bin(bn_y, tmp)) == 0) {
-                ret = -1;
-                goto err;
-            }
-            if (ret < 32) {
-                uint8_t *des = pub_key + (33+32) - ret;
-                memcpy(des, tmp, ret);
-            } else {
-                uint8_t *src = tmp + ret - 32;
-                memcpy(pub_key + 33, src, 32);
-            }
-        }
+        // For Secp256k1, P256, StarkCurve, pub_bytes_len = 65, coordinate_bytes_len = 32
+        int coordinate_bytes_len = (pub_bytes_len - 1)/2;
 
+        // temp buffer
+        std::unique_ptr<uint8_t[], ByteArrayDeleter> tmp(new uint8_t[coordinate_bytes_len], ByteArrayDeleter(coordinate_bytes_len));
+        memset(tmp.get(), 0, coordinate_bytes_len);
+
+        // First byte
+        pub_bytes[0] = 0x04;
+        // x-coordinate
+        if ((ret = BN_bn2binpad(bn_x, tmp.get(), coordinate_bytes_len)) != coordinate_bytes_len) {
+            ret = -6;
+            goto err;
+        }
+        // encode x in Big-Endian bytes
+        uint8_t *des = pub_bytes + 1;
+        memcpy(des, tmp.get(), coordinate_bytes_len);
+        // y-coordinate
+        if ((ret = BN_bn2binpad(bn_y, tmp.get(), coordinate_bytes_len)) != coordinate_bytes_len) {
+            ret = -7;
+            goto err;
+        }
+        // encode y in Big-Endian bytes
+        des = pub_bytes + 1 + coordinate_bytes_len;
+        memcpy(des, tmp.get(), coordinate_bytes_len);
         ret = 0; // 0 is OK
     }
 
@@ -102,8 +103,7 @@ err:
         BN_clear_free(bn_y);
         bn_y = nullptr;
     }
-
-    return ret;    
+    return ret;
 }
 
 // priv_key is a 32 byte big endian stored number
@@ -120,8 +120,8 @@ int sign_digest(const ec_group_st* grp, const uint8_t *priv_key, const uint8_t *
     ECDSA_SIG* ecdsa_sig = nullptr;
     const int MAX_TRY_TIMES = 10000;
 
-    ASSERT_THROW(grp);
-    ASSERT_THROW(priv_key && digest32 && sig64);
+    assert(grp);
+    assert(priv_key && digest32 && sig64);
 
     if (!(priv = BN_new()) ||
         !(ec_key = EC_KEY_new_by_curve_name(EC_GROUP_get_curve_name(grp)))) {
