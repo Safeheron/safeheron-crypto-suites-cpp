@@ -112,9 +112,7 @@ void PailAffGroupEleRangeProof_V2::Prove(const PailAffGroupEleRangeSetUp_V2 &set
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     Y.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    X.x().ToBytesBE(str);
-    sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    X.y().ToBytesBE(str);
+    X.EncodeFull(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     q.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
@@ -130,9 +128,7 @@ void PailAffGroupEleRangeProof_V2::Prove(const PailAffGroupEleRangeSetUp_V2 &set
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    Bx_.x().ToBytesBE(str);
-    sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    Bx_.y().ToBytesBE(str);
+    Bx_.EncodeFull(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     By_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
@@ -225,9 +221,7 @@ bool PailAffGroupEleRangeProof_V2::Verify(const PailAffGroupEleRangeSetUp_V2 &se
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     Y.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    X.x().ToBytesBE(str);
-    sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    X.y().ToBytesBE(str);
+    X.EncodeFull(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     q.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
@@ -243,9 +237,7 @@ bool PailAffGroupEleRangeProof_V2::Verify(const PailAffGroupEleRangeSetUp_V2 &se
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     A_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    Bx_.x().ToBytesBE(str);
-    sha512.Write((const uint8_t *)(str.c_str()), str.length());
-    Bx_.y().ToBytesBE(str);
+    Bx_.EncodeFull(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());
     By_.ToBytesBE(str);
     sha512.Write((const uint8_t *)(str.c_str()), str.length());

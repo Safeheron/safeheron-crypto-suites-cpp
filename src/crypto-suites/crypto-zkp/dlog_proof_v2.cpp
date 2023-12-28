@@ -44,17 +44,11 @@ void DLogProof_V2::InternalProveWithR(const BN &x, const CurvePoint &g, const BN
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    g.x().ToBytes32BE(str);
+    g.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    g.y().ToBytes32BE(str);
+    A_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    A_.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    A_.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    X.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    X.y().ToBytes32BE(str);
+    X.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, 32);
@@ -76,17 +70,11 @@ bool DLogProof_V2::InternalVerify(const curve::CurvePoint &X) const {
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    curv_->g.x().ToBytes32BE(str);
+    curv->g.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    curv_->g.y().ToBytes32BE(str);
+    A_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    A_.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    A_.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    X.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    X.y().ToBytes32BE(str);
+    X.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
     BN e = BN::FromBytesBE(sha256_digest, 32);

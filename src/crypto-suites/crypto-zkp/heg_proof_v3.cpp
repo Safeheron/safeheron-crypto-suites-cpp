@@ -51,35 +51,21 @@ void HEGProof_V3::ProveWithR(const HEGStatement_V3 &statement, const HEGWitness_
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    T.x().ToBytes32BE(str);
+    T.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    T.y().ToBytes32BE(str);
+    G.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.x().ToBytes32BE(str);
+    H.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.y().ToBytes32BE(str);
+    S.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    H.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    H.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    S.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    S.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.y().ToBytes32BE(str);
+    R.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     ord.ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha.x().ToBytes32BE(str);
+    Alpha.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Beta.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Beta.y().ToBytes32BE(str);
+    Beta.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 
@@ -113,35 +99,21 @@ bool HEGProof_V3::Verify(const HEGStatement_V3 &statement) const {
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    T.x().ToBytes32BE(str);
+    T.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    T.y().ToBytes32BE(str);
+    G.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.x().ToBytes32BE(str);
+    H.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.y().ToBytes32BE(str);
+    S.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    H.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    H.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    S.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    S.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.y().ToBytes32BE(str);
+    R.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     ord.ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha_.x().ToBytes32BE(str);
+    Alpha_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha_.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Beta_.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Beta_.y().ToBytes32BE(str);
+    Beta_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 

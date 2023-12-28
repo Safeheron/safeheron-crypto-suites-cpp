@@ -17,9 +17,7 @@ Com512& Com512::CommitBN(const safeheron::bignum::BN &num){
 
 Com512& Com512::CommitCurvePoint(const safeheron::curve::CurvePoint &point){
     std::string buf;
-    point.x().ToBytesBE(buf);
-    sha.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
-    point.y().ToBytesBE(buf);
+    point.EncodeFull(buf);
     sha.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
     return *this;
 }

@@ -52,24 +52,16 @@ void PedersenProof::ProveWithR(const PedersenStatement &statement,
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
     // Alpha
-    Alpha.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha.y().ToBytesBE(str);
+    Alpha.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // T
-    statement.T_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.T_.y().ToBytesBE(str);
+    statement.T_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // G
-    statement.G_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.G_.y().ToBytesBE(str);
+    statement.G_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // H
-    statement.H_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.H_.y().ToBytesBE(str);
+    statement.H_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 
@@ -102,24 +94,16 @@ bool PedersenProof::Verify(const PedersenStatement &statement) const {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
     // Alpha
-    Alpha_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha_.y().ToBytesBE(str);
+    Alpha_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // T
-    statement.T_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.T_.y().ToBytesBE(str);
+    statement.T_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // G
-    statement.G_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.G_.y().ToBytesBE(str);
+    statement.G_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     // H
-    statement.H_.x().ToBytesBE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    statement.H_.y().ToBytesBE(str);
+    statement.H_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 

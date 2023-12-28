@@ -39,9 +39,7 @@ BN CreateComWithBlind(const CurvePoint &point, const BN &blind_factor) {
     uint8_t digest[CSafeHash256::OUTPUT_SIZE];
     CSafeHash256 sha256;
     std::string buf;
-    point.x().ToBytesBE(buf);
-    sha256.Write((const uint8_t*)buf.c_str(), buf.length());
-    point.y().ToBytesBE(buf);
+    point.EncodeFull(buf);
     sha256.Write((const uint8_t*)buf.c_str(), buf.length());
 
     blind_factor.ToBytesBE(buf);
@@ -56,9 +54,7 @@ BN CreateComWithBlind(const std::vector<CurvePoint> &points, const BN &blind_fac
     CSafeHash256 sha256;
     std::string buf;
     for(size_t i = 0; i < points.size(); ++i) {
-        points[i].x().ToBytesBE(buf);
-        sha256.Write((const uint8_t *) buf.c_str(), buf.length());
-        points[i].y().ToBytesBE(buf);
+        points[i].EncodeFull(buf);
         sha256.Write((const uint8_t *) buf.c_str(), buf.length());
     }
 

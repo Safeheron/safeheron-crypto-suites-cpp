@@ -47,23 +47,15 @@ void LinearCombinationProof::ProveWithR(const LinearCombinationStatement &statem
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    V.x().ToBytes32BE(str);
+    V.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    V.y().ToBytes32BE(str);
+    R.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.y().ToBytes32BE(str);
+    G.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     ord.ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha.y().ToBytes32BE(str);
+    Alpha.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 
@@ -94,23 +86,15 @@ bool LinearCombinationProof::Verify(const LinearCombinationStatement &statement)
     if(salt_.length() > 0) {
         sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
     }
-    V.x().ToBytes32BE(str);
+    V.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    V.y().ToBytes32BE(str);
+    R.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    R.y().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    G.y().ToBytes32BE(str);
+    G.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     ord.ToBytes32BE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha_.x().ToBytes32BE(str);
-    sha256.Write((const uint8_t *)(str.c_str()), str.length());
-    Alpha_.y().ToBytes32BE(str);
+    Alpha_.EncodeFull(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     sha256.Finalize(sha256_digest);
 
