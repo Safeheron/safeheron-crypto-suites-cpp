@@ -101,7 +101,7 @@ TEST(ZKP, PailEncRangeProof_V3Failed_Range__Minus_l)
 
     // Witness
     BN x = SampleRange(l, curv->n);
-    x = BN::ZERO - x;
+    x = pail_pub.n() - x;
     BN r = RandomBNLtCoPrime(pail_pub.n());
     pail::PailEncRangeWitness_V3 witness(x, r);
 

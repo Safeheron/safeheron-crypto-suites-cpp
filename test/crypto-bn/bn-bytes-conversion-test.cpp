@@ -41,11 +41,41 @@ TEST(BN, ByteConversion) {
     uint8_t expected_little_endian[2] = { 0xc7, 0xbc};
     bn6.ToBytesBE(str_big_endian);
     bn6.ToBytesLE(str_little_endian);
-    std::cout << "str_big_endian: " << str_big_endian << std::endl;
-    std::cout << "str_little_endian: " << str_little_endian << std::endl;
     for(int i = 0; i < 2; i++) {
         EXPECT_EQ((uint8_t)str_big_endian[i], expected_big_endian[i]);
         EXPECT_EQ((uint8_t)str_little_endian[i], expected_little_endian[i]);
+    }
+
+    BN bn32_0(0);
+    std::string str_zero;
+    uint8_t ch_zero[32] = {0};
+    uint8_t expected_ch_zero[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    bn32_0.ToBytes32BE(str_zero);
+    bn32_0.ToBytes32BE(ch_zero);
+    for(int i = 0; i < 32; i++) {
+        EXPECT_EQ((uint8_t)str_zero[i], expected_ch_zero[i]);
+        EXPECT_EQ(ch_zero[i], expected_ch_zero[i]);
+    }
+
+    BN bn32_123("123", 16);
+    std::string str_bn123_big_endian;
+    std::string str_bn123_little_endian;
+    uint8_t ch_bn123_big_endian[32] = {0};
+    uint8_t ch_bn123_little_endian[32] = {0};
+    uint8_t expected_ch_bn123_big[32] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x23};
+    uint8_t expected_ch_bn123_little[32] = {0x23, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    bn32_123.ToBytes32BE(str_bn123_big_endian);
+    bn32_123.ToBytes32BE(ch_bn123_big_endian);
+    bn32_123.ToBytes32LE(str_bn123_little_endian);
+    bn32_123.ToBytes32LE(ch_bn123_little_endian);
+    for(int i = 0; i < 32; i++) {
+        EXPECT_EQ((uint8_t)str_bn123_big_endian[i], expected_ch_bn123_big[i]);
+        EXPECT_EQ(ch_bn123_big_endian[i], expected_ch_bn123_big[i]);
+        EXPECT_EQ((uint8_t)str_bn123_little_endian[i], expected_ch_bn123_little[i]);
+        EXPECT_EQ(ch_bn123_little_endian[i], expected_ch_bn123_little[i]);
     }
 
     BN bn32("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", 16);
@@ -126,12 +156,19 @@ TEST(BN, ToBytes32FromBytes32)
         EXPECT_EQ(num3[i], buf32LE[i]);
         EXPECT_EQ(num3[i], buf32BE[31 - i]);
     }
+
     BN n4 = BN::FromBytesBE(num4, 33);
-    n4.ToBytes32BE(buf32BE);
-    n4.ToBytes32LE(buf32LE);
-    for(int i = 0; i < 32; ++i){
-        EXPECT_EQ(num4[i + 1], buf32BE[i]);
-        EXPECT_EQ(num4[i + 1], buf32LE[31 - i]);
+    try {
+        n4.ToBytes32BE(buf32BE);
+    }
+    catch(std::exception & e) {
+        EXPECT_TRUE(strstr(e.what(), "(len = BN_bn2binpad(bn_, buf32, 32)) != 32"));
+    }
+    try {
+        n4.ToBytes32LE(buf32LE);
+    }
+    catch(std::exception & e) {
+        EXPECT_TRUE(strstr(e.what(), "(len = BN_bn2lebinpad(bn_, buf32, 32)) != 32"));
     }
 }
 

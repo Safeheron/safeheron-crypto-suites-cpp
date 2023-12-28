@@ -362,6 +362,9 @@ public:
 
     /**
      * @brief Calculate square root of this object
+     *  1. let q = n^2 + delta  (0<= delta < (n+1)^2 - n^2 )
+     *  2. if input q then return n when q >= 0
+     *  3. if q < 0, then shrow an exception
      * 
      * @return BN the square root of this big number
      */
@@ -466,12 +469,14 @@ public:
     /**
      * Conversion to bytes string in big endian, which is 32 in length by byte
      * @param[out] buf
+     * @warning Throw an exception if ByteLength(bn_) > 32.
      */
     void ToBytes32BE(std::string &buf) const;
 
     /**
      * Conversion to bytes string in little endian, which is 32 in length by byte
      * @param[out] buf
+     * @warning Throw an exception if ByteLength(bn_) > 32.
      */
     void ToBytes32LE(std::string &buf) const;
 
@@ -479,6 +484,7 @@ public:
      * Conversion to bytes string in big endian, which is 32 in length by byte
      * @param[out] buf32
      * @param[in] blen
+     * @warning Throw an exception if ByteLength(bn_) > 32.
      */
     void ToBytes32BE(uint8_t *buf32, int blen=32) const;
 
@@ -486,6 +492,7 @@ public:
      * Conversion to bytes string in little endian, which is 32 in length by byte
      * @param[out] buf32
      * @param[in] blen
+     * @warning Throw an exception if ByteLength(bn_) > 32.
      */
     void ToBytes32LE(uint8_t *buf32, int blen=32) const;
 

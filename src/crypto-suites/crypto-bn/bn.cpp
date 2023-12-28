@@ -980,31 +980,45 @@ BN BN::SqrtM(const BN &p) const
 
 /**
  * @brief Calculate square root of this object
+ *  1. let q = n^2 + delta  (0<= delta < (n+1)^2 - n^2 )
+ *  2. if input q then return n when q >= 0
+ *  3. if q < 0, then shrow an exception
+ * 
+ *  Refer to "Computing Integer Square Roots" written by James Ulery.
+ *  http://www.azillionmonkeys.com/qed/ulerysqroot.pdf
+ * 
+ *  unsigned isqrt (unsigned long v) {
+ *      unsigned long temp, nHat=0, b = 0x8000, bshft = 15;
+ *      do {
+ *          if (v >= (temp = (((nHat<<1)+b) <<bshft--))) { 
+ *              nHat += b;
+ *              v -= temp;
+ *          }
+ *      } while (b >>= 1);
+ *      return nHat;
+ *  }
  * 
  * @return BN the square root of this big number
  */
 BN BN::Sqrt() const
 {
-	int shift = 0;
-    BN mask(0);
-    BN sqrt(0);
+    BN temp(0), nHat(0), b(0);
     BN x(*this);
-    BN r(0);
 
-	shift = BN_num_bits(bn_) / 2;
+    ASSERT_THROW(!IsNeg());
 
-	while (shift >= 0) {
-        mask = BN::ONE << shift;
-        sqrt = (mask + (r << 1)) << shift;
+    int bshift = (BN_num_bits(bn_) + 1) / 2;
+    b = BN(1) << bshift;
 
-        if (sqrt <= x) {
-            r += mask;
-            x -= sqrt;
+    do {
+        temp = ((nHat << 1) + b) << (bshift--);
+        if (x >= temp) {
+            nHat += b;
+            x -= temp;
         }
-		shift--;
-    }
+    }while((b >>= 1) > 0);
 
-    return r;
+    return nHat;
 }
 
 /**
@@ -1252,33 +1266,10 @@ void BN::ToBytes32BE(uint8_t *buf32, int blen) const
     ASSERT_THROW(blen >= 32);
     memset(buf32, 0, 32);
 
-    int len = BN_num_bytes(bn_);
-    if (len == 0) {
-        return;
+    int len = 0;
+    if ((len = BN_bn2binpad(bn_, buf32, 32)) != 32) {
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2binpad(bn_, buf32, 32)) != 32");
     }
-
-    uint8_t*ch = (uint8_t*)OPENSSL_malloc(len);
-    if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
-    }
-
-    memset(ch, 0, len);
-    if ((len = BN_bn2bin(bn_, ch)) <= 0) {
-        OPENSSL_free(ch);
-        ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2bin(bn_, ch)) <= 0");
-    }
-
-    if (len < 32) {
-        uint8_t *des = buf32 + 32 - len;
-        memcpy(des, ch, len);
-    } else {
-        uint8_t *src = ch + len - 32;
-        memcpy(buf32, src, 32);
-    }
-
-    OPENSSL_free(ch);
-    ch = nullptr;
 }
 
 /**
@@ -1292,33 +1283,10 @@ void BN::ToBytes32LE(uint8_t *buf32, int blen) const
     ASSERT_THROW(blen >= 32);
     memset(buf32, 0, 32);
 
-    int len = BN_num_bytes(bn_);
-    if (len == 0) {
-        return;
+    int len = 0;
+    if ((len = BN_bn2lebinpad(bn_, buf32, 32)) != 32) {
+        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2lebinpad(bn_, buf32, 32)) != 32");
     }
-
-    uint8_t* ch = (uint8_t*)OPENSSL_malloc(len);
-    if (ch == nullptr) {
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, len, "ch == nullptr");
-    }
-
-    memset(ch, 0, len);
-    if ((len = BN_bn2lebinpad(bn_, ch, len)) <= 0) {
-        OPENSSL_free(ch);
-        ch = nullptr;
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, len, "(len = BN_bn2lebinpad(bn_, ch, len)) <= 0");
-    }
-
-    if (len < 32) {
-        // memcpy_s
-        memcpy(buf32, ch, len);
-    }
-    else {
-        memcpy(buf32, ch, 32);
-    }
-
-    OPENSSL_free(ch);
-    ch = nullptr;
 }
 
 /**

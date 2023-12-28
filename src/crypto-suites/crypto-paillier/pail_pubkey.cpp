@@ -3,6 +3,7 @@
 #include "crypto-suites/crypto-encode/base64.h"
 #include "crypto-suites/exception/safeheron_exceptions.h"
 #include "crypto-suites/crypto-paillier/pail_pubkey.h"
+#include "crypto-suites/common/custom_assert.h"
 
 using std::string;
 using safeheron::bignum::BN;
@@ -47,12 +48,14 @@ std::string PailPubKey::Inspect() const {
  * @param {BN} r : random number
  */
 BN PailPubKey::EncryptWithR(const BN &m, const BN &r) const {
+    ASSERT_THROW(BN(0) <= m && m < n_);
     BN gm = (m * n_ + 1) % n_sqr_;
     BN rn = r.PowM(n_, n_sqr_);
     return (gm * rn) % n_sqr_;
 }
 
 BN PailPubKey::EncryptWithR_v0(const BN &m, const BN &r) const {
+    ASSERT_THROW(BN(0) <= m && m < n_);
     BN gm = g_.PowM(m, n_sqr_);
     BN rn = r.PowM(n_, n_sqr_);
     return (gm * rn) % n_sqr_;

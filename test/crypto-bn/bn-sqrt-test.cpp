@@ -48,12 +48,77 @@ void test_bignum_sqrt(int bits)
     std::cout << std::endl;
 }
 
+void test_bignum_sqrt_2(int bits)
+{
+    std::string s;
+    // n
+    BN n = safeheron::rand::RandomBN(bits);
+    // n+1
+    BN n_plus_1 = n + 1;
+    // n^2
+    BN n_sqr = n * n;
+    // (n+1)^2
+    BN n_plus_1_sqr = n_plus_1 * n_plus_1;
+
+    // delta \in [0, (n+1)^2 - n^2)
+    BN delta = safeheron::rand::RandomBNInRange(BN(0), n_plus_1_sqr - n_sqr);
+    n.ToHexStr(s);
+    std::cout << "BN(" << bits << "):" << s << std::endl;
+
+    BN sqr = n * n;
+    sqr.ToHexStr(s);
+    std::cout << "-->sqr:"<< s << std::endl;
+
+    // sqr = n^2 + delta
+    sqr += delta;
+
+    // check sqrt === n
+    BN sqrt = sqr.Sqrt();
+    sqrt.ToHexStr(s);
+    std::cout << "-->sqrt:"<< s << std::endl;
+    EXPECT_TRUE(sqrt == n);
+
+    std::cout << std::endl;
+}
+
 TEST(BN, bignum_sqrt)
 {
     test_bignum_sqrt(512);
     test_bignum_sqrt(1024);
     test_bignum_sqrt(2048);
     test_bignum_sqrt(4096);
+
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(512);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(1024);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(2048);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(4096);
+    }
+
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(7);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(15);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(37);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(137);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(737);
+    }
+    for (int i = 0; i < 100; ++i) {
+        test_bignum_sqrt_2(1393);
+    }
 }
 
 
