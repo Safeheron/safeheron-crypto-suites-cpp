@@ -405,6 +405,7 @@ bool CurvePoint::PointFromY(const safeheron::bignum::BN &y, bool x_is_odd, Curve
 }
 
 void CurvePoint::EncodeCompressed(uint8_t* pub33) const {
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     if(IsInfinity()) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1, "Failed in CurvePoint::EncodeCompressed(uint8_t* pub33): IsInfinity");
     }
@@ -444,6 +445,7 @@ bool CurvePoint::DecodeCompressed(const uint8_t* pub33, CurveType c_type) {
 }
 
 void CurvePoint::EncodeFull(uint8_t* pub65) const {
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     // Refuse to encode infinity point
     if(IsInfinity()) {
         throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1, "Failed in CurvePoint::EncodeFull(uint8_t* pub65): IsInfinity");
@@ -932,6 +934,7 @@ bool CurvePoint::operator!=(const CurvePoint &point) const {
 }
 
 safeheron::bignum::BN CurvePoint::x() const {
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     uint32_t category = get_category(curve_type_);
     switch (category) {
         case 0: // Short curve
@@ -975,11 +978,12 @@ safeheron::bignum::BN CurvePoint::x() const {
             return x;
         }
         default:
-            return safeheron::bignum::BN::MINUS_ONE;
+            throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "Unexpected exception in CurvePoint::x()");
     }
 }
 
 safeheron::bignum::BN CurvePoint::y() const {
+    ASSERT_THROW(curve_type_ != CurveType::INVALID_CURVE);
     BN y;
     uint32_t category = get_category(curve_type_);
     switch (category) {
@@ -1009,7 +1013,7 @@ safeheron::bignum::BN CurvePoint::y() const {
             return BN::FromBytesLE(point_y, 32);
         }
         default:
-            return safeheron::bignum::BN::MINUS_ONE;
+            throw LocatedException(__FILE__, __LINE__, __FUNCTION__, -1, "Unexpected exception in CurvePoint::y()");
     }
 }
 
