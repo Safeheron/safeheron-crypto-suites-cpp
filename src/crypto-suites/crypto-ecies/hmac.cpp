@@ -71,7 +71,7 @@ bool IHMAC::calcMAC(const std::string &key,
 std::string IHMAC::getLengthTag(const std::string & str)
 {
     uint8_t tag[8] = { 0 };
-    long len = 8 * str.length();    //in bits
+    uint64_t len = 8 * str.length();    //in bits
     std::string res;
 
     if (len > 0) {

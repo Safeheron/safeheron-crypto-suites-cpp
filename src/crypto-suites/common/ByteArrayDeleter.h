@@ -5,7 +5,7 @@
 #ifndef SAFEHERONCRYPTOSUITES_BYTEARRAYDELETER_H
 #define SAFEHERONCRYPTOSUITES_BYTEARRAYDELETER_H
 
-#include <cstring>
+#include <crypto-suites/crypto-bip39/memzero.h>
 
 namespace safeheron {
 namespace common {
@@ -13,7 +13,7 @@ namespace common {
 class ByteArrayDeleter {
 public:
     void operator()(uint8_t* ptr) const {
-        memset_s(ptr, size_, 0, size_);
+        crypto_bip39_memzero(ptr, size_);
         delete[] ptr;
     }
 
