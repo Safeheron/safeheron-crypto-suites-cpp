@@ -78,13 +78,14 @@ MakeSharesWithCommitsAndCoes(std::vector<Point> &shares, std::vector<safeheron::
  * Verify share in Feldman's scheme
  *
  * @param commits
+ * @param threshold
  * @param shareIndex
  * @param share
  * @param curve
  * @returns {boolean}
  */
 bool
-VerifyShare(const std::vector<safeheron::curve::CurvePoint> &commits, const safeheron::bignum::BN &shareIndex, const safeheron::bignum::BN &share, const safeheron::curve::CurvePoint &g, const safeheron::bignum::BN &prime);
+VerifyShare(const std::vector<safeheron::curve::CurvePoint> &commits, int threshold, const safeheron::bignum::BN &shareIndex, const safeheron::bignum::BN &share, const safeheron::curve::CurvePoint &g, const safeheron::bignum::BN &prime);
 
 /**
  * Recover secret

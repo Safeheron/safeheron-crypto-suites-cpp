@@ -35,8 +35,8 @@ void MakeSharesWithCommitsAndCoes(vector<Point> &shares, vector<CurvePoint> &com
     vsss::MakeSharesWithCommitsAndCoes(shares, commits, secret, threshold, shareIndexs, coeArray, curv->n, curv->g);
 }
 
-bool VerifyShare(const vector<CurvePoint> &commits, const BN &shareIndex, const BN &share) {
-    return vsss::VerifyShare(commits, shareIndex, share, curv->g, curv->n);
+bool VerifyShare(const vector<CurvePoint> &commits, int threshold, const BN &shareIndex, const BN &share) {
+    return vsss::VerifyShare(commits, threshold, shareIndex, share, curv->g, curv->n);
 }
 
 void RecoverSecret(BN &secret, const vector<Point> &shares) {

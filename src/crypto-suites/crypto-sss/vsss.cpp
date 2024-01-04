@@ -29,7 +29,8 @@ void MakeSharesWithCommitsAndCoes(vector<Point> &shares, vector<CurvePoint> &com
     poly.GetCommits(commits, g);
 }
 
-bool VerifyShare(const vector<CurvePoint> &commits, const BN &shareIndex, const BN &share, const CurvePoint &g, const BN &prime) {
+bool VerifyShare(const vector<CurvePoint> &commits, int threshold, const BN &shareIndex, const BN &share, const CurvePoint &g, const BN &prime) {
+    if((int)commits.size() != threshold) return false;
     return Polynomial::VerifyCommits(commits, shareIndex, share, g, prime);
 }
 

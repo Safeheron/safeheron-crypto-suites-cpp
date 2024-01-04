@@ -87,7 +87,7 @@ TEST(Secret_Sharing_Scheme, Example2)
         std::cout << "x: " << str << std::endl;
         shares[i].y.ToHexStr(str);
         std::cout << "y: " << str << std::endl;
-        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, shares[i].x, shares[i].y));
+        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, threshold, shares[i].x, shares[i].y));
     }
 
     BN recovered_secret;
@@ -120,7 +120,7 @@ TEST(Secret_Sharing_Scheme, Example3)
         std::cout << "x: " << str << std::endl;
         shares[i].y.ToHexStr(str);
         std::cout << "y: " << str << std::endl;
-        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, shares[i].x, shares[i].y));
+        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, threshold, shares[i].x, shares[i].y));
     }
 
     BN recovered_secret;
@@ -149,7 +149,7 @@ TEST(Secret_Sharing_Scheme, Example4)
         std::cout << "x: " << str << std::endl;
         shares[i].y.ToHexStr(str);
         std::cout << "y: " << str << std::endl;
-        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, shares[i].x, shares[i].y));
+        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, threshold, shares[i].x, shares[i].y));
     }
 
     BN recovered_secret;
@@ -174,7 +174,7 @@ TEST(Secret_Sharing_Scheme, Example5)
         std::cout << "x: " << str << std::endl;
         shares[i].y.ToHexStr(str);
         std::cout << "y: " << str << std::endl;
-        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, shares[i].x, shares[i].y));
+        EXPECT_TRUE(vsss_secp256k1::VerifyShare(cmts, threshold, shares[i].x, shares[i].y));
     }
 
     BN recovered_secret;
