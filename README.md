@@ -239,9 +239,9 @@ ASSERT_TRUE(proof.Verify(pail_pub, index, point.x(), point.y()));
 ```
 
 # Security Audit
-Some sub-libs originate from an internal repository by Safeheron and were audited by Kudelski Security in December 2021 and some sub-libs were audited by LeastAuthority in 2023.
+Some sub-libs originate from an internal repository by Safeheron and were audited by Kudelski Security in December 2021.
 
-Lots of changes after the audit, use at your own risk.
+We asked LeastAuthority to conduct an audit of our library in the second half of 2023, and this is [the audit report](https://leastauthority.com/wp-content/uploads/2024/01/Safeheron_Crypto_Suites__Multiparty_ECDSA_Updated_Final_Audit_Report_Least_Authority.pdf).
 
 # Development Process & Contact
 This library is maintained by Safeheron. Contributions are highly welcomed! Besides GitHub issues and PRs, feel free to reach out by mail.
