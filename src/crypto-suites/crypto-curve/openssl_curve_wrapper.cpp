@@ -1,6 +1,7 @@
 #include <cassert>
 #include <openssl/ec.h>
 #include <cstring>
+#include <memory>
 #include "crypto-suites/common/ByteArrayDeleter.h"
 #include "crypto-suites/crypto-curve/openssl_curve_wrapper.h"
 #include "crypto-suites/common/custom_assert.h"
