@@ -580,7 +580,7 @@ bool CurvePoint::DecodeCompressed(const std::string &bytes, CurveType c_type){
         }
     }
 
-    int coord_len = CoordinateLength(curve_type_);
+    int coord_len = CoordinateLength(c_type);
     if(coord_len < 0) return false;
 
     // 02/03 + X
@@ -657,7 +657,7 @@ bool CurvePoint::DecodeFull(const std::string &bytes, CurveType c_type){
     }
 
     // 04 + X + Y
-    int coord_len = CoordinateLength(curve_type_);
+    int coord_len = CoordinateLength(c_type);
     if(coord_len < 0) return false;
 
     size_t pub_bytes_len = coord_len * 2 + 1;
