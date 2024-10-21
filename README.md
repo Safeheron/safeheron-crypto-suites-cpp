@@ -11,66 +11,23 @@
 
 # Introduction
 
-SafeheronCryptoSuites is an assembly of all the basic libraries and cryptography protocols from Safeheron, which contains:
 
-- crypto-bn-cpp: It provides an implementation of C++ big integer. Additionally, it provides operations for modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, jacobi symbol calculation, and a few other miscellaneous operations.
-- crypto-curve-cpp. It provides a uniform abstract for elliptic curves based cryptography (ECC).
-  - It contains an extremely simple mathematical interface to onboard new elliptic curves. Use this library for general purpose elliptic curve cryptography.
-  - It provides interfaces on ecdsa to Sepcp256k1 and P256.
-  - It provides interfaces on eddsa to ed25519.
+SafeheronCryptoSuites is a foundational cryptographic library developed by Safeheron that covers multiple cryptographic algorithms and primitives, including the following modules:
 
-- crypto-commitment-cpp. It provides several commitment schemes.
-- crypto-hash-cpp. It provides several hash algorithms such as sha1, sha256, sha512, ripemd160, hash160, hash256, hmac_sha256, hmac_sha512 and chacha20.
-- crypto-encode-cpp. It provides encoding interfaces for hex, base58 and base64.
-- crypto-paillier-cpp. It provides an implementation of  Paillier's crypto scheme.
-- crypto-sss-cpp. It provides secret sharing schemes.
-- crypto-zkp-cpp. It provides several zero knowledge protocols.
-- crypto-bip32-cpp. It provides a BIP32 compatible library which supports bip32-secp256k1 and bip32-ed25519.
-- crypto-bip39-cpp. It provides an implementation of BIP39.
-- crypto-ecies-cpp. It provides an implementation of Elliptic Curve Integrated Encryption Scheme according to IEEE 1363 which is an Institute of Electrical and Electronics Engineers (IEEE) standardization project for public-key cryptography.
-
-Note: All modules were combined in the repository now instead using git submodules for management.
-
-
-# Important Update in Module "crypto-bn-cpp"
-
-The input of the random number generator changes from "bytes" to "bits".
-
-- The new generators:
-```c++
-safeheron::bignum::BN RandomBN(size_t bits);
-safeheron::bignum::BN RandomBNStrict(size_t bits);
-safeheron::bignum::BN RandomPrime(size_t bits);
-safeheron::bignum::BN RandomPrimeStrict(size_t bits);
-safeheron::bignum::BN RandomSafePrime(size_t bits);
-safeheron::bignum::BN RandomSafePrimeStrict(size_t bits);
-```
-
-- The old generators:
-```c++
-safeheron::bignum::BN RandomBN(size_t byteSize);
-safeheron::bignum::BN RandomBNStrict(size_t byteSize);
-safeheron::bignum::BN RandomPrime(size_t byteSize);
-safeheron::bignum::BN RandomPrimeStrict(size_t byteSize);
-safeheron::bignum::BN RandomSafePrime(size_t byteSize);
-safeheron::bignum::BN RandomSafePrimeStrict(size_t byteSize);
-```
-
-
-**Along with the update, all the usage should update too, otherwise there is a risk.**.
-
-For example, we used to get a 256-bits number like this before:
-```c++
-    BN r = safeheron::bignum::BN RandomBN(256 / 8);
-```
-Now we must invoke the generator like this:
-```c++
-    BN r = safeheron::bignum::BN RandomBN(256);
-```
-**If usage don't update then you will get a small number with 32-bits length, and then it could easily be guessed out by the adversary.**
-
-
-
+- crypto-bn: Provides object-oriented big integer algorithms, supporting modular arithmetic, GCD calculation, primality testing, prime generation, bit manipulation, Jacobi symbol calculation, and other number theory algorithms.
+- crypto-curve: Provides a unified abstraction interface for elliptic curve, widely used in elliptic curve cryptography.
+  - Supports short elliptic curves such as Secp256k1, P256(Secp256r1), and STARK curves.
+  - Supports Edwards curves such as Ed25519 curve.
+   
+- crypto-commitment: Provides various commitment schemes.
+- crypto-hash: Supports multiple hashing algorithms, such as SHA1, SHA256, SHA512, RIPEMD160, Hash160, Hash256, HMAC_SHA256, HMAC_SHA512, and ChaCha20.
+- crypto-encode: Provides encoding and decoding interfaces for HEX, Base58, and Base64.
+- crypto-paillier: Implements the Paillier's encryption scheme.
+- crypto-sss: Implements secret sharing schemes.
+- crypto-zkp: Provides various zero-knowledge protocols.
+- crypto-bip32: Supports the BIP32 standard, including BIP32-Secp256k1 and BIP32-Ed25519.
+- crypto-bip39: Implements BIP39.
+- crypto-ecies: Implements the Elliptic Curve Integrated Encryption Scheme (ECIES) based on IEEE 1363, a standardization project for public-key cryptography by the IEEE.
 
 # Build and Install
 
