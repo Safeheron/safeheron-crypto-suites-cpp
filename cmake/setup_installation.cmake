@@ -21,7 +21,7 @@ install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${exported_targets_name}
         ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include
+        INCLUDES DESTINATION include
 )
 
 install(
