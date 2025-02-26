@@ -32,10 +32,10 @@ static void prime_util(int n, std::vector<int> &prime_arr){
     assert(n > 0);
     prime_arr.clear();
     if(n < 2) return;
-    for(int i = 3; i <= n; i++){
+    for(int i = 2; i <= n; i++){
         bool is_prime = true;
         for(int p: prime_arr){
-            if(p * p >= i) {
+            if(p * p > i) {
                 break;
             }
             if(i % p == 0) {

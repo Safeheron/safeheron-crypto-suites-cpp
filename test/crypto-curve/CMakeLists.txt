@@ -40,6 +40,12 @@ add_test(NAME curve.ecdsa-test COMMAND ecdsa-test)
 add_executable(eddsa-test eddsa-test.cpp)
 add_test(NAME curve.eddsa-test COMMAND eddsa-test)
 
+add_executable(schnorr-bip340-test schnorr-bip340-test.cpp)
+add_test(NAME curve.schnorr-bip340-test COMMAND schnorr-bip340-test)
+
+add_executable(schnorr-legacy-test schnorr-legacy-test.cpp)
+add_test(NAME curve.schnorr-legacy-test COMMAND schnorr-legacy-test)
+
 if (${ENABLE_STARK})
         add_executable(stark-test stark-consistency-test.cpp)
         add_test(NAME curve.stark-test COMMAND stark-test)

@@ -52,6 +52,7 @@ file(GLOB SOURCE_crypto-curve
         crypto-suites/crypto-curve/openssl_curve_wrapper.cpp
         crypto-suites/crypto-curve/ecdsa.cpp
         crypto-suites/crypto-curve/eddsa.cpp
+        crypto-suites/crypto-curve/schnorr.cpp
         ${ed25519-donna_SOURCES}
         )
 
@@ -84,6 +85,9 @@ file(GLOB SOURCE_crypto-hash
         crypto-suites/crypto-hash/hmac_sha512.cpp
         crypto-suites/crypto-hash/safe_hash256.cpp
         crypto-suites/crypto-hash/safe_hash512.cpp
+        crypto-suites/crypto-hash/hash_bip340.cpp
+        crypto-suites/crypto-hash/sha3_imp.c
+        crypto-suites/crypto-hash/keccak256.cpp
         )
 
 file(GLOB SOURCE_crypto-paillier
@@ -99,6 +103,11 @@ file(GLOB SOURCE_crypto-sss
         crypto-suites/crypto-sss/vsss_ed25519.cpp
         crypto-suites/crypto-sss/vsss_secp256k1.cpp
         )
+file(GLOB SOURCE_crypto-aes
+        crypto-suites/crypto-aes/gcm.cpp
+        crypto-suites/crypto-aes/Formatter.cpp
+        )
+
 
 if (${ENABLE_SNAP_SCOPE})
     file(GLOB SOURCE_crypto-zkp
@@ -146,6 +155,7 @@ if (${ENABLE_SNAP_SCOPE})
             ${SOURCE_crypto-paillier}
             ${SOURCE_crypto-sss}
             ${SOURCE_crypto-zkp}
+            ${SOURCE_crypto-aes}
             )
 else()
     file(GLOB SOURCE_crypto-zkp
@@ -195,6 +205,7 @@ else()
             ${SOURCE_crypto-zkp}
             ${SOURCE_crypto-bip32}
             ${SOURCE_crypto-commitment}
+            ${SOURCE_crypto-aes}
             )
 endif()
 
