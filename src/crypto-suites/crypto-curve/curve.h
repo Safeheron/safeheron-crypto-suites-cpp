@@ -5,6 +5,7 @@
 #include "crypto-suites/crypto-curve/curve_point.h"
 #include "crypto-suites/crypto-curve/ecdsa.h"
 #include "crypto-suites/crypto-curve/eddsa.h"
+#include "crypto-suites/crypto-curve/schnorr.h"
 
 namespace safeheron{
 namespace curve {

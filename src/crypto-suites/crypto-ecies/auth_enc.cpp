@@ -42,7 +42,7 @@ bool AuthEnc::Encrypt(const BN &local_priv, const CurvePoint &remote_pub,
         // Sign
         safeheron::curve::ecdsa::Sign(c_type, local_priv, digest, sig);
     }
-    catch(safeheron::exception::OpensslException e) {
+    catch(const safeheron::exception::OpensslException &e) {
         return false;
     }
 
@@ -97,7 +97,7 @@ bool AuthEnc::Decrypt(const BN &local_priv, const CurvePoint &remote_pub,
         ok = safeheron::curve::ecdsa::Verify(c_type, remote_pub, digest, sig);
         if (!ok) return false;
     }
-    catch (safeheron::exception::LocatedException e) {
+    catch (const safeheron::exception::LocatedException &e) {
         return false;
     }
 
