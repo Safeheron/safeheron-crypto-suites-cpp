@@ -125,18 +125,33 @@ void test_aes_gcm_identical_data(const std::vector<std::vector<std::string>> &te
         uint8_t* p_decrypted_data = nullptr;
 
         GCM gcm(key);
-        gcm.Encrypt((uint8_t*)plain.c_str(), plain.length(),
-                    (uint8_t*)iv.c_str(), iv.length(),
-                    (uint8_t*)AAD.c_str(), AAD.length(),
-                    p_tag, tag_len, p_cipher, cipher_len);
+        if (AAD.empty()) {
+            gcm.Encrypt((uint8_t *) plain.c_str(), plain.length(),
+                        (uint8_t *) iv.c_str(), iv.length(),
+                        nullptr, 0,
+                        p_tag, tag_len, p_cipher, cipher_len);
+        } else {
+            gcm.Encrypt((uint8_t *) plain.c_str(), plain.length(),
+                        (uint8_t *) iv.c_str(), iv.length(),
+                        (uint8_t *) AAD.c_str(), AAD.length(),
+                        p_tag, tag_len, p_cipher, cipher_len);
+        }
         EXPECT_TRUE((tag_len == (int)tag.length()) && (memcmp(p_tag, tag.c_str(), tag_len) == 0));
         EXPECT_TRUE((cipher_len == (int)cipher.length()) && (memcmp(p_cipher, cipher.c_str(), cipher_len) == 0));
 
-        gcm.Decrypt(p_cipher, cipher_len,
-                    (uint8_t*)iv.c_str(), iv.length(),
-                    (uint8_t*)AAD.c_str(), AAD.length(),
-                    p_tag, tag_len,
-                    p_decrypted_data, decrypted_data_len);
+        if (AAD.empty()) {
+            gcm.Decrypt(p_cipher, cipher_len,
+                        (uint8_t *) iv.c_str(), iv.length(),
+                        nullptr, 0,
+                        p_tag, tag_len,
+                        p_decrypted_data, decrypted_data_len);
+        } else {
+            gcm.Decrypt(p_cipher, cipher_len,
+                        (uint8_t *) iv.c_str(), iv.length(),
+                        (uint8_t *) AAD.c_str(), AAD.length(),
+                        p_tag, tag_len,
+                        p_decrypted_data, decrypted_data_len);
+        }
         EXPECT_TRUE((decrypted_data_len == (int)plain.length()) && memcmp(p_decrypted_data, plain.c_str(), decrypted_data_len) == 0);
 
         std::cout << "Encrypt:" << std::endl;

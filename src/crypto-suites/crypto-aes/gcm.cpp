@@ -2,6 +2,7 @@
 #include "Formatter.h"
 #include "crypto-suites/exception/safeheron_exceptions.h"
 #include "crypto-suites/common/custom_assert.h"
+#include "crypto-suites/common/custom_memzero.h"
 #include <openssl/rand.h>
 #include <openssl/evp.h>
 
@@ -23,16 +24,24 @@ GCM::GCM(uint8_t *p_key, int key_len)
 {
     ASSERT_THROW(p_key);
     ASSERT_THROW(key_len == 16 || key_len == 24 || key_len == 32);
-    key_.assign((char*)p_key, key_len);
+    key_.resize(key_len);
+    memcpy(key_.data(), p_key, key_len);
 }
 
 GCM::GCM(const std::string &key)
 {
     ASSERT_THROW(key.length() == 16 || key.length() == 24 || key.length() == 32);
-    key_ = key;
+    key_.resize(key.length());
+    memcpy(key_.data(), key.c_str(), key.length());
 }
 
-void GCM::Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
+GCM::~GCM() 
+{
+    // fill the buffer with 0 before release
+    crypto_memzero(key_.data(), key_.size());
+}
+
+bool GCM::Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
                  const uint8_t* p_in_iv, int in_iv_len,
                 const uint8_t* p_in_associatedData, int in_associated_data_len,
                 uint8_t* &p_out_tag, int &out_tag_len,
@@ -42,15 +51,27 @@ void GCM::Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
     const EVP_CIPHER *cipher = nullptr;
     EVP_CIPHER_CTX *ctx = nullptr;
 
+    error_msg_ = "";
+
     if (!p_in_plaindata || in_plaindata_len <= 0) {
-        throw new std::invalid_argument("Parameter p_in_plaindata cannot be null or empty.");
+        error_msg_ = "Parameter p_in_plaindata cannot be null or empty.";
+        return false;
     }
     if (!p_in_iv || in_iv_len != GCM_IV_LEN) {
-        throw new std::invalid_argument("Parameter p_in_iv cannot be null and length must be 12 bytes.");
+        error_msg_ = "Parameter p_in_iv cannot be null and length must be 12 bytes.";
+        return false;
+    }
+    if (!p_in_associatedData && in_associated_data_len > 0) {
+        error_msg_ = "Parameter p_in_associatedData cannot be null when in_associated_data_len > 0.";
+        return false;
+    }
+    if (p_in_associatedData && in_associated_data_len <= 0) {
+        error_msg_ = "Parameter in_associated_data_len cannot be 0 or less 0 when p_in_associatedData is not null.";
+        return false;
     }
 
     // support AES-GCM with 128/192/256 bytes key
-    switch (key_.length()) {
+    switch (key_.size()) {
         case 16:
             cipher = EVP_aes_128_gcm();
             break;
@@ -61,28 +82,51 @@ void GCM::Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
             cipher = EVP_aes_256_gcm();
             break;
         default:
-            throw new std::invalid_argument("AES-GCM Key length is wrong!");
+            error_msg_ = "AES-GCM Key length is wrong.";
+            return false;
     }
 
+    // create and initialize cipher context
+    if (!(ctx = EVP_CIPHER_CTX_new()) ||
+        (1 != EVP_EncryptInit_ex(ctx, cipher, nullptr, nullptr, nullptr)) ||
+        (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, GCM_IV_LEN, nullptr)) ||
+        (1 != EVP_EncryptInit_ex(ctx, nullptr, nullptr, key_.data(), p_in_iv))) {
+        EVP_CIPHER_CTX_free(ctx);
+        error_msg_ = "Create and initialize cipher context failed.";
+        return false;
+    }
+
+    // add AAD data
+    if (p_in_associatedData && in_associated_data_len > 0) {
+        if (1 != EVP_EncryptUpdate(ctx, nullptr, &len, p_in_associatedData, in_associated_data_len)) {
+            EVP_CIPHER_CTX_free(ctx);
+            error_msg_ = "Try to add AAD data failed.";
+            return false;
+        }
+    }
+
+    // encrypt plain data
     out_cipherdata_len = 0;
     out_tag_len = GCM_TAG_LEN;
     p_out_tag = new uint8_t[GCM_TAG_LEN];
     p_out_cipherdata = new uint8_t[in_plaindata_len + EVP_MAX_BLOCK_LENGTH];
-
-    // use p_in_associatedData as the AAD, and use a 16-bytes tag
-    if (!(ctx = EVP_CIPHER_CTX_new()) ||
-        (1 != EVP_EncryptInit_ex(ctx, cipher, nullptr, nullptr, nullptr)) ||
-        (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, GCM_IV_LEN, nullptr)) ||
-        (1 != EVP_EncryptInit_ex(ctx, nullptr, nullptr, (const uint8_t*)key_.c_str(), p_in_iv)) ||
-        (1 != EVP_EncryptUpdate(ctx, nullptr, &len, p_in_associatedData, in_associated_data_len)) ||
-        (1 != EVP_EncryptUpdate(ctx, p_out_cipherdata, &out_cipherdata_len, p_in_plaindata, in_plaindata_len)) ||
+    if ((1 != EVP_EncryptUpdate(ctx, p_out_cipherdata, &out_cipherdata_len, p_in_plaindata, in_plaindata_len)) ||
         (1 != EVP_EncryptFinal_ex(ctx, p_out_cipherdata + out_cipherdata_len, &len)) ||
         (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, GCM_TAG_LEN, p_out_tag)) ) {
+        delete []p_out_tag;
+        delete []p_out_cipherdata;
+        p_out_tag = nullptr;
+        p_out_cipherdata = nullptr;
         EVP_CIPHER_CTX_free(ctx);
-        throw OpensslException(__FILE__, __LINE__, __FUNCTION__, -1, "EVP functions failed.");
+        error_msg_ = "Encrypt data failed.";
+        return false;
     }
-    EVP_CIPHER_CTX_free(ctx);
+
+    // return ciphertext data length
     out_cipherdata_len += len;
+    EVP_CIPHER_CTX_free(ctx);
+
+    return true;
 }
 
 bool GCM::Decrypt(const uint8_t* p_in_cipherdata, int in_cipherdata_len,
@@ -95,18 +139,31 @@ bool GCM::Decrypt(const uint8_t* p_in_cipherdata, int in_cipherdata_len,
     const EVP_CIPHER *cipher = nullptr;
     EVP_CIPHER_CTX *ctx = nullptr;
 
+    error_msg_ = "";
+
     if (!p_in_cipherdata || in_cipherdata_len <= 0) {
-        throw new std::invalid_argument("Parameter p_in_cipherdata cannot be null or empty.");
+        error_msg_ = "Parameter p_in_cipherdata cannot be null or empty.";
+        return false;
     }
     if (!p_in_iv || in_iv_len != GCM_IV_LEN) {
-        throw new std::invalid_argument("Parameter p_in_iv cannot be null and length must be 12 bytes.");
+        error_msg_ = "Parameter p_in_iv cannot be null and length must be 12 bytes.";
+        return false;
     }
     if (!p_in_tag || in_tag_len != GCM_TAG_LEN) {
-        throw new std::invalid_argument("Parameter p_in_tag cannot be null or empty.");
+        error_msg_ = "Parameter p_in_tag cannot be null or empty.";
+        return false;
+    }
+    if (!p_in_associatedData && in_associated_data_len > 0) {
+        error_msg_ = "Parameter p_in_associatedData cannot be null when in_associated_data_len > 0.";
+        return false;
+    }
+    if (p_in_associatedData && in_associated_data_len <= 0) {
+        error_msg_ = "Parameter in_associated_data_len cannot be 0 or less 0 when p_in_associatedData is not null.";
+        return false;
     }
 
     // support AES-GCM with 128/192/256 bytes key
-    switch (key_.length()) {
+    switch (key_.size()) {
         case 16:
             cipher = EVP_aes_128_gcm();
             break;
@@ -117,31 +174,50 @@ bool GCM::Decrypt(const uint8_t* p_in_cipherdata, int in_cipherdata_len,
             cipher = EVP_aes_256_gcm();
             break;
         default:
-            throw new std::invalid_argument("AES-GCM Key length is wrong!");
+            error_msg_ = "AES-GCM Key length is wrong!";
+            return false;
     }
-    
-    out_plaindata_len = 0;
-    p_out_plaindata = new uint8_t[in_cipherdata_len];
 
-    // use p_in_associatedData as the AAD, and use a 16-bytes tag
+    // create and initialize cipher context
     if (!(ctx = EVP_CIPHER_CTX_new()) ||
         (1 != EVP_DecryptInit_ex(ctx, cipher, nullptr, nullptr, nullptr)) ||
         (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, in_iv_len, nullptr)) ||
-        (1 != EVP_DecryptInit_ex(ctx, nullptr, nullptr, (const uint8_t*)key_.c_str(), p_in_iv)) ||
-        (1 != EVP_DecryptUpdate(ctx, nullptr, &len, p_in_associatedData, in_associated_data_len)) ||
-        (1 != EVP_DecryptUpdate(ctx, p_out_plaindata, &out_plaindata_len, p_in_cipherdata, in_cipherdata_len)) ||
-        (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, in_tag_len, (void*)p_in_tag)) ||
-        (1 != EVP_DecryptFinal_ex(ctx, p_out_plaindata + out_plaindata_len, &len)) ) {
+        (1 != EVP_DecryptInit_ex(ctx, nullptr, nullptr, key_.data(), p_in_iv))) {
         EVP_CIPHER_CTX_free(ctx);
+        error_msg_ = "Create and initialize cipher context failed.";
         return false;
     }
-    EVP_CIPHER_CTX_free(ctx);
+
+    // add AAD data
+    if (p_in_associatedData && in_associated_data_len > 0) {
+        if (1 != EVP_DecryptUpdate(ctx, nullptr, &len, p_in_associatedData, in_associated_data_len)) {
+            EVP_CIPHER_CTX_free(ctx);
+            error_msg_ = "Try to add AAD data failed.";
+            return false;
+        }
+    }
+    
+    // decrypt ciphertext data
+    out_plaindata_len = 0;
+    p_out_plaindata = new uint8_t[in_cipherdata_len];
+    if ((1 != EVP_DecryptUpdate(ctx, p_out_plaindata, &out_plaindata_len, p_in_cipherdata, in_cipherdata_len)) ||
+        (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, in_tag_len, (void*)p_in_tag)) ||
+        (1 != EVP_DecryptFinal_ex(ctx, p_out_plaindata + out_plaindata_len, &len)) ) {
+        delete []p_out_plaindata;
+        p_out_plaindata = nullptr;
+        EVP_CIPHER_CTX_free(ctx);
+        error_msg_ = "Decrypt data failed.";
+        return false;
+    }
+
+    // return decrypted data length
     out_plaindata_len += len;
+    EVP_CIPHER_CTX_free(ctx);
 
     return true;
 }
 
-void GCM::EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
+bool GCM::EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
                  const uint8_t* p_in_associatedData, int in_associated_data_len,
                  uint8_t* &p_out_cipherpack, int &out_cipherpack_len)
 {
@@ -153,18 +229,23 @@ void GCM::EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
     std::string out_cypher;
     Formatter fm;
 
+    error_msg_ = "";
+
     // use a random number as the iv
     RAND_bytes(iv, GCM_IV_LEN);
 
     // encrypt plain data
-    Encrypt(p_in_plaindata, in_plaindata_len, iv, GCM_IV_LEN, p_in_associatedData, 
-            in_associated_data_len, p_tag, tag_len, p_cipher, cipher_len);
+    if (!Encrypt(p_in_plaindata, in_plaindata_len, iv, GCM_IV_LEN, p_in_associatedData, 
+            in_associated_data_len, p_tag, tag_len, p_cipher, cipher_len)) {
+        return false;
+    }
 
     // construct GCM cypher
     if (!fm.ConstructAESGCMCypher(p_cipher, cipher_len, p_tag, tag_len, iv, GCM_IV_LEN, out_cypher)) {
         delete []p_tag;
         delete []p_cipher;
-        throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, -1, "ConstructAESGCMCypher() failed.");
+        error_msg_ = "Construct ciphertext data package failed.";
+        return false;
     }
 
     // return result
@@ -176,6 +257,7 @@ void GCM::EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
     delete []p_cipher;
     p_tag = nullptr;
     p_cipher = nullptr;
+    return true;
 }
 
 bool GCM::DecryptPack(const uint8_t* p_in_cipherpack, int in_cipherpack_len,
@@ -192,8 +274,11 @@ bool GCM::DecryptPack(const uint8_t* p_in_cipherpack, int in_cipherpack_len,
     uint32_t iv_len = -1;
     Formatter fm;
 
+    error_msg_ = "";
+
     if (!p_in_cipherpack || in_cipherpack_len <= 0) {
-        throw new std::invalid_argument("Parameter p_in_cipherpack cannot be null or empty.");
+        error_msg_ = "Parameter p_in_cipherpack cannot be null or empty.";
+        return false;
     }
 
     // parser GCM cypher
@@ -201,7 +286,8 @@ bool GCM::DecryptPack(const uint8_t* p_in_cipherpack, int in_cipherpack_len,
                               p_encrypted_data, encrypted_data_len,
                               p_tag, tag_len,
                               p_iv, iv_len)) {
-        throw new std::invalid_argument("Parameter p_in_cipherpack in not valid.");
+        error_msg_ = "Parameter p_in_cipherpack in not valid.";
+        return false;
     }
 
     // decrypt
@@ -209,36 +295,46 @@ bool GCM::DecryptPack(const uint8_t* p_in_cipherpack, int in_cipherpack_len,
             in_associated_data_len, p_tag, tag_len, p_out_plaindata, out_plaindata_len);
 }
 
-void GCM::EncryptPack(const std::string &in_plaindata,
+bool GCM::EncryptPack(const std::string &in_plaindata,
                     const std::string &in_associatedData,
                     std::string &out_cipherpack)
 {
     int out_cipherpack_len = 0;
     uint8_t* p_out_cipherpack = nullptr;
 
-    EncryptPack((uint8_t*)in_plaindata.c_str(), in_plaindata.length(),
+    error_msg_ = "";
+
+    if (!EncryptPack((uint8_t*)in_plaindata.c_str(), in_plaindata.length(),
                 (uint8_t*)in_associatedData.c_str(), in_associatedData.length(),
-                p_out_cipherpack, out_cipherpack_len);
+                p_out_cipherpack, out_cipherpack_len)) {
+        return false;
+    }
 
     out_cipherpack.assign((char*)p_out_cipherpack, out_cipherpack_len);
     delete []p_out_cipherpack;
     p_out_cipherpack = nullptr;
+    return true;
 }
 
-void GCM::DecryptPack(const std::string &in_cipherpack,
+bool GCM::DecryptPack(const std::string &in_cipherpack,
                      const std::string &in_associatedData,
                      std::string &out_plaindata)
 {
     int out_plaindata_len = 0;
     uint8_t* p_out_plaindata = nullptr;
 
-    DecryptPack((uint8_t*)in_cipherpack.c_str(), in_cipherpack.length(),
+    error_msg_ = "";
+
+    if (!DecryptPack((uint8_t*)in_cipherpack.c_str(), in_cipherpack.length(),
                 (uint8_t*)in_associatedData.c_str(), in_associatedData.length(),
-                p_out_plaindata, out_plaindata_len);
+                p_out_plaindata, out_plaindata_len)) {
+        return false;
+    }
 
     out_plaindata.assign((char*)p_out_plaindata, out_plaindata_len);
     delete []p_out_plaindata;
     p_out_plaindata = nullptr;
+    return true;
 }
 
 

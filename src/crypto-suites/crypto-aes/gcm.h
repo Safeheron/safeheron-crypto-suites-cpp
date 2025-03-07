@@ -4,7 +4,9 @@
 
 #ifndef SAFEHERON_CRYPTO_GCM_H
 #define SAFEHERON_CRYPTO_GCM_H
+
 #include <string>
+#include <vector>
 
 namespace safeheron{
 namespace aes{
@@ -28,6 +30,12 @@ public:
     GCM(const std::string &key);
 
     /**
+     * Destructor
+     * 
+     */
+    ~GCM();
+
+    /**
      * Encrypt
      *
      * - plaindata: The content to encrypt.
@@ -47,7 +55,7 @@ public:
      * @param p_out_cipherdata
      * @param out_cipherdata_len
      */
-    void Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
+    bool Encrypt(const uint8_t* p_in_plaindata, int in_plaindata_len,
                  const uint8_t* p_in_iv, int in_iv_len,
                  const uint8_t* p_in_associatedData, int in_associated_data_len,
                  uint8_t* &p_out_tag, int &out_tag_len,
@@ -92,7 +100,7 @@ public:
      * @param p_out_cipherpack
      * @param out_cipherpack_len
      */
-    void EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
+    bool EncryptPack(const uint8_t* p_in_plaindata, int in_plaindata_len,
                  const uint8_t* p_in_associatedData, int in_associated_data_len,
                  uint8_t* &p_out_cipherpack, int &out_cipherpack_len);
     /**
@@ -125,7 +133,7 @@ public:
      * @param in_associatedData
      * @param out_cipherpack
      */
-    void EncryptPack(const std::string &in_plaindata,
+    bool EncryptPack(const std::string &in_plaindata,
                      const std::string &in_associatedData,
                      std::string &out_cipherpack);
 
@@ -140,11 +148,21 @@ public:
      * @param in_associatedData
      * @param out_plaindata
      */
-    void DecryptPack(const std::string &in_cipherpack,
+    bool DecryptPack(const std::string &in_cipherpack,
                      const std::string &in_associatedData,
                      std::string &out_plaindata);
+    
+    /**
+     * @brief Get the Error Message
+     *     Use this function to return a detailed error message when an encryption or decryption function fails.
+     * 
+     * @return std::string 
+     */
+    std::string GetErrorMessage() const { return error_msg_; }
+
 private:
-    std::string key_;
+    std::vector<uint8_t> key_;
+    std::string error_msg_;
 };
 
 
