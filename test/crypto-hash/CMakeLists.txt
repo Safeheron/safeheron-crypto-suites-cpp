@@ -21,3 +21,10 @@ add_test(NAME hash.safe-hash256-test COMMAND safe-hash256-test)
 
 add_executable(safe-hash512-test safe-hash512-test.cpp)
 add_test(NAME hash.safe-hash512-test COMMAND safe-hash512-test)
+
+add_executable(hmac-sha512-test hmac-sha512-test.cpp)
+add_test(NAME hash.hmac-sha512-test COMMAND hmac-sha512-test)
+
+add_executable(keccak256-test keccak256-test.cpp)
+add_test(NAME hash.keccak256-test COMMAND keccak256-test)
+

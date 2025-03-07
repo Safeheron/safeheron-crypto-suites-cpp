@@ -60,6 +60,7 @@ if (${ENABLE_TESTS})
     add_subdirectory(test/crypto-paillier)
     add_subdirectory(test/crypto-sss)
     add_subdirectory(test/crypto-zkp)
+    add_subdirectory(test/crypto-aes)
 endif()
 
 include("cmake/setup_installation.cmake")
