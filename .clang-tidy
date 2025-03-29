@@ -1,0 +1,111 @@
+#Checks: >
+#  clang-analyzer-*,                         # Static analyzer: detects potential bugs (highly recommended)
+#  bugprone-*,                               # Common programming pitfalls
+#  modernize-*,                              # Modern C++ best practices
+#  -modernize-use-trailing-return-type,      # Trailing return types are rarely preferred; better to disable
+#  -modernize-concat-nested-namespaces,      # Combined nested namespaces are optional; may impact style
+#  -spelling-*,                              # Disable spelling checks (e.g., in comments, identifiers)
+#  performance-*,                            # Performance-related suggestions
+#  readability-*,                            # General code readability improvements
+#  misc-*,                                   # Miscellaneous general checks
+#  -misc-non-private-member-variables-in-classes,  # Allow non-private members if needed
+#  -misc-unused-parameters,                  # Avoid warning on unused parameters (common in overrides)
+#  -misc-definitions-in-headers,             # Disable to prevent header-only code from being flagged
+#  cppcoreguidelines-*,                      # C++ Core Guidelines checks
+#  -cppcoreguidelines-owning-memory,         # Disable strict ownership rules (too restrictive)
+#  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,  # Array-to-pointer decay is often intentional
+#  -cppcoreguidelines-pro-type-reinterpret-cast,          # May be necessary in low-level code
+#  -cppcoreguidelines-pro-type-const-cast,               # Some legitimate use-cases exist
+#  -cppcoreguidelines-pro-type-vararg,                   # Allow use of printf-style varargs if needed
+#  -cppcoreguidelines-avoid-magic-numbers,               # Magic number enforcement often noisy
+#  -cppcoreguidelines-no-malloc                          # Low-level code (e.g. SGX) may require malloc
+
+Checks: >
+  clang-analyzer-*,
+  bugprone-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  -modernize-concat-nested-namespaces,
+  -spelling-*,
+  performance-*,
+  readability-*,
+  misc-*,
+  -misc-non-private-member-variables-in-classes,
+  -misc-unused-parameters,
+  -misc-unused-include,
+  -misc-definitions-in-headers,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -cppcoreguidelines-pro-type-const-cast,
+  -cppcoreguidelines-pro-type-vararg,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-no-malloc
+
+WarningsAsErrors: ''  # Optional: if set to '*', treats all warnings as errors (enforces strict compliance)
+
+HeaderFilterRegex: '.*'  # Apply checks to all files; change to 'src/|include/' to limit scope to your project only
+
+CheckOptions:
+  - key: modernize-use-auto.MinTypeNameLength
+    value: '5'  # Only suggest replacing types with 'auto' if the type name is at least 5 characters long (e.g., skip 'int', 'bool')
+  - key: modernize-loop-convert.MaxCopySize
+    value: '16'  # Only convert loops to range-based if the copied element size is <= 16 bytes (to avoid costly copies)
+
+  # === Variable naming style ===
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalVariablePrefix
+    value: g_
+  - key: readability-identifier-naming.StaticVariableCase
+    value: lower_case
+
+  # === Member variables ===
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+
+  # === Constants ===
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.EnumConstantCase
+    value: CamelCase
+
+  # === Functions / Methods ===
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.MethodCase
+    value: CamelCase
+
+  # === Types ===
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypeAliasCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: CamelCase
+
+  # === Parameters & Namespaces ===
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+
+  # === Macros ===
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.AllowedShortNames
+    value: 'ok;i;j;t;x;y;id;ns'

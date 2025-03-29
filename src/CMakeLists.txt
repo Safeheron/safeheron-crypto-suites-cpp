@@ -88,6 +88,9 @@ file(GLOB SOURCE_crypto-hash
         crypto-suites/crypto-hash/hash_bip340.cpp
         crypto-suites/crypto-hash/sha3_imp.c
         crypto-suites/crypto-hash/keccak256.cpp
+        crypto-suites/crypto-hash/shake_imp.cpp
+        crypto-suites/crypto-hash/shake256.cpp
+        crypto-suites/crypto-hash/shake128.cpp
         )
 
 file(GLOB SOURCE_crypto-paillier

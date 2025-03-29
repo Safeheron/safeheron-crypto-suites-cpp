@@ -1,0 +1,29 @@
+Language: Cpp
+BasedOnStyle: LLVM  # C++ Core Guidelines are primarily based on LLVM rules
+IndentWidth: 4      # Recommended 4-space indentation
+ColumnLimit: 120    # Code line width limit (can be adjusted to 80~120)
+
+# Pointer asterisk close to the type
+PointerAlignment: Left
+
+# Modern C++ rules
+UseTab: Never
+AllowShortFunctionsOnASingleLine: None
+AlwaysBreakTemplateDeclarations: Yes
+
+# C++ Core Guidelines recommend smart pointers and modern STL
+IncludeBlocks: Regroup
+SortIncludes: CaseInsensitive
+IncludeCategories:
+  - Regex: '^<.*>'  # Standard library headers first
+    Priority: 1
+  - Regex: '^"(openssl*|mbedtls*|nlohmann*).*"'  # SGX lib
+    Priority: 2
+  - Regex: '^"sgx.*"'  # SGX lib
+    Priority: 3
+  - Regex: '^"ssgx.*"'  # Safeheron SGX lib
+    Priority: 4
+  - Regex: '^"third_party/.*"'  # Third-party libraries
+    Priority: 5
+  - Regex: '^".*"'  # Project headers last
+    Priority: 6

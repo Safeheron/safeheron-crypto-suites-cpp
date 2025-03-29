@@ -28,3 +28,8 @@ add_test(NAME hash.hmac-sha512-test COMMAND hmac-sha512-test)
 add_executable(keccak256-test keccak256-test.cpp)
 add_test(NAME hash.keccak256-test COMMAND keccak256-test)
 
+add_executable(shake256-test shake256-test.cpp)
+add_test(NAME hash.shake256-test COMMAND shake256-test)
+
+add_executable(shake128-test shake128-test.cpp)
+add_test(NAME hash.shake128-test COMMAND shake128-test)
