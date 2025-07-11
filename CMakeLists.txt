@@ -19,6 +19,7 @@ add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
 include_directories(src)
 
+target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${Protobuf_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
 target_link_libraries(${CMAKE_PROJECT_NAME}
         ${PROTOBUF_LIBRARIES}
