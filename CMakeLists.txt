@@ -18,12 +18,12 @@ add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
 include_directories(src)
 
-get_target_property(INC_DIRS Protobuf::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(INC_DIRS protobuf::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Protobuf include dirs from target: ${INC_DIRS}")
 
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
 target_link_libraries(${CMAKE_PROJECT_NAME}
-        Protobuf::libprotobuf
+        protobuf::libprotobuf
         OpenSSL::Crypto
         -ldl
         )
