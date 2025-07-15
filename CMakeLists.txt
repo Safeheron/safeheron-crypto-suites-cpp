@@ -11,17 +11,19 @@ cmake_policy(SET CMP0076 NEW)
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0079 NEW)
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # depend on pkg-config, this looks for opencv.pc file
+find_package(Protobuf REQUIRED)
 #set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
 add_library(${CMAKE_PROJECT_NAME} SHARED "")
 
 include_directories(src)
 
+get_target_property(INC_DIRS protobuf::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "Protobuf include dirs from target: ${INC_DIRS}")
+
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
 target_link_libraries(${CMAKE_PROJECT_NAME}
-        ${PROTOBUF_LIBRARIES}
+        protobuf::libprotobuf
         OpenSSL::Crypto
         -ldl
         )
