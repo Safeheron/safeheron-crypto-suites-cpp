@@ -1,0 +1,14 @@
+include(CMakeFindDependencyMacro)
+@SafeheronCryptoSuitesSgx_FIND_DEPENDENCY_CALLS@
+include("${CMAKE_CURRENT_LIST_DIR}/@exported_targets_filename@")
+
+get_filename_component(CMAKE_CURRENT_LIST_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+
+@PACKAGE_INIT@
+set_and_check(SafeheronCryptoSuitesSgx_INCLUDE_DIR  "${_INSTALL_PREFIX}/include")
+set_and_check(SafeheronCryptoSuitesSgx_INCLUDE_DIRS "${_INSTALL_PREFIX}/include")
+set_and_check(SafeheronCryptoSuitesSgx_LIBRARY_DIR "${_INSTALL_PREFIX}/lib")
+set_and_check(SafeheronCryptoSuitesSgx_LIBRARY "${_INSTALL_PREFIX}/lib/libSafeheronCryptoSuitesSgx.a")
+
+MESSAGE(STATUS "Found SafeheronCryptoSuitesSgx.")
