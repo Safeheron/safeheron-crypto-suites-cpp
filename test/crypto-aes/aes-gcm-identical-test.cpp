@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "crypto-aes/gcm.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-aes/gcm.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 using namespace safeheron;
 using namespace safeheron::aes;

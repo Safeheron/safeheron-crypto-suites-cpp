@@ -1,11 +1,11 @@
 #include <vector>
 #include "gtest/gtest.h"
-#include "crypto-bip39/bip39.h"
+#include "crypto-suites/crypto-bip39/bip39.h"
 #include "ventropy_16.h"
 #include "vmnemonic_en_12.h"
 #include "vmnemonic_zhs_12.h"
 #include "vmnemonic_zht_12.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 TEST(bip39, verify_16bytes) {
     // bytes to mnemonic

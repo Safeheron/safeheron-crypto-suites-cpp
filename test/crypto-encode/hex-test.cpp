@@ -1,8 +1,8 @@
 #include <cstring>
 #include "gtest/gtest.h"
-#include "crypto-encode/base64.h"
-#include "crypto-encode/hex.h"
-#include "crypto-encode/hex_imp.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-encode/hex_imp.h"
 
 #ifdef ENABLE_ASSEMBLE
 #include <google/protobuf/stubs/common.h>
@@ -53,7 +53,7 @@ void test_invalid_hex(const std::string &hex){
 
         EXPECT_TRUE(false);
     }catch (const std::exception &e){
-        std::cout << "exception: " << e.what() << std::endl;
+        std::cout << "crypto-suites/exception: " << e.what() << std::endl;
     }
 }
 

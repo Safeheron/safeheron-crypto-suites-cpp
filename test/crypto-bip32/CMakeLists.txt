@@ -1,15 +1,12 @@
 find_package(GTest REQUIRED)
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-include_directories(${GTEST_INCLUDE_DIRS})
-include_directories("../../src/crypto-suites/crypto-bip32")
-include_directories(/usr/local/include)
-
-link_libraries(${CMAKE_PROJECT_NAME}
-        ${GTEST_BOTH_LIBRARIES}
-        pthread )
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 # test cases for bip32-secp256k1
 add_executable(bip32-secp256k1-serialization-test bip32-secp256k1-serialization-test.cpp)

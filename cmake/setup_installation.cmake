@@ -2,7 +2,7 @@ include(CMakePackageConfigHelpers)
 
 set(exported_targets_name "${PROJECT_NAME}Targets")
 set(exported_targets_filename "${exported_targets_name}.cmake")
-set(export_dirpath "share/cmake/${PROJECT_NAME}")
+set(export_dirpath "lib/cmake/${PROJECT_NAME}")
 set(config_basename "${PROJECT_NAME}Config")
 set(config_filename "${config_basename}.cmake")
 set(version_filename "${config_basename}Version.cmake")
@@ -20,8 +20,9 @@ configure_package_config_file(
 install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${exported_targets_name}
+        LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include
+        INCLUDES DESTINATION include
 )
 
 install(

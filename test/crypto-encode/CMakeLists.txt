@@ -1,11 +1,12 @@
 find_package(GTest REQUIRED)
 
-include_directories(${GTEST_INCLUDE_DIRS})
-include_directories("../../src/crypto-suites/crypto-encode")
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-link_libraries(${CMAKE_PROJECT_NAME}
-            ${GTEST_BOTH_LIBRARIES}
-            pthread )
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 add_executable(base64-test base64-test.cpp)
 add_test(NAME encode.base64-test COMMAND base64-test)

@@ -1,10 +1,10 @@
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "crypto-encode/hex.h"
-#include "crypto-curve/curve.h"
-#include "crypto-commitment/commitment.h"
-#include "crypto-bn/rand.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-commitment/commitment.h"
+#include "crypto-suites/crypto-bn/rand.h"
 
 using safeheron::bignum::BN;
 using safeheron::curve::Curve;

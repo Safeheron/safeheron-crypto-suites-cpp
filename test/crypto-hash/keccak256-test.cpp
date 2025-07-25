@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "crypto-hash/keccak256.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-hash/keccak256.h"
+#include "crypto-suites/crypto-encode/hex.h"
 #include "util-test.h"
 
 struct DigestMessage {

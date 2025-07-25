@@ -1,8 +1,8 @@
 #include <vector>
 #include "gtest/gtest.h"
 #include "official_test_data.h"
-#include "crypto-bip39/bip39.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-bip39/bip39.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 TEST(bip39, offical_english_menmonic_test) {
     std::vector<std::vector<std::string>> &entropy_mnemonic_vec = english_mnemonic_vec;

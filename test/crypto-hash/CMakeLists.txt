@@ -1,11 +1,12 @@
 find_package(GTest REQUIRED)
 
-include_directories("../../src/crypto-suites/crypto-hash"
-        ${GTEST_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-link_libraries(${CMAKE_PROJECT_NAME}
-            ${GTEST_BOTH_LIBRARIES}
-            pthread )
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 add_executable(hash-test hash-test.cpp)
 add_test(NAME hash.hash-test COMMAND hash-test)

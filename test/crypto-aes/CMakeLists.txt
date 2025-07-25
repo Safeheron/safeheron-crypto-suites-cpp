@@ -1,12 +1,12 @@
 find_package(GTest REQUIRED)
 
-include_directories(${GTEST_INCLUDE_DIRS})
-include_directories("../../src/crypto-suites/crypto-aes")
-include_directories(/usr/local/include)
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-link_libraries(${CMAKE_PROJECT_NAME}
-        ${GTEST_BOTH_LIBRARIES}
-        pthread)
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 add_executable(aes-gcm-test aes-gcm-test.cpp)
 add_test(NAME aes-gcm-test COMMAND aes-gcm-test)

@@ -81,18 +81,9 @@ else ()
             -ldl
     )
 
-    #get_target_property(INC_DIRS protobuf::libprotobuf INTERFACE_INCLUDE_DIRECTORIES)
-    #message(STATUS "Protobuf include dirs from target: ${INC_DIRS}")
-
     option(ENABLE_TESTS "Enable tests" OFF)
     if (${ENABLE_TESTS})
-        set(CMAKE_CXX_STANDARD 17)
         enable_testing()
-        include_directories(
-                src/crypto-suites
-                /usr/local/include
-        )
-        link_directories(/usr/local/lib)
 
         if (NOT ${ENABLE_SNAP_SCOPE})
             add_subdirectory(test/crypto-bip32)

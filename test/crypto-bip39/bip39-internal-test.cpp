@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
-#include "crypto-bn/rand.h"
-#include "crypto-bip39/wally_bip39.h"
-#include "crypto-bip39/wordlist.h"
-#include "crypto-encode/hex.h"
-#include "crypto-bip39/internal.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-bip39/wally_bip39.h"
+#include "crypto-suites/crypto-bip39/wordlist.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-bip39/internal.h"
 
 TEST(bip39, words) {
     //test bip39_get_languages

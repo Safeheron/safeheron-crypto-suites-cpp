@@ -6,7 +6,8 @@ get_filename_component(CMAKE_CURRENT_LIST_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 get_filename_component(_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
 
 set(_SafeheronCryptoSuites_PREFIX_DIR "${_INSTALL_PREFIX}")  # stage _INSTALL_PREFIX
-find_package(Protobuf REQUIRED)
+find_dependency(Protobuf REQUIRED)
+find_dependency(OpenSSL REQUIRED)
 set(_INSTALL_PREFIX "${_SafeheronCryptoSuites_PREFIX_DIR}")  # restore _INSTALL_PREFIX
 
 @PACKAGE_INIT@

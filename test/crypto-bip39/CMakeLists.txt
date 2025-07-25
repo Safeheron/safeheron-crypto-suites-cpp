@@ -1,15 +1,12 @@
 find_package(GTest REQUIRED)
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-include_directories(${GTEST_INCLUDE_DIRS})
-include_directories("../../src/crypto-suites/crypto-bip39")
-include_directories(/usr/local/include)
-
-link_libraries(${CMAKE_PROJECT_NAME}
-        ${GTEST_BOTH_LIBRARIES}
-        pthread )
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 add_executable(bip39-test bip39-test.cpp)
 add_test(NAME bip39.bip39-test COMMAND bip39-test)

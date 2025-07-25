@@ -1,13 +1,13 @@
-#include "crypto-ecies/ecies.h"
-#include "crypto-ecies/auth_enc.h"
+#include "crypto-suites/crypto-ecies/ecies.h"
+#include "crypto-suites/crypto-ecies/auth_enc.h"
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "crypto-bn/bn.h"
-#include "crypto-bn/rand.h"
-#include "crypto-curve/curve.h"
-#include "crypto-encode/base64.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 using namespace safeheron::bignum;
 using namespace safeheron::curve;

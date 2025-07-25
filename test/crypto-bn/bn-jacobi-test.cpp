@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "crypto-bn/bn.h"
-#include "crypto-bn/rand.h"
-#include "exception/safeheron_exceptions.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/exception/safeheron_exceptions.h"
 
 #ifdef ENABLE_ASSEMBLE
 #include <google/protobuf/stubs/common.h>

@@ -1,6 +1,6 @@
 #include <cstring>
 #include "gtest/gtest.h"
-#include "crypto-encode/base58.h"
+#include "crypto-suites/crypto-encode/base58.h"
 
 #ifdef ENABLE_ASSEMBLE
 #include <google/protobuf/stubs/common.h>
