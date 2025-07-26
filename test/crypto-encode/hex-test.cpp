@@ -53,7 +53,7 @@ void test_invalid_hex(const std::string &hex){
 
         EXPECT_TRUE(false);
     }catch (const std::exception &e){
-        std::cout << "crypto-suites/exception: " << e.what() << std::endl;
+        std::cout << "exception: " << e.what() << std::endl;
     }
 }
 

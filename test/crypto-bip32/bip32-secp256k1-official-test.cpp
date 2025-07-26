@@ -158,7 +158,7 @@ TEST(Bip32, OfficialTestCase_Secp256k1)
             try{
                 testSeedAndCKD_Secp256k1(seed, path, xprv, xpub);
             }catch (const LocatedException &e){
-                std::cout << "crypto-suites/exception: " << e.what() << std::endl;
+                std::cout << "exception: " << e.what() << std::endl;
             }
         }
     }

@@ -24,21 +24,23 @@ cmake_policy(SET CMP0076 NEW)
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0079 NEW)
 
-option(ENABLE_STARK "Enable stark curve" OFF)
-if (${ENABLE_STARK})
-    add_definitions(-DENABLE_STARK)
-endif()
-
-option(ENABLE_SNAP_SCOPE "Enable Snap Scope" OFF)
-if (${ENABLE_SNAP_SCOPE})
-    message(STATUS "Notice: ******************* Enable Snap Scope in Crypto-Suites ******************* ")
-endif()
-
 add_library(${CMAKE_PROJECT_NAME} SHARED "")
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES
 )
+
+option(ENABLE_STARK "Enable stark curve" OFF)
+if (${ENABLE_STARK})
+    add_definitions(-DENABLE_STARK)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ENABLE_STARK)
+endif()
+
+option(ENABLE_SNAP_SCOPE "Enable Snap Scope" OFF)
+if (${ENABLE_SNAP_SCOPE})
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ENABLE_SNAP_SCOPE)
+    message(STATUS "Notice: ******************* Enable Snap Scope in Crypto-Suites ******************* ")
+endif()
 
 include_directories(src)
 
@@ -83,22 +85,9 @@ else ()
 
     option(ENABLE_TESTS "Enable tests" OFF)
     if (${ENABLE_TESTS})
+        include(CTest)
         enable_testing()
-
-        if (NOT ${ENABLE_SNAP_SCOPE})
-            add_subdirectory(test/crypto-bip32)
-            add_subdirectory(test/crypto-commitment)
-        endif()
-        add_subdirectory(test/crypto-bip39)
-        add_subdirectory(test/crypto-bn)
-        add_subdirectory(test/crypto-curve)
-        add_subdirectory(test/crypto-ecies)
-        add_subdirectory(test/crypto-encode)
-        add_subdirectory(test/crypto-hash)
-        add_subdirectory(test/crypto-paillier)
-        add_subdirectory(test/crypto-sss)
-        add_subdirectory(test/crypto-zkp)
-        add_subdirectory(test/crypto-aes)
+        add_subdirectory(test)
     endif()
 endif ()
 

@@ -65,6 +65,8 @@ install(
 
         # crypto-hash-cpp
         PATTERN "compat.h" EXCLUDE
+        PATTERN "byte_order.h" EXCLUDE
+        PATTERN "sha3_imp.h" EXCLUDE
 
         # crypto-ecies-cpp
         PATTERN "hmac.h" EXCLUDE

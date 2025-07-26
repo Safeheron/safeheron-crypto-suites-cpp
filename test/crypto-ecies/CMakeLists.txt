@@ -1,5 +1,3 @@
-find_package(GTest REQUIRED)
-
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 link_libraries(
