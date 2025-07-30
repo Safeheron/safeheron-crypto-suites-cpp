@@ -1,6 +1,7 @@
 #ifndef SAFEHERON_CRYPTO_BIP32_H
 #define SAFEHERON_CRYPTO_BIP32_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 #include "crypto-suites/crypto-curve/curve.h"

@@ -6,6 +6,7 @@
 #ifndef SAFEHERON_CRYPTOBIP32_HDPATH_H
 #define SAFEHERON_CRYPTOBIP32_HDPATH_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

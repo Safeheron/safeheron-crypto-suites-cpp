@@ -24,10 +24,17 @@ cmake_policy(SET CMP0076 NEW)
 cmake_policy(SET CMP0077 NEW)
 cmake_policy(SET CMP0079 NEW)
 
-add_library(${CMAKE_PROJECT_NAME} SHARED "")
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+if (PLATFORM STREQUAL "SGX")
+    add_library(${CMAKE_PROJECT_NAME} STATIC "")
+else()
+    add_library(${CMAKE_PROJECT_NAME} "")
+endif()
+
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES
+        POSITION_INDEPENDENT_CODE ON
 )
 
 option(ENABLE_STARK "Enable stark curve" OFF)
@@ -80,7 +87,6 @@ else ()
     target_link_libraries(${CMAKE_PROJECT_NAME}
             protobuf::libprotobuf
             OpenSSL::Crypto
-            -ldl
     )
 
     option(ENABLE_TESTS "Enable tests" OFF)

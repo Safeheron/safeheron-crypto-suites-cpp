@@ -1,7 +1,8 @@
 #ifndef SAFEHERON_BIG_NUMBER_H
 #define SAFEHERON_BIG_NUMBER_H
 
-#include<string>
+#include <cstdint>
+#include <string>
 
 struct bignum_st;
 
