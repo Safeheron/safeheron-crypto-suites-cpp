@@ -80,7 +80,7 @@ if (PLATFORM STREQUAL "SGX")
     )
 else ()
     find_package(Protobuf REQUIRED)
-    #set(OPENSSL_USE_STATIC_LIBS TRUE)
+    set(OPENSSL_USE_STATIC_LIBS TRUE)
     find_package(OpenSSL REQUIRED)
 
     target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
