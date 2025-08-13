@@ -5,6 +5,7 @@
 #ifndef SAFEHERON_MPC_NODE_FORMATTER_H
 #define SAFEHERON_MPC_NODE_FORMATTER_H
 
+#include <cstdint>
 #include <string>
 
 class Formatter{
