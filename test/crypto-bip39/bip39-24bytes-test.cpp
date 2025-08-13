@@ -1,11 +1,11 @@
 #include <vector>
 #include "gtest/gtest.h"
-#include "crypto-bip39/bip39.h"
+#include "crypto-suites/crypto-bip39/bip39.h"
 #include "ventropy_24.h"
 #include "vmnemonic_en_18.h"
 #include "vmnemonic_zhs_18.h"
 #include "vmnemonic_zht_18.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-encode/hex.h"
 
 TEST(bip39, verify_24bytes) {
     for(int i = 0; i < 1000; ++i) {

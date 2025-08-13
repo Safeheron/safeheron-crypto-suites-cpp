@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "crypto-hash/sha256.h"
-#include "crypto-hash/safe_hash256.h"
+#include "crypto-suites/crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/safe_hash256.h"
 #include "util-test.h"
 
 #ifdef ENABLE_ASSEMBLE

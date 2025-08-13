@@ -1,17 +1,10 @@
-find_package(GTest REQUIRED)
-find_package(PkgConfig REQUIRED)
-pkg_search_module(PROTOBUF REQUIRED protobuf)  # this looks for opencv.pc file
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-include_directories(
-        ${GTEST_INCLUDE_DIRS}
-        ../../src/crypto-suites/crypto-curve
-        /usr/local/include
-        )
-
-link_libraries(${CMAKE_PROJECT_NAME}
-                ${GTEST_BOTH_LIBRARIES}
-                pthread )
-
+link_libraries(
+        ${CMAKE_PROJECT_NAME}
+        GTest::gtest
+        pthread
+)
 
 add_executable(constructor-test constructor-test.cpp)
 add_test(NAME curve.constructor-test COMMAND constructor-test)

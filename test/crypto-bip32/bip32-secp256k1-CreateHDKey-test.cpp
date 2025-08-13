@@ -1,15 +1,15 @@
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "crypto-bn/rand.h"
-#include "crypto-bn/bn.h"
-#include "exception/located_exception.h"
-#include "crypto-curve/curve.h"
-#include "crypto-bip32/bip32.h"
-#include "crypto-encode/hex.h"
-#include "crypto-encode/base58.h"
-#include "crypto-encode/base64.h"
-#include "crypto-hash/hmac_sha512.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/exception/located_exception.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-bip32/bip32.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-encode/base58.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-hash/hmac_sha512.h"
 
 using std::string;
 using safeheron::bignum::BN;

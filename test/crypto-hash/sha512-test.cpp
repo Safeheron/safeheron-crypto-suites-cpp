@@ -1,4 +1,4 @@
-#include "crypto-hash/sha512.h"
+#include "crypto-suites/crypto-hash/sha512.h"
 #include "gtest/gtest.h"
 #include <vector>
 #include <string>

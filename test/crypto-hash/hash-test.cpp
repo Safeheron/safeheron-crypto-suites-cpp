@@ -2,7 +2,7 @@
 // Created by Sword03 on 2020/10/22.
 //
 #include "gtest/gtest.h"
-#include "crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/sha256.h"
 #include "util-test.h"
 
 #ifdef ENABLE_ASSEMBLE

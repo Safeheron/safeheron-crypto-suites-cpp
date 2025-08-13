@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "crypto-hash/sha256.h"
+#include "crypto-suites/crypto-hash/sha256.h"
 #include <vector>
 #include <string>
 #include "util-test.h"

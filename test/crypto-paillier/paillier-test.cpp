@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
-#include "crypto-bn/rand.h"
-#include "crypto-bn/bn.h"
-#include "exception/located_exception.h"
-#include "crypto-paillier/pail.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/exception/located_exception.h"
+#include "crypto-suites/crypto-paillier/pail.h"
 #include "CTimer.h"
 using namespace std;
 using namespace safeheron::bignum;

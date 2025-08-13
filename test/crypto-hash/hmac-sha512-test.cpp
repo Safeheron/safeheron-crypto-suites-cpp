@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "crypto-hash/hmac_sha512.h"
+#include "crypto-suites/crypto-hash/hmac_sha512.h"
 #include "util-test.h"
 
 using safeheron::hash::CHMAC_SHA512;

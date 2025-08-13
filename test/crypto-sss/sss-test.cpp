@@ -2,10 +2,10 @@
 #include <vector>
 #include <google/protobuf/stubs/common.h>
 #include "gtest/gtest.h"
-#include "crypto-bn/rand.h"
-#include "crypto-encode/base64.h"
-#include "crypto-curve/curve.h"
-#include "crypto-sss/vsss_secp256k1.h"
+#include "crypto-suites/crypto-bn/rand.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-sss/vsss_secp256k1.h"
 
 using safeheron::bignum::BN;
 using namespace safeheron::rand;

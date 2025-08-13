@@ -2,9 +2,9 @@
 #include <fstream>
 #include <vector>
 #include "gtest/gtest.h"
-#include "crypto-bip32/bip32.h"
-#include "crypto-curve/curve.h"
-#include "crypto-encode/hex.h"
+#include "crypto-suites/crypto-bip32/bip32.h"
+#include "crypto-suites/crypto-curve/curve.h"
+#include "crypto-suites/crypto-encode/hex.h"
 using safeheron::bip32::HDKey;
 using safeheron::curve::CurveType;
 using safeheron::curve::CurvePoint;

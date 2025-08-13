@@ -1,8 +1,8 @@
 #include <cstring>
 #include "gtest/gtest.h"
-#include "crypto-encode/base64.h"
-#include "crypto-encode/hex.h"
-#include "crypto-encode/hex_imp.h"
+#include "crypto-suites/crypto-encode/base64.h"
+#include "crypto-suites/crypto-encode/hex.h"
+#include "crypto-suites/crypto-encode/hex_imp.h"
 
 #ifdef ENABLE_ASSEMBLE
 #include <google/protobuf/stubs/common.h>

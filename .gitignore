@@ -33,5 +33,10 @@
 
 .DS_Store
 .idea
-build/
-cmake-build-debug/
+build
+
+.vscode
+
+google_sheet.json
+
+cmake-build*/

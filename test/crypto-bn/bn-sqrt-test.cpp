@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "crypto-bn/bn.h"
-#include "crypto-bn/rand.h"
+#include "crypto-suites/crypto-bn/bn.h"
+#include "crypto-suites/crypto-bn/rand.h"
 #include <openssl/bn.h>
 
 using safeheron::bignum::BN;

@@ -1,8 +1,6 @@
-find_package(GTest REQUIRED)
-
-include_directories("../../src/crypto-suites")
+include_directories(${PROJECT_SOURCE_DIR}/src)
 link_libraries(${CMAKE_PROJECT_NAME}
-        ${GTEST_BOTH_LIBRARIES}
+        GTest::gtest
         pthread )
 
 add_executable(bn-arithmetic-operation-test bn-arithmetic-operation-test.cpp)
