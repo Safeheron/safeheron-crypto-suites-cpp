@@ -1044,9 +1044,9 @@ bool BN::ExistSqrtM(const BN &p) const
  * Return true is this is a prime, otherwise return false
  * @return true if this is probably prime, false otherwise.
  */
-bool BN::IsProbablyPrime() const
+bool BN::IsProbablyPrime(int checks) const
 {
-    return BN_is_prime_fasttest_ex(bn_, 0, nullptr, 1, nullptr);
+    return BN_is_prime_fasttest_ex(bn_, checks, nullptr, 1, nullptr);
 }
 
 /**

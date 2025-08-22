@@ -201,8 +201,12 @@ bool PailBlumModulusProof::Verify(const BN &N) const {
     if( (x_arr_.size() < ITERATIONS_BlumInt_Proof) || (a_arr_.size() < ITERATIONS_BlumInt_Proof)  || (b_arr_.size() < ITERATIONS_BlumInt_Proof)  || (z_arr_.size() < ITERATIONS_PailN_Proof) ) return false;
 
     if(N <= 1 || N.BitLength() < 2046) return false;
+    // N is an odd composite number and N % 4 == 1
+    if (!N.IsOdd() || N.IsProbablyPrime(128) || (N % 4 != 1) ) return false;
     if(w_ <= 0 || w_ >= N) return false;
     if(BN::JacobiSymbol(w_, N) != -1) return false;
+    // w is coprime to N
+    if (w_.Gcd(N) != 1) return false;
 
     std::vector<BN> y_arr;
     GenerateYs(y_arr, N, w_, ITERATIONS_BlumInt_Proof);
@@ -225,6 +229,7 @@ bool PailBlumModulusProof::Verify(const BN &N) const {
         if(z_arr_[i].Gcd(N) != 1) return false;
         BN z = z_arr_[i].PowM(N, N);
         if (z != y_arr[i]) return false;
+        if(y_arr[i] == 1 || y_arr[i] == (N-1)) return false;
     }
     return true;
 }

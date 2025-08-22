@@ -383,7 +383,7 @@ public:
      * Return true is this is a prime, otherwise return false
      * @return true if this is probably prime, false otherwise.
      */
-    bool IsProbablyPrime() const;
+    bool IsProbablyPrime(int checks = 0) const;
 
     /**
      * Conversion from hex string to BN.
