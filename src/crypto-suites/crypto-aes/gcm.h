@@ -5,6 +5,7 @@
 #ifndef SAFEHERON_CRYPTO_GCM_H
 #define SAFEHERON_CRYPTO_GCM_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
