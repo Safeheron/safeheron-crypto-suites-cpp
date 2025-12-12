@@ -14,6 +14,13 @@ namespace rand {
 void RandomBytes(unsigned char * buf, size_t size);
 
 /**
+ * Sample random bytes.
+ * @param size
+ * @return random bytes
+ */
+std::string RandomBytes(size_t size);
+
+/**
  * Sample random BN.
  * @param bits
  * @return a random BN.

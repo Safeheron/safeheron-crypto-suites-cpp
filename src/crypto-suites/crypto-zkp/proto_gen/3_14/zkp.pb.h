@@ -31,7 +31,7 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
-#include "../../../crypto-curve/proto_gen/curve_point.pb.switch.h"
+#include "crypto-suites/crypto-curve/proto_gen/curve_point.pb.switch.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_zkp_2eproto
@@ -47,7 +47,7 @@ struct TableStruct_zkp_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[30]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[34]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -89,6 +89,18 @@ extern LinearCombinationProofDefaultTypeInternal _LinearCombinationProof_default
 class NoSmallFactorProof;
 class NoSmallFactorProofDefaultTypeInternal;
 extern NoSmallFactorProofDefaultTypeInternal _NoSmallFactorProof_default_instance_;
+class PDLPMessage1;
+class PDLPMessage1DefaultTypeInternal;
+extern PDLPMessage1DefaultTypeInternal _PDLPMessage1_default_instance_;
+class PDLPMessage2;
+class PDLPMessage2DefaultTypeInternal;
+extern PDLPMessage2DefaultTypeInternal _PDLPMessage2_default_instance_;
+class PDLVMessage1;
+class PDLVMessage1DefaultTypeInternal;
+extern PDLVMessage1DefaultTypeInternal _PDLVMessage1_default_instance_;
+class PDLVMessage2;
+class PDLVMessage2DefaultTypeInternal;
+extern PDLVMessage2DefaultTypeInternal _PDLVMessage2_default_instance_;
 class PailAffGroupEleRangeProof_V1;
 class PailAffGroupEleRangeProof_V1DefaultTypeInternal;
 extern PailAffGroupEleRangeProof_V1DefaultTypeInternal _PailAffGroupEleRangeProof_V1_default_instance_;
@@ -160,6 +172,10 @@ template<> ::safeheron::proto::HEGProof_V3* Arena::CreateMaybeMessage<::safehero
 template<> ::safeheron::proto::HegProof* Arena::CreateMaybeMessage<::safeheron::proto::HegProof>(Arena*);
 template<> ::safeheron::proto::LinearCombinationProof* Arena::CreateMaybeMessage<::safeheron::proto::LinearCombinationProof>(Arena*);
 template<> ::safeheron::proto::NoSmallFactorProof* Arena::CreateMaybeMessage<::safeheron::proto::NoSmallFactorProof>(Arena*);
+template<> ::safeheron::proto::PDLPMessage1* Arena::CreateMaybeMessage<::safeheron::proto::PDLPMessage1>(Arena*);
+template<> ::safeheron::proto::PDLPMessage2* Arena::CreateMaybeMessage<::safeheron::proto::PDLPMessage2>(Arena*);
+template<> ::safeheron::proto::PDLVMessage1* Arena::CreateMaybeMessage<::safeheron::proto::PDLVMessage1>(Arena*);
+template<> ::safeheron::proto::PDLVMessage2* Arena::CreateMaybeMessage<::safeheron::proto::PDLVMessage2>(Arena*);
 template<> ::safeheron::proto::PailAffGroupEleRangeProof_V1* Arena::CreateMaybeMessage<::safeheron::proto::PailAffGroupEleRangeProof_V1>(Arena*);
 template<> ::safeheron::proto::PailAffGroupEleRangeProof_V2* Arena::CreateMaybeMessage<::safeheron::proto::PailAffGroupEleRangeProof_V2>(Arena*);
 template<> ::safeheron::proto::PailAffRangeProof* Arena::CreateMaybeMessage<::safeheron::proto::PailAffRangeProof>(Arena*);
@@ -6933,6 +6949,672 @@ class PailMulGroupEleRangeProof PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr z2_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr w_;
   ::safeheron::proto::CurvePoint* b_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_zkp_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PDLVMessage1 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:safeheron.proto.PDLVMessage1) */ {
+ public:
+  inline PDLVMessage1() : PDLVMessage1(nullptr) {}
+  virtual ~PDLVMessage1();
+
+  PDLVMessage1(const PDLVMessage1& from);
+  PDLVMessage1(PDLVMessage1&& from) noexcept
+    : PDLVMessage1() {
+    *this = ::std::move(from);
+  }
+
+  inline PDLVMessage1& operator=(const PDLVMessage1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PDLVMessage1& operator=(PDLVMessage1&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PDLVMessage1& default_instance();
+
+  static inline const PDLVMessage1* internal_default_instance() {
+    return reinterpret_cast<const PDLVMessage1*>(
+               &_PDLVMessage1_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    30;
+
+  friend void swap(PDLVMessage1& a, PDLVMessage1& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PDLVMessage1* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PDLVMessage1* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PDLVMessage1* New() const final {
+    return CreateMaybeMessage<PDLVMessage1>(nullptr);
+  }
+
+  PDLVMessage1* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PDLVMessage1>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PDLVMessage1& from);
+  void MergeFrom(const PDLVMessage1& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PDLVMessage1* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "safeheron.proto.PDLVMessage1";
+  }
+  protected:
+  explicit PDLVMessage1(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_zkp_2eproto);
+    return ::descriptor_table_zkp_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kC1FieldNumber = 1,
+    kC2FieldNumber = 2,
+  };
+  // string c1 = 1;
+  void clear_c1();
+  const std::string& c1() const;
+  void set_c1(const std::string& value);
+  void set_c1(std::string&& value);
+  void set_c1(const char* value);
+  void set_c1(const char* value, size_t size);
+  std::string* mutable_c1();
+  std::string* release_c1();
+  void set_allocated_c1(std::string* c1);
+  private:
+  const std::string& _internal_c1() const;
+  void _internal_set_c1(const std::string& value);
+  std::string* _internal_mutable_c1();
+  public:
+
+  // string c2 = 2;
+  void clear_c2();
+  const std::string& c2() const;
+  void set_c2(const std::string& value);
+  void set_c2(std::string&& value);
+  void set_c2(const char* value);
+  void set_c2(const char* value, size_t size);
+  std::string* mutable_c2();
+  std::string* release_c2();
+  void set_allocated_c2(std::string* c2);
+  private:
+  const std::string& _internal_c2() const;
+  void _internal_set_c2(const std::string& value);
+  std::string* _internal_mutable_c2();
+  public:
+
+  // @@protoc_insertion_point(class_scope:safeheron.proto.PDLVMessage1)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr c1_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr c2_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_zkp_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PDLVMessage2 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:safeheron.proto.PDLVMessage2) */ {
+ public:
+  inline PDLVMessage2() : PDLVMessage2(nullptr) {}
+  virtual ~PDLVMessage2();
+
+  PDLVMessage2(const PDLVMessage2& from);
+  PDLVMessage2(PDLVMessage2&& from) noexcept
+    : PDLVMessage2() {
+    *this = ::std::move(from);
+  }
+
+  inline PDLVMessage2& operator=(const PDLVMessage2& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PDLVMessage2& operator=(PDLVMessage2&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PDLVMessage2& default_instance();
+
+  static inline const PDLVMessage2* internal_default_instance() {
+    return reinterpret_cast<const PDLVMessage2*>(
+               &_PDLVMessage2_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    31;
+
+  friend void swap(PDLVMessage2& a, PDLVMessage2& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PDLVMessage2* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PDLVMessage2* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PDLVMessage2* New() const final {
+    return CreateMaybeMessage<PDLVMessage2>(nullptr);
+  }
+
+  PDLVMessage2* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PDLVMessage2>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PDLVMessage2& from);
+  void MergeFrom(const PDLVMessage2& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PDLVMessage2* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "safeheron.proto.PDLVMessage2";
+  }
+  protected:
+  explicit PDLVMessage2(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_zkp_2eproto);
+    return ::descriptor_table_zkp_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAFieldNumber = 1,
+    kBFieldNumber = 2,
+    kBlindABFieldNumber = 3,
+  };
+  // string a = 1;
+  void clear_a();
+  const std::string& a() const;
+  void set_a(const std::string& value);
+  void set_a(std::string&& value);
+  void set_a(const char* value);
+  void set_a(const char* value, size_t size);
+  std::string* mutable_a();
+  std::string* release_a();
+  void set_allocated_a(std::string* a);
+  private:
+  const std::string& _internal_a() const;
+  void _internal_set_a(const std::string& value);
+  std::string* _internal_mutable_a();
+  public:
+
+  // string b = 2;
+  void clear_b();
+  const std::string& b() const;
+  void set_b(const std::string& value);
+  void set_b(std::string&& value);
+  void set_b(const char* value);
+  void set_b(const char* value, size_t size);
+  std::string* mutable_b();
+  std::string* release_b();
+  void set_allocated_b(std::string* b);
+  private:
+  const std::string& _internal_b() const;
+  void _internal_set_b(const std::string& value);
+  std::string* _internal_mutable_b();
+  public:
+
+  // string blind_a_b = 3;
+  void clear_blind_a_b();
+  const std::string& blind_a_b() const;
+  void set_blind_a_b(const std::string& value);
+  void set_blind_a_b(std::string&& value);
+  void set_blind_a_b(const char* value);
+  void set_blind_a_b(const char* value, size_t size);
+  std::string* mutable_blind_a_b();
+  std::string* release_blind_a_b();
+  void set_allocated_blind_a_b(std::string* blind_a_b);
+  private:
+  const std::string& _internal_blind_a_b() const;
+  void _internal_set_blind_a_b(const std::string& value);
+  std::string* _internal_mutable_blind_a_b();
+  public:
+
+  // @@protoc_insertion_point(class_scope:safeheron.proto.PDLVMessage2)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr a_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr b_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blind_a_b_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_zkp_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PDLPMessage1 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:safeheron.proto.PDLPMessage1) */ {
+ public:
+  inline PDLPMessage1() : PDLPMessage1(nullptr) {}
+  virtual ~PDLPMessage1();
+
+  PDLPMessage1(const PDLPMessage1& from);
+  PDLPMessage1(PDLPMessage1&& from) noexcept
+    : PDLPMessage1() {
+    *this = ::std::move(from);
+  }
+
+  inline PDLPMessage1& operator=(const PDLPMessage1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PDLPMessage1& operator=(PDLPMessage1&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PDLPMessage1& default_instance();
+
+  static inline const PDLPMessage1* internal_default_instance() {
+    return reinterpret_cast<const PDLPMessage1*>(
+               &_PDLPMessage1_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    32;
+
+  friend void swap(PDLPMessage1& a, PDLPMessage1& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PDLPMessage1* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PDLPMessage1* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PDLPMessage1* New() const final {
+    return CreateMaybeMessage<PDLPMessage1>(nullptr);
+  }
+
+  PDLPMessage1* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PDLPMessage1>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PDLPMessage1& from);
+  void MergeFrom(const PDLPMessage1& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PDLPMessage1* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "safeheron.proto.PDLPMessage1";
+  }
+  protected:
+  explicit PDLPMessage1(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_zkp_2eproto);
+    return ::descriptor_table_zkp_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCommitQHatFieldNumber = 1,
+  };
+  // string commit_Q_hat = 1;
+  void clear_commit_q_hat();
+  const std::string& commit_q_hat() const;
+  void set_commit_q_hat(const std::string& value);
+  void set_commit_q_hat(std::string&& value);
+  void set_commit_q_hat(const char* value);
+  void set_commit_q_hat(const char* value, size_t size);
+  std::string* mutable_commit_q_hat();
+  std::string* release_commit_q_hat();
+  void set_allocated_commit_q_hat(std::string* commit_q_hat);
+  private:
+  const std::string& _internal_commit_q_hat() const;
+  void _internal_set_commit_q_hat(const std::string& value);
+  std::string* _internal_mutable_commit_q_hat();
+  public:
+
+  // @@protoc_insertion_point(class_scope:safeheron.proto.PDLPMessage1)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr commit_q_hat_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_zkp_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PDLPMessage2 PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:safeheron.proto.PDLPMessage2) */ {
+ public:
+  inline PDLPMessage2() : PDLPMessage2(nullptr) {}
+  virtual ~PDLPMessage2();
+
+  PDLPMessage2(const PDLPMessage2& from);
+  PDLPMessage2(PDLPMessage2&& from) noexcept
+    : PDLPMessage2() {
+    *this = ::std::move(from);
+  }
+
+  inline PDLPMessage2& operator=(const PDLPMessage2& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PDLPMessage2& operator=(PDLPMessage2&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const PDLPMessage2& default_instance();
+
+  static inline const PDLPMessage2* internal_default_instance() {
+    return reinterpret_cast<const PDLPMessage2*>(
+               &_PDLPMessage2_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    33;
+
+  friend void swap(PDLPMessage2& a, PDLPMessage2& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PDLPMessage2* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PDLPMessage2* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PDLPMessage2* New() const final {
+    return CreateMaybeMessage<PDLPMessage2>(nullptr);
+  }
+
+  PDLPMessage2* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<PDLPMessage2>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const PDLPMessage2& from);
+  void MergeFrom(const PDLPMessage2& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PDLPMessage2* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "safeheron.proto.PDLPMessage2";
+  }
+  protected:
+  explicit PDLPMessage2(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_zkp_2eproto);
+    return ::descriptor_table_zkp_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kBlindQHatFieldNumber = 2,
+    kQHatFieldNumber = 1,
+    kPailEncRangProofFieldNumber = 3,
+  };
+  // string blind_Q_hat = 2;
+  void clear_blind_q_hat();
+  const std::string& blind_q_hat() const;
+  void set_blind_q_hat(const std::string& value);
+  void set_blind_q_hat(std::string&& value);
+  void set_blind_q_hat(const char* value);
+  void set_blind_q_hat(const char* value, size_t size);
+  std::string* mutable_blind_q_hat();
+  std::string* release_blind_q_hat();
+  void set_allocated_blind_q_hat(std::string* blind_q_hat);
+  private:
+  const std::string& _internal_blind_q_hat() const;
+  void _internal_set_blind_q_hat(const std::string& value);
+  std::string* _internal_mutable_blind_q_hat();
+  public:
+
+  // .safeheron.proto.CurvePoint Q_hat = 1;
+  bool has_q_hat() const;
+  private:
+  bool _internal_has_q_hat() const;
+  public:
+  void clear_q_hat();
+  const ::safeheron::proto::CurvePoint& q_hat() const;
+  ::safeheron::proto::CurvePoint* release_q_hat();
+  ::safeheron::proto::CurvePoint* mutable_q_hat();
+  void set_allocated_q_hat(::safeheron::proto::CurvePoint* q_hat);
+  private:
+  const ::safeheron::proto::CurvePoint& _internal_q_hat() const;
+  ::safeheron::proto::CurvePoint* _internal_mutable_q_hat();
+  public:
+  void unsafe_arena_set_allocated_q_hat(
+      ::safeheron::proto::CurvePoint* q_hat);
+  ::safeheron::proto::CurvePoint* unsafe_arena_release_q_hat();
+
+  // .safeheron.proto.PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+  bool has_pail_enc_rang_proof() const;
+  private:
+  bool _internal_has_pail_enc_rang_proof() const;
+  public:
+  void clear_pail_enc_rang_proof();
+  const ::safeheron::proto::PailEncRangeProof_V3& pail_enc_rang_proof() const;
+  ::safeheron::proto::PailEncRangeProof_V3* release_pail_enc_rang_proof();
+  ::safeheron::proto::PailEncRangeProof_V3* mutable_pail_enc_rang_proof();
+  void set_allocated_pail_enc_rang_proof(::safeheron::proto::PailEncRangeProof_V3* pail_enc_rang_proof);
+  private:
+  const ::safeheron::proto::PailEncRangeProof_V3& _internal_pail_enc_rang_proof() const;
+  ::safeheron::proto::PailEncRangeProof_V3* _internal_mutable_pail_enc_rang_proof();
+  public:
+  void unsafe_arena_set_allocated_pail_enc_rang_proof(
+      ::safeheron::proto::PailEncRangeProof_V3* pail_enc_rang_proof);
+  ::safeheron::proto::PailEncRangeProof_V3* unsafe_arena_release_pail_enc_rang_proof();
+
+  // @@protoc_insertion_point(class_scope:safeheron.proto.PDLPMessage2)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr blind_q_hat_;
+  ::safeheron::proto::CurvePoint* q_hat_;
+  ::safeheron::proto::PailEncRangeProof_V3* pail_enc_rang_proof_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_zkp_2eproto;
 };
@@ -17232,9 +17914,620 @@ inline void PailMulGroupEleRangeProof::set_allocated_w(std::string* w) {
   // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PailMulGroupEleRangeProof.w)
 }
 
+// -------------------------------------------------------------------
+
+// PDLVMessage1
+
+// string c1 = 1;
+inline void PDLVMessage1::clear_c1() {
+  c1_.ClearToEmpty();
+}
+inline const std::string& PDLVMessage1::c1() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLVMessage1.c1)
+  return _internal_c1();
+}
+inline void PDLVMessage1::set_c1(const std::string& value) {
+  _internal_set_c1(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLVMessage1.c1)
+}
+inline std::string* PDLVMessage1::mutable_c1() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLVMessage1.c1)
+  return _internal_mutable_c1();
+}
+inline const std::string& PDLVMessage1::_internal_c1() const {
+  return c1_.Get();
+}
+inline void PDLVMessage1::_internal_set_c1(const std::string& value) {
+  
+  c1_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLVMessage1::set_c1(std::string&& value) {
+  
+  c1_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLVMessage1.c1)
+}
+inline void PDLVMessage1::set_c1(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  c1_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLVMessage1.c1)
+}
+inline void PDLVMessage1::set_c1(const char* value,
+    size_t size) {
+  
+  c1_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLVMessage1.c1)
+}
+inline std::string* PDLVMessage1::_internal_mutable_c1() {
+  
+  return c1_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLVMessage1::release_c1() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLVMessage1.c1)
+  return c1_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLVMessage1::set_allocated_c1(std::string* c1) {
+  if (c1 != nullptr) {
+    
+  } else {
+    
+  }
+  c1_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), c1,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLVMessage1.c1)
+}
+
+// string c2 = 2;
+inline void PDLVMessage1::clear_c2() {
+  c2_.ClearToEmpty();
+}
+inline const std::string& PDLVMessage1::c2() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLVMessage1.c2)
+  return _internal_c2();
+}
+inline void PDLVMessage1::set_c2(const std::string& value) {
+  _internal_set_c2(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLVMessage1.c2)
+}
+inline std::string* PDLVMessage1::mutable_c2() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLVMessage1.c2)
+  return _internal_mutable_c2();
+}
+inline const std::string& PDLVMessage1::_internal_c2() const {
+  return c2_.Get();
+}
+inline void PDLVMessage1::_internal_set_c2(const std::string& value) {
+  
+  c2_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLVMessage1::set_c2(std::string&& value) {
+  
+  c2_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLVMessage1.c2)
+}
+inline void PDLVMessage1::set_c2(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  c2_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLVMessage1.c2)
+}
+inline void PDLVMessage1::set_c2(const char* value,
+    size_t size) {
+  
+  c2_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLVMessage1.c2)
+}
+inline std::string* PDLVMessage1::_internal_mutable_c2() {
+  
+  return c2_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLVMessage1::release_c2() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLVMessage1.c2)
+  return c2_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLVMessage1::set_allocated_c2(std::string* c2) {
+  if (c2 != nullptr) {
+    
+  } else {
+    
+  }
+  c2_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), c2,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLVMessage1.c2)
+}
+
+// -------------------------------------------------------------------
+
+// PDLVMessage2
+
+// string a = 1;
+inline void PDLVMessage2::clear_a() {
+  a_.ClearToEmpty();
+}
+inline const std::string& PDLVMessage2::a() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLVMessage2.a)
+  return _internal_a();
+}
+inline void PDLVMessage2::set_a(const std::string& value) {
+  _internal_set_a(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLVMessage2.a)
+}
+inline std::string* PDLVMessage2::mutable_a() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLVMessage2.a)
+  return _internal_mutable_a();
+}
+inline const std::string& PDLVMessage2::_internal_a() const {
+  return a_.Get();
+}
+inline void PDLVMessage2::_internal_set_a(const std::string& value) {
+  
+  a_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLVMessage2::set_a(std::string&& value) {
+  
+  a_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLVMessage2.a)
+}
+inline void PDLVMessage2::set_a(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  a_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLVMessage2.a)
+}
+inline void PDLVMessage2::set_a(const char* value,
+    size_t size) {
+  
+  a_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLVMessage2.a)
+}
+inline std::string* PDLVMessage2::_internal_mutable_a() {
+  
+  return a_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLVMessage2::release_a() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLVMessage2.a)
+  return a_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLVMessage2::set_allocated_a(std::string* a) {
+  if (a != nullptr) {
+    
+  } else {
+    
+  }
+  a_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), a,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLVMessage2.a)
+}
+
+// string b = 2;
+inline void PDLVMessage2::clear_b() {
+  b_.ClearToEmpty();
+}
+inline const std::string& PDLVMessage2::b() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLVMessage2.b)
+  return _internal_b();
+}
+inline void PDLVMessage2::set_b(const std::string& value) {
+  _internal_set_b(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLVMessage2.b)
+}
+inline std::string* PDLVMessage2::mutable_b() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLVMessage2.b)
+  return _internal_mutable_b();
+}
+inline const std::string& PDLVMessage2::_internal_b() const {
+  return b_.Get();
+}
+inline void PDLVMessage2::_internal_set_b(const std::string& value) {
+  
+  b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLVMessage2::set_b(std::string&& value) {
+  
+  b_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLVMessage2.b)
+}
+inline void PDLVMessage2::set_b(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLVMessage2.b)
+}
+inline void PDLVMessage2::set_b(const char* value,
+    size_t size) {
+  
+  b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLVMessage2.b)
+}
+inline std::string* PDLVMessage2::_internal_mutable_b() {
+  
+  return b_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLVMessage2::release_b() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLVMessage2.b)
+  return b_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLVMessage2::set_allocated_b(std::string* b) {
+  if (b != nullptr) {
+    
+  } else {
+    
+  }
+  b_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), b,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLVMessage2.b)
+}
+
+// string blind_a_b = 3;
+inline void PDLVMessage2::clear_blind_a_b() {
+  blind_a_b_.ClearToEmpty();
+}
+inline const std::string& PDLVMessage2::blind_a_b() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLVMessage2.blind_a_b)
+  return _internal_blind_a_b();
+}
+inline void PDLVMessage2::set_blind_a_b(const std::string& value) {
+  _internal_set_blind_a_b(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLVMessage2.blind_a_b)
+}
+inline std::string* PDLVMessage2::mutable_blind_a_b() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLVMessage2.blind_a_b)
+  return _internal_mutable_blind_a_b();
+}
+inline const std::string& PDLVMessage2::_internal_blind_a_b() const {
+  return blind_a_b_.Get();
+}
+inline void PDLVMessage2::_internal_set_blind_a_b(const std::string& value) {
+  
+  blind_a_b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLVMessage2::set_blind_a_b(std::string&& value) {
+  
+  blind_a_b_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLVMessage2.blind_a_b)
+}
+inline void PDLVMessage2::set_blind_a_b(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  blind_a_b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLVMessage2.blind_a_b)
+}
+inline void PDLVMessage2::set_blind_a_b(const char* value,
+    size_t size) {
+  
+  blind_a_b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLVMessage2.blind_a_b)
+}
+inline std::string* PDLVMessage2::_internal_mutable_blind_a_b() {
+  
+  return blind_a_b_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLVMessage2::release_blind_a_b() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLVMessage2.blind_a_b)
+  return blind_a_b_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLVMessage2::set_allocated_blind_a_b(std::string* blind_a_b) {
+  if (blind_a_b != nullptr) {
+    
+  } else {
+    
+  }
+  blind_a_b_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), blind_a_b,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLVMessage2.blind_a_b)
+}
+
+// -------------------------------------------------------------------
+
+// PDLPMessage1
+
+// string commit_Q_hat = 1;
+inline void PDLPMessage1::clear_commit_q_hat() {
+  commit_q_hat_.ClearToEmpty();
+}
+inline const std::string& PDLPMessage1::commit_q_hat() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLPMessage1.commit_Q_hat)
+  return _internal_commit_q_hat();
+}
+inline void PDLPMessage1::set_commit_q_hat(const std::string& value) {
+  _internal_set_commit_q_hat(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLPMessage1.commit_Q_hat)
+}
+inline std::string* PDLPMessage1::mutable_commit_q_hat() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLPMessage1.commit_Q_hat)
+  return _internal_mutable_commit_q_hat();
+}
+inline const std::string& PDLPMessage1::_internal_commit_q_hat() const {
+  return commit_q_hat_.Get();
+}
+inline void PDLPMessage1::_internal_set_commit_q_hat(const std::string& value) {
+  
+  commit_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLPMessage1::set_commit_q_hat(std::string&& value) {
+  
+  commit_q_hat_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLPMessage1.commit_Q_hat)
+}
+inline void PDLPMessage1::set_commit_q_hat(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  commit_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLPMessage1.commit_Q_hat)
+}
+inline void PDLPMessage1::set_commit_q_hat(const char* value,
+    size_t size) {
+  
+  commit_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLPMessage1.commit_Q_hat)
+}
+inline std::string* PDLPMessage1::_internal_mutable_commit_q_hat() {
+  
+  return commit_q_hat_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLPMessage1::release_commit_q_hat() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLPMessage1.commit_Q_hat)
+  return commit_q_hat_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLPMessage1::set_allocated_commit_q_hat(std::string* commit_q_hat) {
+  if (commit_q_hat != nullptr) {
+    
+  } else {
+    
+  }
+  commit_q_hat_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), commit_q_hat,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLPMessage1.commit_Q_hat)
+}
+
+// -------------------------------------------------------------------
+
+// PDLPMessage2
+
+// .safeheron.proto.CurvePoint Q_hat = 1;
+inline bool PDLPMessage2::_internal_has_q_hat() const {
+  return this != internal_default_instance() && q_hat_ != nullptr;
+}
+inline bool PDLPMessage2::has_q_hat() const {
+  return _internal_has_q_hat();
+}
+inline const ::safeheron::proto::CurvePoint& PDLPMessage2::_internal_q_hat() const {
+  const ::safeheron::proto::CurvePoint* p = q_hat_;
+  return p != nullptr ? *p : reinterpret_cast<const ::safeheron::proto::CurvePoint&>(
+      ::safeheron::proto::_CurvePoint_default_instance_);
+}
+inline const ::safeheron::proto::CurvePoint& PDLPMessage2::q_hat() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLPMessage2.Q_hat)
+  return _internal_q_hat();
+}
+inline void PDLPMessage2::unsafe_arena_set_allocated_q_hat(
+    ::safeheron::proto::CurvePoint* q_hat) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(q_hat_);
+  }
+  q_hat_ = q_hat;
+  if (q_hat) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:safeheron.proto.PDLPMessage2.Q_hat)
+}
+inline ::safeheron::proto::CurvePoint* PDLPMessage2::release_q_hat() {
+  
+  ::safeheron::proto::CurvePoint* temp = q_hat_;
+  q_hat_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::safeheron::proto::CurvePoint* PDLPMessage2::unsafe_arena_release_q_hat() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLPMessage2.Q_hat)
+  
+  ::safeheron::proto::CurvePoint* temp = q_hat_;
+  q_hat_ = nullptr;
+  return temp;
+}
+inline ::safeheron::proto::CurvePoint* PDLPMessage2::_internal_mutable_q_hat() {
+  
+  if (q_hat_ == nullptr) {
+    auto* p = CreateMaybeMessage<::safeheron::proto::CurvePoint>(GetArena());
+    q_hat_ = p;
+  }
+  return q_hat_;
+}
+inline ::safeheron::proto::CurvePoint* PDLPMessage2::mutable_q_hat() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLPMessage2.Q_hat)
+  return _internal_mutable_q_hat();
+}
+inline void PDLPMessage2::set_allocated_q_hat(::safeheron::proto::CurvePoint* q_hat) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(q_hat_);
+  }
+  if (q_hat) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(q_hat)->GetArena();
+    if (message_arena != submessage_arena) {
+      q_hat = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, q_hat, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  q_hat_ = q_hat;
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLPMessage2.Q_hat)
+}
+
+// string blind_Q_hat = 2;
+inline void PDLPMessage2::clear_blind_q_hat() {
+  blind_q_hat_.ClearToEmpty();
+}
+inline const std::string& PDLPMessage2::blind_q_hat() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLPMessage2.blind_Q_hat)
+  return _internal_blind_q_hat();
+}
+inline void PDLPMessage2::set_blind_q_hat(const std::string& value) {
+  _internal_set_blind_q_hat(value);
+  // @@protoc_insertion_point(field_set:safeheron.proto.PDLPMessage2.blind_Q_hat)
+}
+inline std::string* PDLPMessage2::mutable_blind_q_hat() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLPMessage2.blind_Q_hat)
+  return _internal_mutable_blind_q_hat();
+}
+inline const std::string& PDLPMessage2::_internal_blind_q_hat() const {
+  return blind_q_hat_.Get();
+}
+inline void PDLPMessage2::_internal_set_blind_q_hat(const std::string& value) {
+  
+  blind_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+}
+inline void PDLPMessage2::set_blind_q_hat(std::string&& value) {
+  
+  blind_q_hat_.Set(
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:safeheron.proto.PDLPMessage2.blind_Q_hat)
+}
+inline void PDLPMessage2::set_blind_q_hat(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  blind_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:safeheron.proto.PDLPMessage2.blind_Q_hat)
+}
+inline void PDLPMessage2::set_blind_q_hat(const char* value,
+    size_t size) {
+  
+  blind_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:safeheron.proto.PDLPMessage2.blind_Q_hat)
+}
+inline std::string* PDLPMessage2::_internal_mutable_blind_q_hat() {
+  
+  return blind_q_hat_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+}
+inline std::string* PDLPMessage2::release_blind_q_hat() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLPMessage2.blind_Q_hat)
+  return blind_q_hat_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void PDLPMessage2::set_allocated_blind_q_hat(std::string* blind_q_hat) {
+  if (blind_q_hat != nullptr) {
+    
+  } else {
+    
+  }
+  blind_q_hat_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), blind_q_hat,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLPMessage2.blind_Q_hat)
+}
+
+// .safeheron.proto.PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+inline bool PDLPMessage2::_internal_has_pail_enc_rang_proof() const {
+  return this != internal_default_instance() && pail_enc_rang_proof_ != nullptr;
+}
+inline bool PDLPMessage2::has_pail_enc_rang_proof() const {
+  return _internal_has_pail_enc_rang_proof();
+}
+inline void PDLPMessage2::clear_pail_enc_rang_proof() {
+  if (GetArena() == nullptr && pail_enc_rang_proof_ != nullptr) {
+    delete pail_enc_rang_proof_;
+  }
+  pail_enc_rang_proof_ = nullptr;
+}
+inline const ::safeheron::proto::PailEncRangeProof_V3& PDLPMessage2::_internal_pail_enc_rang_proof() const {
+  const ::safeheron::proto::PailEncRangeProof_V3* p = pail_enc_rang_proof_;
+  return p != nullptr ? *p : reinterpret_cast<const ::safeheron::proto::PailEncRangeProof_V3&>(
+      ::safeheron::proto::_PailEncRangeProof_V3_default_instance_);
+}
+inline const ::safeheron::proto::PailEncRangeProof_V3& PDLPMessage2::pail_enc_rang_proof() const {
+  // @@protoc_insertion_point(field_get:safeheron.proto.PDLPMessage2.pail_enc_rang_proof)
+  return _internal_pail_enc_rang_proof();
+}
+inline void PDLPMessage2::unsafe_arena_set_allocated_pail_enc_rang_proof(
+    ::safeheron::proto::PailEncRangeProof_V3* pail_enc_rang_proof) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(pail_enc_rang_proof_);
+  }
+  pail_enc_rang_proof_ = pail_enc_rang_proof;
+  if (pail_enc_rang_proof) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:safeheron.proto.PDLPMessage2.pail_enc_rang_proof)
+}
+inline ::safeheron::proto::PailEncRangeProof_V3* PDLPMessage2::release_pail_enc_rang_proof() {
+  
+  ::safeheron::proto::PailEncRangeProof_V3* temp = pail_enc_rang_proof_;
+  pail_enc_rang_proof_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::safeheron::proto::PailEncRangeProof_V3* PDLPMessage2::unsafe_arena_release_pail_enc_rang_proof() {
+  // @@protoc_insertion_point(field_release:safeheron.proto.PDLPMessage2.pail_enc_rang_proof)
+  
+  ::safeheron::proto::PailEncRangeProof_V3* temp = pail_enc_rang_proof_;
+  pail_enc_rang_proof_ = nullptr;
+  return temp;
+}
+inline ::safeheron::proto::PailEncRangeProof_V3* PDLPMessage2::_internal_mutable_pail_enc_rang_proof() {
+  
+  if (pail_enc_rang_proof_ == nullptr) {
+    auto* p = CreateMaybeMessage<::safeheron::proto::PailEncRangeProof_V3>(GetArena());
+    pail_enc_rang_proof_ = p;
+  }
+  return pail_enc_rang_proof_;
+}
+inline ::safeheron::proto::PailEncRangeProof_V3* PDLPMessage2::mutable_pail_enc_rang_proof() {
+  // @@protoc_insertion_point(field_mutable:safeheron.proto.PDLPMessage2.pail_enc_rang_proof)
+  return _internal_mutable_pail_enc_rang_proof();
+}
+inline void PDLPMessage2::set_allocated_pail_enc_rang_proof(::safeheron::proto::PailEncRangeProof_V3* pail_enc_rang_proof) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete pail_enc_rang_proof_;
+  }
+  if (pail_enc_rang_proof) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(pail_enc_rang_proof);
+    if (message_arena != submessage_arena) {
+      pail_enc_rang_proof = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, pail_enc_rang_proof, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  pail_enc_rang_proof_ = pail_enc_rang_proof;
+  // @@protoc_insertion_point(field_set_allocated:safeheron.proto.PDLPMessage2.pail_enc_rang_proof)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

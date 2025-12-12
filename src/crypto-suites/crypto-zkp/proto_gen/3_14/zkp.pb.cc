@@ -16,6 +16,7 @@
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_curve_5fpoint_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CurvePoint_curve_5fpoint_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_zkp_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_DLNProof_zkp_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_zkp_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_PailEncRangeProof_V3_zkp_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_zkp_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PailEncRangeProof_V3_Z_zkp_2eproto;
 namespace safeheron {
 namespace proto {
@@ -139,6 +140,22 @@ class PailMulGroupEleRangeProofDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PailMulGroupEleRangeProof> _instance;
 } _PailMulGroupEleRangeProof_default_instance_;
+class PDLVMessage1DefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PDLVMessage1> _instance;
+} _PDLVMessage1_default_instance_;
+class PDLVMessage2DefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PDLVMessage2> _instance;
+} _PDLVMessage2_default_instance_;
+class PDLPMessage1DefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PDLPMessage1> _instance;
+} _PDLPMessage1_default_instance_;
+class PDLPMessage2DefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<PDLPMessage2> _instance;
+} _PDLPMessage2_default_instance_;
 }  // namespace proto
 }  // namespace safeheron
 static void InitDefaultsscc_info_AliceRangeProof_zkp_2eproto() {
@@ -291,6 +308,60 @@ static void InitDefaultsscc_info_NoSmallFactorProof_zkp_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_NoSmallFactorProof_zkp_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_NoSmallFactorProof_zkp_2eproto}, {}};
+
+static void InitDefaultsscc_info_PDLPMessage1_zkp_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::safeheron::proto::_PDLPMessage1_default_instance_;
+    new (ptr) ::safeheron::proto::PDLPMessage1();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PDLPMessage1_zkp_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PDLPMessage1_zkp_2eproto}, {}};
+
+static void InitDefaultsscc_info_PDLPMessage2_zkp_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::safeheron::proto::_PDLPMessage2_default_instance_;
+    new (ptr) ::safeheron::proto::PDLPMessage2();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_PDLPMessage2_zkp_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_PDLPMessage2_zkp_2eproto}, {
+      &scc_info_CurvePoint_curve_5fpoint_2eproto.base,
+      &scc_info_PailEncRangeProof_V3_zkp_2eproto.base,}};
+
+static void InitDefaultsscc_info_PDLVMessage1_zkp_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::safeheron::proto::_PDLVMessage1_default_instance_;
+    new (ptr) ::safeheron::proto::PDLVMessage1();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PDLVMessage1_zkp_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PDLVMessage1_zkp_2eproto}, {}};
+
+static void InitDefaultsscc_info_PDLVMessage2_zkp_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::safeheron::proto::_PDLVMessage2_default_instance_;
+    new (ptr) ::safeheron::proto::PDLVMessage2();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PDLVMessage2_zkp_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_PDLVMessage2_zkp_2eproto}, {}};
 
 static void InitDefaultsscc_info_PailAffGroupEleRangeProof_V1_zkp_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -547,7 +618,7 @@ static void InitDefaultsscc_info_TwoDLNProof_zkp_2eproto() {
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_TwoDLNProof_zkp_2eproto}, {
       &scc_info_DLNProof_zkp_2eproto.base,}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_zkp_2eproto[30];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_zkp_2eproto[34];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_zkp_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_zkp_2eproto = nullptr;
 
@@ -862,6 +933,35 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_zkp_2eproto::offsets[] PROTOBU
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::PailMulGroupEleRangeProof, z1_),
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::PailMulGroupEleRangeProof, z2_),
   PROTOBUF_FIELD_OFFSET(::safeheron::proto::PailMulGroupEleRangeProof, w_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage1, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage1, c1_),
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage1, c2_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage2, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage2, a_),
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage2, b_),
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLVMessage2, blind_a_b_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage1, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage1, commit_q_hat_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage2, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage2, q_hat_),
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage2, blind_q_hat_),
+  PROTOBUF_FIELD_OFFSET(::safeheron::proto::PDLPMessage2, pail_enc_rang_proof_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::safeheron::proto::DLogProof)},
@@ -894,6 +994,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 276, -1, sizeof(::safeheron::proto::PailDecModuloProof)},
   { 288, -1, sizeof(::safeheron::proto::PailEncMulProof)},
   { 298, -1, sizeof(::safeheron::proto::PailMulGroupEleRangeProof)},
+  { 310, -1, sizeof(::safeheron::proto::PDLVMessage1)},
+  { 317, -1, sizeof(::safeheron::proto::PDLVMessage2)},
+  { 325, -1, sizeof(::safeheron::proto::PDLPMessage1)},
+  { 331, -1, sizeof(::safeheron::proto::PDLPMessage2)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -927,6 +1031,10 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PailDecModuloProof_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PailEncMulProof_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PailMulGroupEleRangeProof_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PDLVMessage1_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PDLVMessage2_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PDLPMessage1_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::safeheron::proto::_PDLPMessage2_default_instance_),
 };
 
 const char descriptor_table_protodef_zkp_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -1014,12 +1122,19 @@ const char descriptor_table_protodef_zkp_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "ulGroupEleRangeProof\022\t\n\001A\030\001 \001(\t\022&\n\001B\030\002 \001"
   "(\0132\033.safeheron.proto.CurvePoint\022\t\n\001E\030\003 \001"
   "(\t\022\t\n\001S\030\004 \001(\t\022\n\n\002z1\030\005 \001(\t\022\n\n\002z2\030\006 \001(\t\022\t\n"
-  "\001w\030\007 \001(\tb\006proto3"
+  "\001w\030\007 \001(\t\"&\n\014PDLVMessage1\022\n\n\002c1\030\001 \001(\t\022\n\n\002"
+  "c2\030\002 \001(\t\"7\n\014PDLVMessage2\022\t\n\001a\030\001 \001(\t\022\t\n\001b"
+  "\030\002 \001(\t\022\021\n\tblind_a_b\030\003 \001(\t\"$\n\014PDLPMessage"
+  "1\022\024\n\014commit_Q_hat\030\001 \001(\t\"\223\001\n\014PDLPMessage2"
+  "\022*\n\005Q_hat\030\001 \001(\0132\033.safeheron.proto.CurveP"
+  "oint\022\023\n\013blind_Q_hat\030\002 \001(\t\022B\n\023pail_enc_ra"
+  "ng_proof\030\003 \001(\0132%.safeheron.proto.PailEnc"
+  "RangeProof_V3b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_zkp_2eproto_deps[1] = {
   &::descriptor_table_curve_5fpoint_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_zkp_2eproto_sccs[30] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_zkp_2eproto_sccs[34] = {
   &scc_info_AliceRangeProof_zkp_2eproto.base,
   &scc_info_DLNProof_zkp_2eproto.base,
   &scc_info_DLogProof_zkp_2eproto.base,
@@ -1031,6 +1146,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_zkp
   &scc_info_HegProof_zkp_2eproto.base,
   &scc_info_LinearCombinationProof_zkp_2eproto.base,
   &scc_info_NoSmallFactorProof_zkp_2eproto.base,
+  &scc_info_PDLPMessage1_zkp_2eproto.base,
+  &scc_info_PDLPMessage2_zkp_2eproto.base,
+  &scc_info_PDLVMessage1_zkp_2eproto.base,
+  &scc_info_PDLVMessage2_zkp_2eproto.base,
   &scc_info_PailAffGroupEleRangeProof_V1_zkp_2eproto.base,
   &scc_info_PailAffGroupEleRangeProof_V2_zkp_2eproto.base,
   &scc_info_PailAffRangeProof_zkp_2eproto.base,
@@ -1053,10 +1172,10 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_zkp
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_zkp_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_zkp_2eproto = {
-  false, false, descriptor_table_protodef_zkp_2eproto, "zkp.proto", 3376,
-  &descriptor_table_zkp_2eproto_once, descriptor_table_zkp_2eproto_sccs, descriptor_table_zkp_2eproto_deps, 30, 1,
+  false, false, descriptor_table_protodef_zkp_2eproto, "zkp.proto", 3661,
+  &descriptor_table_zkp_2eproto_once, descriptor_table_zkp_2eproto_sccs, descriptor_table_zkp_2eproto_deps, 34, 1,
   schemas, file_default_instances, TableStruct_zkp_2eproto::offsets,
-  file_level_metadata_zkp_2eproto, 30, file_level_enum_descriptors_zkp_2eproto, file_level_service_descriptors_zkp_2eproto,
+  file_level_metadata_zkp_2eproto, 34, file_level_enum_descriptors_zkp_2eproto, file_level_service_descriptors_zkp_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -12435,6 +12554,1040 @@ void PailMulGroupEleRangeProof::InternalSwap(PailMulGroupEleRangeProof* other) {
 }
 
 
+// ===================================================================
+
+class PDLVMessage1::_Internal {
+ public:
+};
+
+PDLVMessage1::PDLVMessage1(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:safeheron.proto.PDLVMessage1)
+}
+PDLVMessage1::PDLVMessage1(const PDLVMessage1& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  c1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_c1().empty()) {
+    c1_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_c1(), 
+      GetArena());
+  }
+  c2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_c2().empty()) {
+    c2_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_c2(), 
+      GetArena());
+  }
+  // @@protoc_insertion_point(copy_constructor:safeheron.proto.PDLVMessage1)
+}
+
+void PDLVMessage1::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PDLVMessage1_zkp_2eproto.base);
+  c1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  c2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+PDLVMessage1::~PDLVMessage1() {
+  // @@protoc_insertion_point(destructor:safeheron.proto.PDLVMessage1)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PDLVMessage1::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  c1_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  c2_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void PDLVMessage1::ArenaDtor(void* object) {
+  PDLVMessage1* _this = reinterpret_cast< PDLVMessage1* >(object);
+  (void)_this;
+}
+void PDLVMessage1::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PDLVMessage1::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PDLVMessage1& PDLVMessage1::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PDLVMessage1_zkp_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PDLVMessage1::Clear() {
+// @@protoc_insertion_point(message_clear_start:safeheron.proto.PDLVMessage1)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  c1_.ClearToEmpty();
+  c2_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PDLVMessage1::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string c1 = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_c1();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLVMessage1.c1"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string c2 = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_c2();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLVMessage1.c2"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PDLVMessage1::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:safeheron.proto.PDLVMessage1)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string c1 = 1;
+  if (this->c1().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_c1().data(), static_cast<int>(this->_internal_c1().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLVMessage1.c1");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_c1(), target);
+  }
+
+  // string c2 = 2;
+  if (this->c2().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_c2().data(), static_cast<int>(this->_internal_c2().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLVMessage1.c2");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_c2(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:safeheron.proto.PDLVMessage1)
+  return target;
+}
+
+size_t PDLVMessage1::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:safeheron.proto.PDLVMessage1)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string c1 = 1;
+  if (this->c1().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_c1());
+  }
+
+  // string c2 = 2;
+  if (this->c2().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_c2());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PDLVMessage1::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:safeheron.proto.PDLVMessage1)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PDLVMessage1* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PDLVMessage1>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:safeheron.proto.PDLVMessage1)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:safeheron.proto.PDLVMessage1)
+    MergeFrom(*source);
+  }
+}
+
+void PDLVMessage1::MergeFrom(const PDLVMessage1& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:safeheron.proto.PDLVMessage1)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.c1().size() > 0) {
+    _internal_set_c1(from._internal_c1());
+  }
+  if (from.c2().size() > 0) {
+    _internal_set_c2(from._internal_c2());
+  }
+}
+
+void PDLVMessage1::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:safeheron.proto.PDLVMessage1)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PDLVMessage1::CopyFrom(const PDLVMessage1& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:safeheron.proto.PDLVMessage1)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PDLVMessage1::IsInitialized() const {
+  return true;
+}
+
+void PDLVMessage1::InternalSwap(PDLVMessage1* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  c1_.Swap(&other->c1_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  c2_.Swap(&other->c2_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PDLVMessage1::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+class PDLVMessage2::_Internal {
+ public:
+};
+
+PDLVMessage2::PDLVMessage2(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:safeheron.proto.PDLVMessage2)
+}
+PDLVMessage2::PDLVMessage2(const PDLVMessage2& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  a_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_a().empty()) {
+    a_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_a(), 
+      GetArena());
+  }
+  b_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_b().empty()) {
+    b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_b(), 
+      GetArena());
+  }
+  blind_a_b_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_blind_a_b().empty()) {
+    blind_a_b_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_blind_a_b(), 
+      GetArena());
+  }
+  // @@protoc_insertion_point(copy_constructor:safeheron.proto.PDLVMessage2)
+}
+
+void PDLVMessage2::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PDLVMessage2_zkp_2eproto.base);
+  a_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  b_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  blind_a_b_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+PDLVMessage2::~PDLVMessage2() {
+  // @@protoc_insertion_point(destructor:safeheron.proto.PDLVMessage2)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PDLVMessage2::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  a_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  b_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  blind_a_b_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void PDLVMessage2::ArenaDtor(void* object) {
+  PDLVMessage2* _this = reinterpret_cast< PDLVMessage2* >(object);
+  (void)_this;
+}
+void PDLVMessage2::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PDLVMessage2::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PDLVMessage2& PDLVMessage2::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PDLVMessage2_zkp_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PDLVMessage2::Clear() {
+// @@protoc_insertion_point(message_clear_start:safeheron.proto.PDLVMessage2)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  a_.ClearToEmpty();
+  b_.ClearToEmpty();
+  blind_a_b_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PDLVMessage2::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string a = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_a();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLVMessage2.a"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string b = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_b();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLVMessage2.b"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string blind_a_b = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          auto str = _internal_mutable_blind_a_b();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLVMessage2.blind_a_b"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PDLVMessage2::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:safeheron.proto.PDLVMessage2)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string a = 1;
+  if (this->a().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_a().data(), static_cast<int>(this->_internal_a().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLVMessage2.a");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_a(), target);
+  }
+
+  // string b = 2;
+  if (this->b().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_b().data(), static_cast<int>(this->_internal_b().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLVMessage2.b");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_b(), target);
+  }
+
+  // string blind_a_b = 3;
+  if (this->blind_a_b().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_blind_a_b().data(), static_cast<int>(this->_internal_blind_a_b().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLVMessage2.blind_a_b");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_blind_a_b(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:safeheron.proto.PDLVMessage2)
+  return target;
+}
+
+size_t PDLVMessage2::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:safeheron.proto.PDLVMessage2)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string a = 1;
+  if (this->a().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_a());
+  }
+
+  // string b = 2;
+  if (this->b().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_b());
+  }
+
+  // string blind_a_b = 3;
+  if (this->blind_a_b().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_blind_a_b());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PDLVMessage2::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:safeheron.proto.PDLVMessage2)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PDLVMessage2* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PDLVMessage2>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:safeheron.proto.PDLVMessage2)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:safeheron.proto.PDLVMessage2)
+    MergeFrom(*source);
+  }
+}
+
+void PDLVMessage2::MergeFrom(const PDLVMessage2& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:safeheron.proto.PDLVMessage2)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.a().size() > 0) {
+    _internal_set_a(from._internal_a());
+  }
+  if (from.b().size() > 0) {
+    _internal_set_b(from._internal_b());
+  }
+  if (from.blind_a_b().size() > 0) {
+    _internal_set_blind_a_b(from._internal_blind_a_b());
+  }
+}
+
+void PDLVMessage2::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:safeheron.proto.PDLVMessage2)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PDLVMessage2::CopyFrom(const PDLVMessage2& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:safeheron.proto.PDLVMessage2)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PDLVMessage2::IsInitialized() const {
+  return true;
+}
+
+void PDLVMessage2::InternalSwap(PDLVMessage2* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  a_.Swap(&other->a_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  b_.Swap(&other->b_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  blind_a_b_.Swap(&other->blind_a_b_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PDLVMessage2::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+class PDLPMessage1::_Internal {
+ public:
+};
+
+PDLPMessage1::PDLPMessage1(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:safeheron.proto.PDLPMessage1)
+}
+PDLPMessage1::PDLPMessage1(const PDLPMessage1& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  commit_q_hat_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_commit_q_hat().empty()) {
+    commit_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_commit_q_hat(), 
+      GetArena());
+  }
+  // @@protoc_insertion_point(copy_constructor:safeheron.proto.PDLPMessage1)
+}
+
+void PDLPMessage1::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PDLPMessage1_zkp_2eproto.base);
+  commit_q_hat_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+PDLPMessage1::~PDLPMessage1() {
+  // @@protoc_insertion_point(destructor:safeheron.proto.PDLPMessage1)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PDLPMessage1::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  commit_q_hat_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void PDLPMessage1::ArenaDtor(void* object) {
+  PDLPMessage1* _this = reinterpret_cast< PDLPMessage1* >(object);
+  (void)_this;
+}
+void PDLPMessage1::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PDLPMessage1::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PDLPMessage1& PDLPMessage1::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PDLPMessage1_zkp_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PDLPMessage1::Clear() {
+// @@protoc_insertion_point(message_clear_start:safeheron.proto.PDLPMessage1)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  commit_q_hat_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PDLPMessage1::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string commit_Q_hat = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_commit_q_hat();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLPMessage1.commit_Q_hat"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PDLPMessage1::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:safeheron.proto.PDLPMessage1)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string commit_Q_hat = 1;
+  if (this->commit_q_hat().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_commit_q_hat().data(), static_cast<int>(this->_internal_commit_q_hat().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLPMessage1.commit_Q_hat");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_commit_q_hat(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:safeheron.proto.PDLPMessage1)
+  return target;
+}
+
+size_t PDLPMessage1::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:safeheron.proto.PDLPMessage1)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string commit_Q_hat = 1;
+  if (this->commit_q_hat().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_commit_q_hat());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PDLPMessage1::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:safeheron.proto.PDLPMessage1)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PDLPMessage1* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PDLPMessage1>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:safeheron.proto.PDLPMessage1)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:safeheron.proto.PDLPMessage1)
+    MergeFrom(*source);
+  }
+}
+
+void PDLPMessage1::MergeFrom(const PDLPMessage1& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:safeheron.proto.PDLPMessage1)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.commit_q_hat().size() > 0) {
+    _internal_set_commit_q_hat(from._internal_commit_q_hat());
+  }
+}
+
+void PDLPMessage1::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:safeheron.proto.PDLPMessage1)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PDLPMessage1::CopyFrom(const PDLPMessage1& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:safeheron.proto.PDLPMessage1)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PDLPMessage1::IsInitialized() const {
+  return true;
+}
+
+void PDLPMessage1::InternalSwap(PDLPMessage1* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  commit_q_hat_.Swap(&other->commit_q_hat_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PDLPMessage1::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+class PDLPMessage2::_Internal {
+ public:
+  static const ::safeheron::proto::CurvePoint& q_hat(const PDLPMessage2* msg);
+  static const ::safeheron::proto::PailEncRangeProof_V3& pail_enc_rang_proof(const PDLPMessage2* msg);
+};
+
+const ::safeheron::proto::CurvePoint&
+PDLPMessage2::_Internal::q_hat(const PDLPMessage2* msg) {
+  return *msg->q_hat_;
+}
+const ::safeheron::proto::PailEncRangeProof_V3&
+PDLPMessage2::_Internal::pail_enc_rang_proof(const PDLPMessage2* msg) {
+  return *msg->pail_enc_rang_proof_;
+}
+void PDLPMessage2::clear_q_hat() {
+  if (GetArena() == nullptr && q_hat_ != nullptr) {
+    delete q_hat_;
+  }
+  q_hat_ = nullptr;
+}
+PDLPMessage2::PDLPMessage2(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:safeheron.proto.PDLPMessage2)
+}
+PDLPMessage2::PDLPMessage2(const PDLPMessage2& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  blind_q_hat_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_blind_q_hat().empty()) {
+    blind_q_hat_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_blind_q_hat(), 
+      GetArena());
+  }
+  if (from._internal_has_q_hat()) {
+    q_hat_ = new ::safeheron::proto::CurvePoint(*from.q_hat_);
+  } else {
+    q_hat_ = nullptr;
+  }
+  if (from._internal_has_pail_enc_rang_proof()) {
+    pail_enc_rang_proof_ = new ::safeheron::proto::PailEncRangeProof_V3(*from.pail_enc_rang_proof_);
+  } else {
+    pail_enc_rang_proof_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:safeheron.proto.PDLPMessage2)
+}
+
+void PDLPMessage2::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_PDLPMessage2_zkp_2eproto.base);
+  blind_q_hat_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+      reinterpret_cast<char*>(&q_hat_) - reinterpret_cast<char*>(this)),
+      0, static_cast<size_t>(reinterpret_cast<char*>(&pail_enc_rang_proof_) -
+      reinterpret_cast<char*>(&q_hat_)) + sizeof(pail_enc_rang_proof_));
+}
+
+PDLPMessage2::~PDLPMessage2() {
+  // @@protoc_insertion_point(destructor:safeheron.proto.PDLPMessage2)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void PDLPMessage2::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  blind_q_hat_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete q_hat_;
+  if (this != internal_default_instance()) delete pail_enc_rang_proof_;
+}
+
+void PDLPMessage2::ArenaDtor(void* object) {
+  PDLPMessage2* _this = reinterpret_cast< PDLPMessage2* >(object);
+  (void)_this;
+}
+void PDLPMessage2::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void PDLPMessage2::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const PDLPMessage2& PDLPMessage2::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_PDLPMessage2_zkp_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void PDLPMessage2::Clear() {
+// @@protoc_insertion_point(message_clear_start:safeheron.proto.PDLPMessage2)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  blind_q_hat_.ClearToEmpty();
+  if (GetArena() == nullptr && q_hat_ != nullptr) {
+    delete q_hat_;
+  }
+  q_hat_ = nullptr;
+  if (GetArena() == nullptr && pail_enc_rang_proof_ != nullptr) {
+    delete pail_enc_rang_proof_;
+  }
+  pail_enc_rang_proof_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* PDLPMessage2::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // .safeheron.proto.CurvePoint Q_hat = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_q_hat(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string blind_Q_hat = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_blind_q_hat();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "safeheron.proto.PDLPMessage2.blind_Q_hat"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .safeheron.proto.PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_pail_enc_rang_proof(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* PDLPMessage2::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:safeheron.proto.PDLPMessage2)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .safeheron.proto.CurvePoint Q_hat = 1;
+  if (this->has_q_hat()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::q_hat(this), target, stream);
+  }
+
+  // string blind_Q_hat = 2;
+  if (this->blind_q_hat().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_blind_q_hat().data(), static_cast<int>(this->_internal_blind_q_hat().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "safeheron.proto.PDLPMessage2.blind_Q_hat");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_blind_q_hat(), target);
+  }
+
+  // .safeheron.proto.PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+  if (this->has_pail_enc_rang_proof()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::pail_enc_rang_proof(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:safeheron.proto.PDLPMessage2)
+  return target;
+}
+
+size_t PDLPMessage2::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:safeheron.proto.PDLPMessage2)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string blind_Q_hat = 2;
+  if (this->blind_q_hat().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_blind_q_hat());
+  }
+
+  // .safeheron.proto.CurvePoint Q_hat = 1;
+  if (this->has_q_hat()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *q_hat_);
+  }
+
+  // .safeheron.proto.PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+  if (this->has_pail_enc_rang_proof()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *pail_enc_rang_proof_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void PDLPMessage2::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:safeheron.proto.PDLPMessage2)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PDLPMessage2* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<PDLPMessage2>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:safeheron.proto.PDLPMessage2)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:safeheron.proto.PDLPMessage2)
+    MergeFrom(*source);
+  }
+}
+
+void PDLPMessage2::MergeFrom(const PDLPMessage2& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:safeheron.proto.PDLPMessage2)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.blind_q_hat().size() > 0) {
+    _internal_set_blind_q_hat(from._internal_blind_q_hat());
+  }
+  if (from.has_q_hat()) {
+    _internal_mutable_q_hat()->::safeheron::proto::CurvePoint::MergeFrom(from._internal_q_hat());
+  }
+  if (from.has_pail_enc_rang_proof()) {
+    _internal_mutable_pail_enc_rang_proof()->::safeheron::proto::PailEncRangeProof_V3::MergeFrom(from._internal_pail_enc_rang_proof());
+  }
+}
+
+void PDLPMessage2::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:safeheron.proto.PDLPMessage2)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PDLPMessage2::CopyFrom(const PDLPMessage2& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:safeheron.proto.PDLPMessage2)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PDLPMessage2::IsInitialized() const {
+  return true;
+}
+
+void PDLPMessage2::InternalSwap(PDLPMessage2* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  blind_q_hat_.Swap(&other->blind_q_hat_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PDLPMessage2, pail_enc_rang_proof_)
+      + sizeof(PDLPMessage2::pail_enc_rang_proof_)
+      - PROTOBUF_FIELD_OFFSET(PDLPMessage2, q_hat_)>(
+          reinterpret_cast<char*>(&q_hat_),
+          reinterpret_cast<char*>(&other->q_hat_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata PDLPMessage2::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace proto
 }  // namespace safeheron
@@ -12528,6 +13681,18 @@ template<> PROTOBUF_NOINLINE ::safeheron::proto::PailEncMulProof* Arena::CreateM
 }
 template<> PROTOBUF_NOINLINE ::safeheron::proto::PailMulGroupEleRangeProof* Arena::CreateMaybeMessage< ::safeheron::proto::PailMulGroupEleRangeProof >(Arena* arena) {
   return Arena::CreateMessageInternal< ::safeheron::proto::PailMulGroupEleRangeProof >(arena);
+}
+template<> PROTOBUF_NOINLINE ::safeheron::proto::PDLVMessage1* Arena::CreateMaybeMessage< ::safeheron::proto::PDLVMessage1 >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::safeheron::proto::PDLVMessage1 >(arena);
+}
+template<> PROTOBUF_NOINLINE ::safeheron::proto::PDLVMessage2* Arena::CreateMaybeMessage< ::safeheron::proto::PDLVMessage2 >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::safeheron::proto::PDLVMessage2 >(arena);
+}
+template<> PROTOBUF_NOINLINE ::safeheron::proto::PDLPMessage1* Arena::CreateMaybeMessage< ::safeheron::proto::PDLPMessage1 >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::safeheron::proto::PDLPMessage1 >(arena);
+}
+template<> PROTOBUF_NOINLINE ::safeheron::proto::PDLPMessage2* Arena::CreateMaybeMessage< ::safeheron::proto::PDLPMessage2 >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::safeheron::proto::PDLPMessage2 >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

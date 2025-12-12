@@ -26,11 +26,10 @@ namespace safeheron{
 namespace zkp {
 namespace pail {
 
-static BN SampleRange(const BN &min, const BN &max){
-    while(true){
-        BN ret = RandomBNLt(max);
-        if(ret >= min) return ret;
-    }
+static bool is_bit_set(const uint8_t* bytes, uint32_t bit_index) {
+    uint32_t byte_index = bit_index >> 3; // byte_index = bit_index / 8
+    uint8_t bit_offset = bit_index & 7; // bit_offset = bit_index % 8
+    return (bytes[byte_index] >> bit_offset) & 0x01;
 }
 
 void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, const PailEncRangeWitness_V3 &witness) {
@@ -38,29 +37,51 @@ void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, cons
     ASSERT_THROW(statement.pail_pub_.n().BitLength() >= 2046);
     const BN l = statement.l_;
     const BN double_l = statement.l_ * 2;
+    const BN double_l_plus_1 = double_l + 1;
+
+    // Switches w1 and w2 randomly
+    uint8_t random_bytes[(SECURITY_PARAMETER + 7) / 8];
+    RandomBytes(random_bytes, sizeof(random_bytes));
+
+    std::vector<Z_Struct> tmp_z_arr;
     for (uint32_t i = 0; i < SECURITY_PARAMETER; ++i) {
-        // Sample w1 in [l, 2l]
-        // w2 = w1 - l
+        tmp_z_arr.emplace_back(Z_Struct());
+
+        // Sample w1 in [l, 2l], w2 = w1 - l
+        // RandomBNInRange samples random number in the range [min, max), but we need w1 to be in the range [l. 2l]
+        tmp_z_arr[i].w1_ = RandomBNInRange(l, double_l_plus_1);
+        tmp_z_arr[i].w2_ = tmp_z_arr[i].w1_ - l;
+
+        for (size_t k=0; k<SECURITY_PARAMETER; ++k) {
+            if (is_bit_set(random_bytes, k)) {
+                BN tmp = tmp_z_arr[i].w1_;
+                tmp_z_arr[i].w1_ = tmp_z_arr[i].w2_;
+                tmp_z_arr[i].w2_ = tmp;
+            }
+        }
+
         // Sample r1, r2 in ZN*
-        z_arr_.emplace_back(Z_Struct());
-        z_arr_[i].w1_ = SampleRange(l, double_l);
-        z_arr_[i].w2_ = z_arr_[i].w1_ - l;
-        z_arr_[i].r1_ = RandomBNLtCoPrime(statement.pail_pub_.n());
-        z_arr_[i].r2_ = RandomBNLtCoPrime(statement.pail_pub_.n());
+        tmp_z_arr[i].r1_ = RandomBNLtCoPrime(statement.pail_pub_.n());
+        tmp_z_arr[i].r2_ = RandomBNLtCoPrime(statement.pail_pub_.n());
 
-        // c1 = Enc(pail_pub, w1, r1)
+        // Compute c1 = Enc(pail_pub, w1, r1)
         c1_arr_.emplace_back(BN());
-        c1_arr_[i] = statement.pail_pub_.EncryptWithR(z_arr_[i].w1_, z_arr_[i].r1_);
+        c1_arr_[i] = statement.pail_pub_.EncryptWithR(tmp_z_arr[i].w1_, tmp_z_arr[i].r1_);
 
-        // c2 = Enc(pail_pub, w2, r2)
+        // Compute c2 = Enc(pail_pub, w2, r2)
         c2_arr_.emplace_back(BN());
-        c2_arr_[i] = statement.pail_pub_.EncryptWithR(z_arr_[i].w2_, z_arr_[i].r2_);
+        c2_arr_[i] = statement.pail_pub_.EncryptWithR(tmp_z_arr[i].w2_, tmp_z_arr[i].r2_);
     }
 
-    // e = hash(c1_arr[1], c2_arr[1], c1_arr[2], c2_arr[2], ... , c1_arr[n], c2_arr[n] )
+    // e = H(statement.l_ || statement.pail_pub_ || statement.c_ || c1_arr[1] || c2_arr[1] || c1_arr[2] || c2_arr[2] || ... || c1_arr[n]|| c2_arr[n])
     CSafeHash256 sha256;
     uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(!salt_.empty()) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    statement.l_.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.pail_pub_.n().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.c_.ToBytesBE(str);
@@ -73,24 +94,29 @@ void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, cons
     }
     sha256.Finalize(sha256_digest);
 
-    // for every bit in e
+    z_arr_.resize(SECURITY_PARAMETER);
     for (uint32_t i = 0; i < SECURITY_PARAMETER; ++i) {
-        uint8_t byte_index = i / 8;
-        uint8_t filter = 1 << (i % 8);
-        bool is_bit_set = (sha256_digest[byte_index] & filter) != 0x00;
-        if(is_bit_set){
-            // if the bit is set, output {j, masked_x, masked_r} and make sure masked_x in [l, 2l]
-            // or else output {w1, w2, r1, r2}
-            BN tmp = witness.x_ + z_arr_[i].w1_;
-            if( l <= tmp && tmp <= double_l){
+        // If the bit is set, output {j, masked_x, masked_r} and make sure the masked_x in [l, 2l]
+        // or else output {w1, w2, r1, r2}
+        if(is_bit_set(sha256_digest, i)){
+            // Choose either z_arr[i].w1_ or z_arr[i].w2_ to make the value of masked_x_ in the range [l, 2l]
+            // and set the value of j to 1 or 2 accordingly
+            BN tmp = witness.x_ + tmp_z_arr[i].w1_;
+            if( l <= tmp && tmp <= double_l) {
                 z_arr_[i].j_ = 1;
                 z_arr_[i].masked_x_ = tmp;
-                z_arr_[i].masked_r_ = (witness.r_ * z_arr_[i].r1_) % statement.pail_pub_.n();
-            } else{
+                z_arr_[i].masked_r_ = (witness.r_ * tmp_z_arr[i].r1_) % statement.pail_pub_.n();
+            } else {
                 z_arr_[i].j_ = 2;
-                z_arr_[i].masked_x_ = witness.x_ + z_arr_[i].w2_;
-                z_arr_[i].masked_r_ = (witness.r_ * z_arr_[i].r2_) % statement.pail_pub_.n();
+                z_arr_[i].masked_x_ = witness.x_ + tmp_z_arr[i].w2_;
+                z_arr_[i].masked_r_ = (witness.r_ * tmp_z_arr[i].r2_) % statement.pail_pub_.n();
             }
+        } else {
+            z_arr_[i].j_ = 0;
+            z_arr_[i].w1_ = tmp_z_arr[i].w1_;
+            z_arr_[i].w2_ = tmp_z_arr[i].w2_;
+            z_arr_[i].r1_ = tmp_z_arr[i].r1_;
+            z_arr_[i].r2_ = tmp_z_arr[i].r2_;
         }
     }
 }
@@ -101,10 +127,15 @@ bool PailEncRangeProof_V3::Verify(const PailEncRangeStatement_V3 &statement) con
     const BN l = statement.l_;
     const BN double_l = statement.l_ * 2;
 
-    // e = hash(c1_arr[1], c2_arr[1], c1_arr[2], c2_arr[2], ... , c1_arr[n], c2_arr[n] )
+    // e = H(statement.l_ || statement.pail_pub_ || statement.c_ || c1_arr[1] || c2_arr[1] || c1_arr[2] || c2_arr[2] || ... || c1_arr[n]|| c2_arr[n])
     CSafeHash256 sha256;
     uint8_t sha256_digest[CSafeHash256::OUTPUT_SIZE];
     string str;
+    if(!salt_.empty()) {
+        sha256.Write((const uint8_t *)(salt_.c_str()), salt_.length());
+    }
+    statement.l_.ToBytesBE(str);
+    sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.pail_pub_.n().ToBytesBE(str);
     sha256.Write((const uint8_t *)(str.c_str()), str.length());
     statement.c_.ToBytesBE(str);
@@ -119,16 +150,17 @@ bool PailEncRangeProof_V3::Verify(const PailEncRangeStatement_V3 &statement) con
 
     bool ok = true;
     for (uint32_t i = 0; i < SECURITY_PARAMETER; ++i) {
-        uint8_t byte_index = i / 8;
-        uint8_t filter = 1 << (i % 8);
-        bool is_bit_set = (sha256_digest[byte_index] & filter) != 0x00;
-        if(is_bit_set){
-            // if the bit is set, check:
+        if(is_bit_set(sha256_digest, i)){
+            // If the bit is set, check:
             // - j == 1 || j == 2
-            // - Enc(pub, masked_x, masked_r) = HAdd(c, c1) if j = 1
-            // - Enc(pub, masked_x, masked_r) = HAdd(c, c2) if j = 2
             // - masked_x in [l, 2l]
+            // - Enc(pub, masked_x, masked_r) == HAdd(c, c1) if j = 1
+            // - Enc(pub, masked_x, masked_r) == HAdd(c, c2) if j = 2
+
             if(z_arr_[i].j_ != 1 && z_arr_[i].j_ != 2) return false;
+
+            ok = (l <= z_arr_[i].masked_x_) && (z_arr_[i].masked_x_ <= double_l);
+            if(!ok) return false;
 
             if(z_arr_[i].j_ == 1){
                 BN c_plus_c1 = statement.pail_pub_.HomomorphicAdd(statement.c_, c1_arr_[i]);
@@ -139,29 +171,26 @@ bool PailEncRangeProof_V3::Verify(const PailEncRangeStatement_V3 &statement) con
                 ok = c_plus_c2 == statement.pail_pub_.EncryptWithR(z_arr_[i].masked_x_, z_arr_[i].masked_r_);
                 if(!ok) return false;
             }
-
-            ok = (l <= z_arr_[i].masked_x_) && (z_arr_[i].masked_x_ <= double_l);
-            if(!ok) return false;
         } else{
-            // if the bit is not set, check:
-            // - c1 = Enc(pub, w1, r1)
-            // - c2 = Enc(pub, w2, r2)
+            // If the bit is not set, check:
             // - one of the case below is true:
-            //   - w1 in [l, 2l] && w2 not in [l, 2l]
-            //   - w1 not in [l, 2l] && w2 in [l, 2l]
+            //   - w1 in [l, 2l] && w2 in [0, l]
+            //   - w1 in [0, l] && w2 in [l, 2l]
+            // - c1 == Enc(pub, w1, r1)
+            // - c2 == Enc(pub, w2, r2)
+            bool w1_in_range_l_2l = (l <= z_arr_[i].w1_) && (z_arr_[i].w1_ <= double_l);
+            bool w1_in_range_0_l = (z_arr_[i].w1_ >= 0) && (z_arr_[i].w1_ <= l);
+
+            bool w2_in_range_l_2l = (l <= z_arr_[i].w2_) && (z_arr_[i].w2_ <= double_l);
+            bool w2_in_range_0_l = (BN(0) <= z_arr_[i].w2_) && (z_arr_[i].w2_ <= l);
+
+            ok = (w1_in_range_l_2l && w2_in_range_0_l) || (w1_in_range_0_l && w2_in_range_l_2l);
+            if(!ok) return false;
+
             ok = c1_arr_[i] == statement.pail_pub_.EncryptWithR(z_arr_[i].w1_, z_arr_[i].r1_);
             if(!ok) return false;
 
             ok = c2_arr_[i] == statement.pail_pub_.EncryptWithR(z_arr_[i].w2_, z_arr_[i].r2_);
-            if(!ok) return false;
-
-            bool w1_in_range = (l <= z_arr_[i].w1_) && (z_arr_[i].w1_ <= double_l);
-            bool w1_out_of_range = (l > z_arr_[i].w1_) || (z_arr_[i].w1_ > double_l);
-
-            bool w2_in_range = (l <= z_arr_[i].w2_) && (z_arr_[i].w2_ <= double_l);
-            bool w2_out_of_range = (l > z_arr_[i].w2_) || (z_arr_[i].w2_ > double_l);
-
-            ok = (w1_in_range && w2_out_of_range) || (w1_out_of_range && w2_in_range);
             if(!ok) return false;
         }
     }

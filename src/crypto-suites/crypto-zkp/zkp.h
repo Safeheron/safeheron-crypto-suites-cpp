@@ -14,7 +14,6 @@
 #include "crypto-suites/crypto-zkp/heg_proof_v3.h"
 #include "crypto-suites/crypto-zkp/no_small_factor_proof.h"
 #include "crypto-suites/crypto-zkp/pail_proof.h"
-#include "crypto-suites/crypto-zkp/pdl_proof.h"
 #include "crypto-suites/crypto-zkp/pedersen_proof.h"
 #include "crypto-suites/crypto-zkp/range_proof.h"
 #include "crypto-suites/crypto-zkp/two_dln_proof.h"
@@ -32,5 +31,11 @@
 #include "crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v3.h"
 #include "crypto-suites/crypto-zkp/pail/pail_mul_group_ele_range_proof.h"
 #include "crypto-suites/crypto-zkp/pail/pail_n_proof.h"
+#include "crypto-suites/crypto-zkp/pdl/pdl_common.h"
+#include "crypto-suites/crypto-zkp/pdl/PDLProver.h"
+#include "crypto-suites/crypto-zkp/pdl/PDLVerifier.h"
+#include "crypto-suites/crypto-zkp/pdl/PDLProver_V2.h"
+#include "crypto-suites/crypto-zkp/pdl/PDLVerifier_V2.h"
+#include "crypto-suites/crypto-zkp/pdl/pdl_message.h"
 
 #endif //SAFEHERON_CRYPTO_ZKP_H

@@ -26,6 +26,13 @@ void RandomBytes(unsigned char *buf, size_t size) {
     }
 }
 
+std::string RandomBytes(size_t size) {
+    std::unique_ptr<uint8_t[]> buf(new(std::nothrow) uint8_t[size]);
+    if (buf == nullptr) throw BadAllocException(__FILE__, __LINE__, __FUNCTION__, size, "buf.get() == nullptr");
+    RandomBytes(buf.get(), size);
+    return std::string((const char *)buf.get(), size);
+}
+
 BN RandomBN(size_t bits) {
     BN n;
     size_t bytes = (bits + 7) / 8;

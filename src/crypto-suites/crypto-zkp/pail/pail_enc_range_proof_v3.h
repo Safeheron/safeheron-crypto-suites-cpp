@@ -15,12 +15,11 @@ namespace pail {
  * @brief This protocol is a zero knowledge proof on Paillier Encryption in Range.
  *
  * Statement: δ = (c, pail_pub, l), where:
- * Witness:   ω = (x, r) where x in (0, l) where l = q/3.
- * Prove relation: c = Enc(pail_pub, x, r) and x in (-q/3, 2q/3)
+ * Witness:   ω = (x, r) where x in (0, l).
+ * Prove relation: c = Enc(pail_pub, x, r) and x in (-l, 2l)
  *
- * Completeness for x in (0, q/3). Note that there is a negligible probability of failure for the honest prover (when
- * alpha > q^3 - q^2 - which  happens with negligible probability - it might happen that s1 > q3)
- * Soundness for x in (-q/3, 2q/3)
+ * Completeness for x in (0, l)
+ * Soundness for x in (-l, 2l)
  *
  * Reference
  * - Appendix A in [Lindell'17](https://eprint.iacr.org/2017/552)
@@ -57,7 +56,10 @@ struct Z_Struct{
 
 class PailEncRangeProof_V3 {
 public:
-    PailEncRangeProof_V3(){};
+    PailEncRangeProof_V3()= default;
+
+    void SetSalt(const std::string &salt) { salt_ = salt; }
+
 
     void Prove(const PailEncRangeStatement_V3 &statement, const PailEncRangeWitness_V3 &witness);
     bool Verify(const PailEncRangeStatement_V3 &statement) const;
@@ -78,6 +80,8 @@ private:
     std::vector<safeheron::bignum::BN> c1_arr_;
     std::vector<safeheron::bignum::BN> c2_arr_;
     std::vector<Z_Struct> z_arr_;
+
+    std::string salt_;
 };
 
 }

@@ -10,9 +10,9 @@ endif()
 
 # Check platform
 if (PLATFORM STREQUAL "SGX")
-    project("SafeheronCryptoSuitesSgx" VERSION 1.0.1)
+    project("SafeheronCryptoSuitesSgx" VERSION 1.1.0)
 else()
-    project("SafeheronCryptoSuites" VERSION 1.0.1)
+    project("SafeheronCryptoSuites" VERSION 1.1.0)
 endif()
 
 set(CMAKE_BUILD_TYPE "Release")
@@ -39,7 +39,6 @@ set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
 
 option(ENABLE_STARK "Enable stark curve" OFF)
 if (${ENABLE_STARK})
-    add_definitions(-DENABLE_STARK)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ENABLE_STARK)
 endif()
 
@@ -52,8 +51,8 @@ endif()
 include_directories(src)
 
 if (PLATFORM STREQUAL "SGX")
-    add_definitions(-DPB_ENABLE_SGX)
-    add_definitions(-DSAFEHERON_SGX_SDK)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PB_ENABLE_SGX)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC SAFEHERON_SGX_SDK)
 
     # Set the sgxsdk path
     set(SGX_SDK_PATH "/opt/intel/sgxsdk")
@@ -77,13 +76,16 @@ if (PLATFORM STREQUAL "SGX")
             ${SGX_C_INCLUDE_DIR}
             ${SGX_CXX_INCLUDE_DIR}
             ${SGX_PROTOBUF_INCLUDE_DIR}
+            src
     )
 else ()
     find_package(Protobuf REQUIRED)
     set(OPENSSL_USE_STATIC_LIBS TRUE)
     find_package(OpenSSL REQUIRED)
 
-    target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE /usr/local/lib)
+    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE src)
+
+
     target_link_libraries(${CMAKE_PROJECT_NAME}
             protobuf::libprotobuf
             OpenSSL::Crypto

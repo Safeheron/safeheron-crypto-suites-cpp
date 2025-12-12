@@ -252,3 +252,24 @@ message PailMulGroupEleRangeProof{
     string z2 = 6;
     string w = 7;
 }
+
+message PDLVMessage1 {
+    string c1 = 1;
+    string c2 = 2;
+}
+
+message PDLVMessage2 {
+    string a = 1;
+    string b = 2;
+    string blind_a_b = 3;
+}
+
+message PDLPMessage1 {
+    string commit_Q_hat = 1;
+}
+
+message PDLPMessage2 {
+    safeheron.proto.CurvePoint Q_hat = 1;
+    string blind_Q_hat = 2;
+    PailEncRangeProof_V3 pail_enc_rang_proof = 3;
+}
