@@ -174,7 +174,15 @@ else()
             crypto-suites/crypto-zkp/pedersen_proof.cpp
             crypto-suites/crypto-zkp/dlog_elgamal_com_proof.cpp
             crypto-suites/crypto-zkp/dlog_equality_proof.cpp
-            crypto-suites/crypto-zkp/pdl_proof.cpp
+            crypto-suites/crypto-zkp/pdl/PDLProver.cpp
+            crypto-suites/crypto-zkp/pdl/PDLVerifier.cpp
+            crypto-suites/crypto-zkp/pdl/PDLProver_V2.cpp
+            crypto-suites/crypto-zkp/pdl/PDLVerifier_V2.cpp
+            crypto-suites/crypto-zkp/pdl/PDLPMessage1.cpp
+            crypto-suites/crypto-zkp/pdl/PDLPMessage2.cpp
+            crypto-suites/crypto-zkp/pdl/PDLVMessage1.cpp
+            crypto-suites/crypto-zkp/pdl/PDLVMessage2.cpp
+
             crypto-suites/crypto-zkp/pail/pail_n_proof.cpp
             crypto-suites/crypto-zkp/pail/pail_aff_range_proof.cpp
             crypto-suites/crypto-zkp/pail/pail_enc_range_proof_v1.cpp

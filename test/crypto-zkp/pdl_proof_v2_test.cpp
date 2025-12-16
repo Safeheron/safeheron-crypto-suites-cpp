@@ -1,6 +1,5 @@
 #include <cstring>
 #include <google/protobuf/stubs/common.h>
-#include "crypto-suites/crypto-zkp/zkp.h"
 #include "gtest/gtest.h"
 #include "crypto-suites/crypto-zkp/zkp.h"
 #include "crypto-suites/crypto-bn/rand.h"
@@ -17,14 +16,14 @@ using safeheron::pail::PailPrivKey;
 using namespace safeheron::zkp;
 using namespace safeheron::rand;
 
-TEST(ZKP, PDLProof)
+TEST(ZKP, PDLProof_V2)
 {
     PailPubKey pail_pub;
     PailPrivKey pail_priv;
     CreateKeyPair2048(pail_priv, pail_pub);
 
     const Curve * curv = GetCurveParam(CurveType::SECP256K1);
-    BN x = RandomBNInRange(curv->n / 3, curv->n * 2 / 3);
+    BN x = RandomBNLt(curv->n);
     CurvePoint Q = curv->g * x;
 
     BN r = RandomBNLtCoPrime(pail_pub.n());
@@ -33,8 +32,8 @@ TEST(ZKP, PDLProof)
     safeheron::zkp::pdl::PDLStatement statement(c, Q, pail_pub);
     safeheron::zkp::pdl::PDLWitness witness(x, r, pail_priv);
 
-    safeheron::zkp::pdl::PDLProver prover;
-    safeheron::zkp::pdl::PDLVerifier verifier;
+    safeheron::zkp::pdl::PDLProver_V2 prover;
+    safeheron::zkp::pdl::PDLVerifier_V2 verifier;
 
     bool ok = true;
     ok = verifier.Init(statement);

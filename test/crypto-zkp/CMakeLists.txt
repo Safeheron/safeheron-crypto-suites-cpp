@@ -85,6 +85,9 @@ if (NOT ${ENABLE_SNAP_SCOPE})
     add_executable(pdl_proof_test pdl_proof_test.cpp CTimer.cpp)
     add_test(NAME zkp.pdl_proof_test COMMAND pdl_proof_test)
 
+    add_executable(pdl_proof_v2_test pdl_proof_v2_test.cpp CTimer.cpp)
+    add_test(NAME zkp.pdl_proof_v2_test COMMAND pdl_proof_v2_test)
+
     add_executable(pail_enc_range_proof_v1_test pail_enc_range_proof_v1_test.cpp CTimer.cpp)
     add_test(NAME zkp.pail_enc_range_proof_v1_test COMMAND pail_enc_range_proof_v1_test)
 

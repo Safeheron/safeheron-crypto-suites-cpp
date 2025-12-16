@@ -8,21 +8,24 @@
 namespace safeheron {
 namespace commitment {
 
-class Com256 {
+class HashCommit256 {
 private:
-    safeheron::hash::CSafeHash256 sha;
+    safeheron::hash::CSafeHash256 sha_;
 public:
     static const size_t OUTPUT_SIZE = safeheron::hash::CSafeHash256::OUTPUT_SIZE;
 
-    Com256& CommitBN(const safeheron::bignum::BN &num);
-    Com256& CommitCurvePoint(const safeheron::curve::CurvePoint &point);
-    Com256& CommitString(const std::string &str);
-    Com256& CommitBytes(const unsigned char *data, size_t len);
+    HashCommit256& UpdateBN(const safeheron::bignum::BN &num);
+    HashCommit256& UpdateCurvePoint(const safeheron::curve::CurvePoint &point);
+    HashCommit256& UpdateString(const std::string &str);
+    HashCommit256& UpdateBytes(const unsigned char *data, size_t len);
 
-    void Finalize(const std::string &blind_factor, unsigned char com[OUTPUT_SIZE]);
-    void Finalize(const std::string &blind_factor, std::string &com);
+    std::string Commit(const std::string &blind_factor);
+    void Commit(const std::string &blind_factor, unsigned char commitment[OUTPUT_SIZE]);
 
-    Com256& Reset();
+    bool OpenAndVerify(const std::string &blind_factor, const std::string &commitment);
+    bool OpenAndVerify(const std::string &blind_factor, const unsigned char commitment[OUTPUT_SIZE]);
+
+    HashCommit256& Reset();
 };
 
 

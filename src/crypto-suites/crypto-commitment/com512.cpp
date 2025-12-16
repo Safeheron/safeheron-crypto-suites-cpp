@@ -1,51 +1,62 @@
-//
-// Created by Sword03 on 2023/9/11.
-//
-
 #include "crypto-suites/crypto-commitment/com512.h"
-#include "crypto-suites/crypto-bn/rand.h"
-
+#include "crypto-suites/common/bytes_comparison.h"
+using safeheron::common::BytesEqual;
 namespace safeheron {
 namespace commitment {
 
-Com512& Com512::CommitBN(const safeheron::bignum::BN &num){
+HashCommit512& HashCommit512::UpdateBN(const safeheron::bignum::BN &num){
     std::string buf;
     num.ToBytesBE(buf);
-    sha.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
+    sha_.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
     return *this;
 }
 
-Com512& Com512::CommitCurvePoint(const safeheron::curve::CurvePoint &point){
+HashCommit512& HashCommit512::UpdateCurvePoint(const safeheron::curve::CurvePoint &point){
     std::string buf;
     point.EncodeFull(buf);
-    sha.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
+    sha_.Write(reinterpret_cast<const unsigned char *>(buf.c_str()), buf.size());
     return *this;
 }
 
-Com512& Com512::CommitString(const std::string &str){
-    sha.Write(reinterpret_cast<const unsigned char *>(str.c_str()), str.size());
+HashCommit512& HashCommit512::UpdateString(const std::string &str){
+    sha_.Write(reinterpret_cast<const unsigned char *>(str.c_str()), str.size());
     return *this;
 }
 
-Com512& Com512::CommitBytes(const unsigned char *data, size_t len){
-    sha.Write(data, len);
+HashCommit512& HashCommit512::UpdateBytes(const unsigned char *data, size_t len){
+    sha_.Write(data, len);
     return *this;
 }
 
-void Com512::Finalize(const std::string &blind_factor, unsigned char com[OUTPUT_SIZE]){
-    // blind factor is included in the part of hash data
-    sha.Write(reinterpret_cast<const unsigned char *>(blind_factor.c_str()), blind_factor.size());
-    sha.Finalize(com);
+void HashCommit512::Commit(const std::string &blind_factor, unsigned char commitment[OUTPUT_SIZE]){
+    sha_.Write(reinterpret_cast<const unsigned char *>(blind_factor.c_str()), blind_factor.size());
+    sha_.Finalize(commitment);
 }
 
-void Com512::Finalize(const std::string &blind_factor, std::string &com){
-    unsigned char t_com[OUTPUT_SIZE];
-    Finalize(blind_factor, t_com);
-    com.assign((const char *)t_com, OUTPUT_SIZE);
+std::string HashCommit512::Commit(const std::string &blind_factor){
+    unsigned char com[OUTPUT_SIZE];
+    sha_.Write(reinterpret_cast<const unsigned char *>(blind_factor.c_str()), blind_factor.size());
+    sha_.Finalize(com);
+    return std::string((const char *)com, OUTPUT_SIZE);
 }
 
-Com512& Com512::Reset() {
-    sha.Reset();
+bool HashCommit512::OpenAndVerify(const std::string &blind_factor, const std::string &commitment) {
+    unsigned char com[OUTPUT_SIZE];
+    sha_.Write(reinterpret_cast<const unsigned char *>(blind_factor.c_str()), blind_factor.size());
+    sha_.Finalize(com);
+    return BytesEqual(commitment, com, OUTPUT_SIZE);
+}
+
+bool HashCommit512::OpenAndVerify(const std::string &blind_factor, const unsigned char commitment[OUTPUT_SIZE]) {
+    if (!commitment) return false;
+    unsigned char com[OUTPUT_SIZE];
+    sha_.Write(reinterpret_cast<const unsigned char *>(blind_factor.c_str()), blind_factor.size());
+    sha_.Finalize(com);
+    return (memcmp(commitment, com, OUTPUT_SIZE) == 0);
+}
+
+HashCommit512& HashCommit512::Reset() {
+    sha_.Reset();
     return *this;
 }
 

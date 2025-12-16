@@ -12,8 +12,8 @@ using safeheron::curve::CurveType;
 using safeheron::curve::CurvePoint;
 using safeheron::commitment::KgdCurvePoint;
 using safeheron::commitment::KgdNumber;
-using safeheron::commitment::Com256;
-using safeheron::commitment::Com512;
+using safeheron::commitment::HashCommit256;
+using safeheron::commitment::HashCommit512;
 
 
 TEST(Commitment, Number)
@@ -79,16 +79,16 @@ TEST(Com256, Com256)
     safeheron::rand::RandomBytes(buf, 32);
     std::string blind_factor((char*)buf, 32);
 
-    Com256 com;
+    HashCommit256 com;
     std::string com_value;
-    com.CommitBN(msg);
-    com.CommitBN(r0);
-    com.CommitBN(r1);
-    com.CommitBN(r2);
-    com.CommitCurvePoint(point0);
-    com.CommitCurvePoint(point1);
-    com.CommitCurvePoint(point2);
-    com.Finalize(blind_factor, com_value);
+    com.UpdateBN(msg);
+    com.UpdateBN(r0);
+    com.UpdateBN(r1);
+    com.UpdateBN(r2);
+    com.UpdateCurvePoint(point0);
+    com.UpdateCurvePoint(point1);
+    com.UpdateCurvePoint(point2);
+    com_value = com.Commit(blind_factor);
 
     std::cout << "commitment(Com256) :" << safeheron::encode::hex::EncodeToHex(com_value) << std::endl;
 }
@@ -108,16 +108,16 @@ TEST(Com512, Com512)
     safeheron::rand::RandomBytes(buf, 32);
     std::string blind_factor((char*)buf, 32);
 
-    Com512 com;
+    HashCommit512 com;
     std::string com_value;
-    com.CommitBN(msg);
-    com.CommitBN(r0);
-    com.CommitBN(r1);
-    com.CommitBN(r2);
-    com.CommitCurvePoint(point0);
-    com.CommitCurvePoint(point1);
-    com.CommitCurvePoint(point2);
-    com.Finalize(blind_factor, com_value);
+    com.UpdateBN(msg);
+    com.UpdateBN(r0);
+    com.UpdateBN(r1);
+    com.UpdateBN(r2);
+    com.UpdateCurvePoint(point0);
+    com.UpdateCurvePoint(point1);
+    com.UpdateCurvePoint(point2);
+    com_value = com.Commit(blind_factor);
 
     std::cout << "commitment(Com512) :" << safeheron::encode::hex::EncodeToHex(com_value) << std::endl;
 }
