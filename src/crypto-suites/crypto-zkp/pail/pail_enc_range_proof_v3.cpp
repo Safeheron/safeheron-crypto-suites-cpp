@@ -52,12 +52,10 @@ void PailEncRangeProof_V3::Prove(const PailEncRangeStatement_V3 &statement, cons
         tmp_z_arr[i].w1_ = RandomBNInRange(l, double_l_plus_1);
         tmp_z_arr[i].w2_ = tmp_z_arr[i].w1_ - l;
 
-        for (size_t k=0; k<SECURITY_PARAMETER; ++k) {
-            if (is_bit_set(random_bytes, k)) {
-                BN tmp = tmp_z_arr[i].w1_;
-                tmp_z_arr[i].w1_ = tmp_z_arr[i].w2_;
-                tmp_z_arr[i].w2_ = tmp;
-            }
+        if (is_bit_set(random_bytes, i)) {
+            BN tmp = tmp_z_arr[i].w1_;
+            tmp_z_arr[i].w1_ = tmp_z_arr[i].w2_;
+            tmp_z_arr[i].w2_ = tmp;
         }
 
         // Sample r1, r2 in ZN*
